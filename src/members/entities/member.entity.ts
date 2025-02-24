@@ -30,14 +30,14 @@ export class Member {
     description: 'Points d\'expérience du membre',
     example: '100.00'
   })
-  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  @Column({ type: 'decimal', precision: 15, scale: 2, name: 'xp' })
   xp: string;
 
   @ApiProperty({
     description: 'Niveau du membre',
     example: 1
   })
-  @Column({ type: 'int' })
+  @Column({ type: 'int', name: 'level' })
   level: number;
 
   @ApiProperty({
@@ -52,33 +52,34 @@ export class Member {
     example: 'Active',
     enum: ['Active', 'Inactive', 'Banned']
   })
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50, name: 'status' })
   status: string;
 
   @ApiProperty({
-    description: 'Date de création du membre',
-    example: '2024-02-18T10:00:00Z'
+    description: 'Date de création'
   })
-  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @ApiProperty({
-    description: 'Date de dernière mise à jour du membre',
-    example: '2024-02-18T10:00:00Z'
+    description: 'Date de dernière mise à jour'
   })
-  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
+  @ApiProperty({
+    description: 'UUID de la guilde',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
   @Column({ type: 'uuid', name: 'uuid_guild' })
   uuidGuild: string;
 
   @ApiProperty({
-    description: 'Relation avec la guilde',
-    type: () => Guild
+    description: 'Relation avec la guilde'
   })
-  @ManyToOne(() => Guild)
+  @ManyToOne(() => Guild, (guild) => guild.members, { lazy: true })
   @JoinColumn({ name: 'uuid_guild' })
-  guild: Guild;  
+  guild: Promise<Guild>;
 
   @Column({ type: 'uuid', name: 'uuid_discord' }) 
   uuidDiscord: string;
