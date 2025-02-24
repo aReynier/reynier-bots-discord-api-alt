@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Member } from '../../members/entities/member.entity';
 import { Report } from '../../reports/entities/report.entity';
 
-@Entity('Resources')
+@Entity('resources')
 export class Resource {
   @ApiProperty({
     description: 'UUID unique de la ressource',
