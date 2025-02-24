@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 import { ApiProperty } from '@nestjs/swagger';
 import { Member } from '../../members/entities/member.entity';
 import { Report } from '../../reports/entities/report.entity';
+import { Comment } from '../../comments/entities/comment.entity';
 
 @Entity('resources')
 export class Resource {
@@ -80,4 +81,11 @@ export class Resource {
     onDelete: 'CASCADE'
   })
   reports: Report[];
+
+  @ApiProperty({
+    description: 'Les commentaires de la ressource',
+    type: () => [Comment]
+  })
+  @OneToMany(() => Comment, comment => comment.resource)
+  comments: Comment[];
 } 
