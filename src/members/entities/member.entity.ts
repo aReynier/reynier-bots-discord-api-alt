@@ -7,6 +7,7 @@ import { DiscordUser } from 'src/discord-users/entities/discord-user.entity';
 import { Resource } from '../../resources/entities/resource.entity';
 import { XpTransaction } from '../../xp-transactions/entities/xp-transaction.entity';
 import { Role } from 'src/roles/entities/role.entity';
+import { Comment } from '../../comments/entities/comment.entity';
 
 @Entity('members')
 export class Member {
@@ -115,5 +116,12 @@ export class Member {
   @ManyToMany(() => Role, (role) => role.members)
   @JoinTable()
   roles: Role[];
+
+  @ApiProperty({
+    description: 'Les commentaires du membre',
+    type: () => [Comment]
+  })
+  @OneToMany(() => Comment, comment => comment.member)
+  comments: Comment[];
 
 }
