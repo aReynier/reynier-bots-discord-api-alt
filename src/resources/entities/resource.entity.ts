@@ -10,7 +10,7 @@ export class Resource {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @PrimaryGeneratedColumn('uuid')
-  uuid_resource: string;
+  uuidResource: string;
 
   @ApiProperty({
     description: 'Le titre de la ressource',
@@ -55,14 +55,14 @@ export class Resource {
     example: '2024-02-17T12:00:00Z'
   })
   @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  updatedAt: Date;
 
   @ApiProperty({
     description: 'Date de création',
     example: '2024-02-17T12:00:00Z'
   })
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty({
     description: 'Les signalements liés à cette ressource',
