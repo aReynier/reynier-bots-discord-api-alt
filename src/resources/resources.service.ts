@@ -28,10 +28,11 @@ export class ResourcesService {
       throw new NotFoundException(`Member with UUID ${uuidMember} not found`);
     }
 
-    // On crée la ressource avec le membre
+    // On crée la ressource avec le membre et son UUID
     const resource = this.resourcesRepository.create({
       ...resourceData,
-      creator: member
+      creator: member,
+      creatorUuid: member.uuidMember
     });
     
     const savedResource = await this.resourcesRepository.save(resource);
