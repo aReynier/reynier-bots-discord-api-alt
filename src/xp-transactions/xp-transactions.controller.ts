@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { XpTransactionsService } from './xp-transactions.service';
 import { CreateXpTransactionDto } from './dto/create-xp-transaction.dto';
-import { UpdateXpTransactionDto } from './dto/update-xp-transaction.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
 import { XpTransactionResponseDto } from './dto/responses/xp-transaction.response.dto';
 
@@ -73,25 +72,6 @@ export class XpTransactionsController {
   @ApiResponse({ status: 404, description: 'Transaction XP non trouvée' })
   async findOne(@Param('uuid') uuid: string): Promise<XpTransactionResponseDto> {
     return await this.xpTransactionsService.findOne(uuid);
-  }
-
-  @Patch(':uuid')
-  @ApiOperation({ 
-    summary: 'Mettre à jour une transaction XP',
-    description: 'Met à jour les informations d\'une transaction XP existante.'
-  })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'La transaction XP a été mise à jour avec succès.',
-    type: XpTransactionResponseDto 
-  })
-  @ApiResponse({ status: 400, description: 'Données invalides' })
-  @ApiResponse({ status: 404, description: 'Transaction XP non trouvée' })
-  async update(
-    @Param('uuid') uuid: string,
-    @Body() updateXpTransactionDto: UpdateXpTransactionDto
-  ): Promise<XpTransactionResponseDto> {
-    return await this.xpTransactionsService.update(uuid, updateXpTransactionDto);
   }
 
   @Delete(':uuid')

@@ -2,7 +2,6 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateXpTransactionDto } from './dto/create-xp-transaction.dto';
-import { UpdateXpTransactionDto } from './dto/update-xp-transaction.dto';
 import { XpTransaction } from './entities/xp-transaction.entity';
 import { Member } from '../members/entities/member.entity';
 import { plainToInstance } from 'class-transformer';
@@ -105,10 +104,6 @@ export class XpTransactionsService {
     }
 
     return plainToInstance(XpTransactionResponseDto, transaction, { excludeExtraneousValues: true });
-  }
-
-  async update(uuid: string, updateXpTransactionDto: UpdateXpTransactionDto): Promise<XpTransactionResponseDto> {
-    throw new BadRequestException('Les transactions XP ne peuvent pas être modifiées une fois créées');
   }
 
   async remove(uuid: string): Promise<void> {
