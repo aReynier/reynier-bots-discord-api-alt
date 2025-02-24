@@ -17,28 +17,30 @@ export class XpTransactionsService {
     private memberRepository: Repository<Member>
   ) {}
 
-  async create(createXpTransactionDto: CreateXpTransactionDto): Promise<XpTransaction> {
-    const xpTransaction = this.xpTransactionRepository.create({
-      transaction_type: createXpTransactionDto.amount >= 0 ? 'GAIN' : 'LOSS',
-      transaction_value: Math.abs(createXpTransactionDto.amount),
-      uuidMember: createXpTransactionDto.userId,
-      reason: createXpTransactionDto.reason,
-      notes: createXpTransactionDto.notes
+  async create(createXpTransactionDto: CreateXpTransactionDto): Promise<XpTransactionResponseDto> {
+    const member = await this.memberRepository.findOne({
+      where: { uuidMember: createXpTransactionDto.uuidMember }
     });
 
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${createXpTransactionDto.uuid_member} not found`);
+      throw new NotFoundException(`Member with UUID ${createXpTransactionDto.uuidMember} not found`);
     }
 
     // Vérifier que la valeur est un nombre valide
-    const transactionValue = parseFloat(createXpTransactionDto.transaction_value);
+    const transactionValue = parseFloat(String(createXpTransactionDto.transactionValue));
     if (isNaN(transactionValue)) {
       throw new BadRequestException('La valeur de la transaction doit être un nombre valide');
     }
 
     // Créer la transaction
     const transaction = this.xpTransactionRepository.create({
-      ...createXpTransactionDto,
+      transactionType: createXpTransactionDto.transactionType,
+      transactionValue: createXpTransactionDto.transactionValue,
+      source: createXpTransactionDto.source,
+      reason: createXpTransactionDto.reason,
+      notes: createXpTransactionDto.notes,
+      referenceType: createXpTransactionDto.referenceType,
+      referenceUuid: createXpTransactionDto.referenceUuid,
       member,
     });
 
@@ -46,7 +48,7 @@ export class XpTransactionsService {
     
     // Retourner la transaction avec ses relations
     const transactionWithRelations = await this.xpTransactionRepository.findOne({
-      where: { uuid_xp_transaction: savedTransaction.uuid_xp_transaction },
+      where: { uuidXpTransaction: savedTransaction.uuidXpTransaction },
       relations: ['member'],
     });
 
@@ -59,7 +61,7 @@ export class XpTransactionsService {
     const transactions = await this.xpTransactionRepository.find({
       relations: ['member'],
       order: {
-        created_at: 'DESC'
+        createdAt: 'DESC'
       }
     });
 
@@ -68,22 +70,22 @@ export class XpTransactionsService {
     );
   }
 
-  async findByMember(uuid_member: string): Promise<XpTransactionResponseDto[]> {
+  async findByMember(uuidMember: string): Promise<XpTransactionResponseDto[]> {
     // Vérifier que le membre existe
     const member = await this.memberRepository.findOne({
-      where: { uuid_member }
+      where: { uuidMember }
     });
 
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${uuid_member} not found`);
+      throw new NotFoundException(`Member with UUID ${uuidMember} not found`);
     }
 
     // Récupérer toutes les transactions du membre
     const transactions = await this.xpTransactionRepository.find({
-      where: { member: { uuid_member } },
+      where: { member: { uuidMember } },
       relations: ['member'],
       order: {
-        created_at: 'DESC'
+        createdAt: 'DESC'
       }
     });
 
@@ -92,28 +94,9 @@ export class XpTransactionsService {
     );
   }
 
-  async update(id: string, updateXpTransactionDto: UpdateXpTransactionDto): Promise<XpTransaction> {
-    const xpTransaction = await this.findOne(id);
-    
-    if (updateXpTransactionDto.userId) {
-      xpTransaction.uuidMember = updateXpTransactionDto.userId;
-    }
-    
-    if (updateXpTransactionDto.amount !== undefined) {
-      xpTransaction.transaction_type = updateXpTransactionDto.amount >= 0 ? 'GAIN' : 'LOSS';
-      xpTransaction.transaction_value = Math.abs(updateXpTransactionDto.amount);
-    }
-    
-    if (updateXpTransactionDto.reason) {
-      xpTransaction.reason = updateXpTransactionDto.reason;
-    }
-    
-    if (updateXpTransactionDto.notes !== undefined) {
-      xpTransaction.notes = updateXpTransactionDto.notes;
-
   async findOne(uuid: string): Promise<XpTransactionResponseDto> {
     const transaction = await this.xpTransactionRepository.findOne({
-      where: { uuid_xp_transaction: uuid },
+      where: { uuidXpTransaction: uuid },
       relations: ['member']
     });
 
