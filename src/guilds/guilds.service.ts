@@ -24,20 +24,20 @@ export class GuildsService {
   }
 
   // Récupérer une guild par son uuid
-  async findOne(uuid: string): Promise<Guild> {
-    const guild = await this.guildRepository.findOneBy({ uuid });
+  async findOne(uuidGuild: string): Promise<Guild> {
+    const guild = await this.guildRepository.findOneBy({ uuidGuild });
     if (!guild) {
-      throw new NotFoundException(`Guild with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Guild with UUID "${uuidGuild}" not found`);
     }
     return guild;
   }
 
   // Mettre à jour une guild
-  async update(uuid: string, updateGuildDto: UpdateGuildDto): Promise<Guild> {
+  async update(uuidGuild: string, updateGuildDto: UpdateGuildDto): Promise<Guild> {
     // Cherche la guild
-    const guild = await this.guildRepository.findOneBy({ uuid });
+    const guild = await this.guildRepository.findOneBy({ uuidGuild });
     if (!guild) {
-      throw new NotFoundException(`Guild with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Guild with UUID "${uuidGuild}" not found`);
     }
     
     // Mise à jour des champs autorisés uniquement
@@ -51,10 +51,10 @@ export class GuildsService {
   }
 
   // Supprimer une guild
-  async remove(uuid: string): Promise<void> {
-    const result = await this.guildRepository.delete({ uuid });
+  async remove(uuidGuild: string): Promise<void> {
+    const result = await this.guildRepository.delete({ uuidGuild });
     if (result.affected === 0) {
-      throw new NotFoundException(`Guild with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Guild with UUID "${uuidGuild}" not found`);
     }
   }
 }
