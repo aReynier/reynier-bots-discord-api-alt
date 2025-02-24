@@ -9,14 +9,14 @@ import { Channel } from '../../channels/entities/channel.entity';
 import { Category } from '../../categories/entities/category.entity';
 import { Campus } from '../../campuses/entities/campus.entity';
 
-@Entity('Guilds')
+@Entity('guilds')
 export class Guild {
   @ApiProperty({
     description: 'ID Discord du serveur',
     example: '123456789012345678',
   })
   @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_guild' })
-  uuid: string;
+  uuidGuild: string;
 
   @ApiProperty({
     description: 'Nom du serveur',
@@ -27,10 +27,10 @@ export class Guild {
 
   @ApiProperty({
     description: 'Nombre de membres',
-    example: 100,
+    example: '100',
   })
-  @Column({ type: 'int' })
-  memberCount: number;
+  @Column({ type: 'varchar', length: 50, name: 'member_count' })
+  memberCount: string;
 
   @ApiProperty({
     description: 'Configuration du serveur',
@@ -51,14 +51,14 @@ export class Guild {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => Member, (member) => member.guild)
-  members: Member[];
+  @ManyToOne(() => Member, (member) => member.guild, { lazy: true })
+  members: Promise<Member[]>;
 
   @OneToMany(() => Promotion, (promotion) => promotion.guild)
   promotions: Promotion[];
 
   @OneToOne(() => Course, course => course.guild)
-  @JoinColumn({ name: 'uuidCourse' })
+  @JoinColumn({ name: 'uuid_course' })
   course: Course;
 
   @OneToMany(() => Role, role => role.guild)
