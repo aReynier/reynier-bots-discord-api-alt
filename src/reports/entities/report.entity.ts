@@ -22,7 +22,7 @@ export class Report {
     description: 'UUID unique du signalement',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', { name: 'uuid_report' })
   uuidReport: string;
 
   @ApiProperty({
@@ -32,7 +32,8 @@ export class Report {
   })
   @Column({
     type: 'enum',
-    enum: ReportType
+    enum: ReportType,
+    name: 'type'
   })
   type: ReportType;
 
@@ -43,7 +44,8 @@ export class Report {
   })
   @Column({
     type: 'enum',
-    enum: ReportCategory
+    enum: ReportCategory,
+    name: 'category'
   })
   category: ReportCategory;
 
@@ -51,28 +53,28 @@ export class Report {
     description: 'Raison détaillée du signalement',
     example: 'Contenu offensant envers la communauté'
   })
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50, name: 'reason' })
   reason: string;
 
   @ApiProperty({
     description: 'Statut actuel du signalement (pending, resolved, rejected)',
     example: 'pending'
   })
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50, name: 'status' })
   status: string;
 
   @ApiProperty({
     description: 'Date de création du signalement',
     example: '2024-02-22T16:05:01.484Z'
   })
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @ApiProperty({
     description: 'Date de dernière mise à jour du signalement',
     example: '2024-02-22T16:05:01.484Z'
   })
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
   @ManyToOne(() => Member)
