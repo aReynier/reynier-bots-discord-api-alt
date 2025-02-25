@@ -27,33 +27,39 @@ export class CoursesService {
                 throw new ConflictException(`Course with name ${createCourseDto.name} already exists`);
             }
 
-            let savedRole: Role | null = null;
-
-            if (createCourseDto.uuidRole) {
-            const roleData = {
-                uuidRole: createCourseDto.uuidRole,
-                uuidGuild: createCourseDto.uuidGuild,
-                name: createCourseDto.name,
-                memberCount: 0,
-                rolePosition: 0,
-                hoist: false,
-                color: "#000000",
-            };    
-                const newRole = this.roleRepository.create(roleData);
-                savedRole = await this.roleRepository.save(newRole);
-            }
-
             const courseData = {
-                ...createCourseDto,
-                uuidRole: savedRole?.uuidRole || undefined
+                name: createCourseDto.name,
+                isCertified: createCourseDto.isCertified,
+                uuidGuild: createCourseDto.uuidGuild,
+                uuidCategory: createCourseDto.uuidCategory,
             };
-    
+
             const newCourse = this.courseRepository.create(courseData);
             const savedCourse = await this.courseRepository.save(newCourse);
 
+            if (createCourseDto.uuidRole) {
+                const role = await this.roleRepository.findOne({
+                    where: { uuidRole: createCourseDto.uuidRole }
+                });
+
+                if (role) {
+                    await this.courseRepository
+                        .createQueryBuilder()
+                        .relation(Course, "roles")
+                        .of(savedCourse)
+                        .add(role.uuidRole);
+                }
+            }
+
             const courseWithRelations = await this.courseRepository.findOne({
                 where: { uuid: savedCourse.uuid },
-                relations: ['role']
+                relations: {
+                    category: true,
+                    guild: true,
+                    roles: true,
+                    promotions: true,
+                    channels: true
+                }
             });
 
             if (!courseWithRelations) {
