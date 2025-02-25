@@ -180,5 +180,15 @@ test.describe('Answers API E2E Tests', () => {
     expect([404, 500]).toContain(nonExistentResponse.status()); // Accepte soit 404 soit 500
     const nonExistentData = JSON.parse(await nonExistentResponse.text());
     expect(nonExistentData.message).toBeTruthy(); // Vérifie juste qu'il y a un message d'erreur
+
+    // Test de mise à jour avec données invalides
+    console.log('Testing update with invalid data...');
+    const invalidUpdateResponse = await request.put(`${API_URL}/answers/some-uuid`, {
+      data: { content: '' },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    expect(invalidUpdateResponse.status()).toBe(400);
   });
 });
