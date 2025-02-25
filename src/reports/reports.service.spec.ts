@@ -6,7 +6,7 @@ import { Report, ReportType, ReportCategory } from './entities/report.entity';
 import { Member } from '../members/entities/member.entity';
 import { Resource } from '../resources/entities/resource.entity';
 import { CreateReportDto } from './dto/create-report.dto';
-import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('ReportsService', () => {
@@ -141,7 +141,9 @@ describe('ReportsService', () => {
         expect(result.reporter).toBeDefined();
         expect(result.reporter.uuidMember).toBe(mockReporter.uuidMember);
         expect(result.resource).toBeDefined();
-        expect(result.resource.uuidResource).toBe(mockResource.uuidResource);
+        if (result.resource) {
+          expect(result.resource.uuidResource).toBe(mockResource.uuidResource);
+        }
       });
 
       it('should throw BadRequestException when creating resource report without uuidResource', async () => {
@@ -367,7 +369,9 @@ describe('ReportsService', () => {
         expect(result.reporter).toBeDefined();
         expect(result.reporter.uuidMember).toBe(mockReporter.uuidMember);
         expect(result.reportedMember).toBeDefined();
-        expect(result.reportedMember.uuidMember).toBe(mockReportedMember.uuidMember);
+        if (result.reportedMember) {
+          expect(result.reportedMember.uuidMember).toBe(mockReportedMember.uuidMember);
+        }
       });
 
       it('should throw BadRequestException when creating member report without uuidReportedMember', async () => {
@@ -573,7 +577,9 @@ describe('ReportsService', () => {
       expect(result[0].reporter).toBeDefined();
       expect(result[0].reporter.uuidMember).toBe(mockReporter.uuidMember);
       expect(result[0].resource).toBeDefined();
-      expect(result[0].resource.uuidResource).toBe(mockResource.uuidResource);
+      if (result[0].resource) {
+        expect(result[0].resource.uuidResource).toBe(mockResource.uuidResource);
+      }
       expect(result[0].reportedMember).toBeUndefined();
 
       // Vérifier le signalement de membre
@@ -581,7 +587,9 @@ describe('ReportsService', () => {
       expect(result[1].reporter).toBeDefined();
       expect(result[1].reporter.uuidMember).toBe(mockReporter.uuidMember);
       expect(result[1].reportedMember).toBeDefined();
-      expect(result[1].reportedMember.uuidMember).toBe(mockReportedMember.uuidMember);
+      if (result[1].reportedMember) {
+        expect(result[1].reportedMember.uuidMember).toBe(mockReportedMember.uuidMember);
+      }
       expect(result[1].resource).toBeUndefined();
     });
 
@@ -645,7 +653,9 @@ describe('ReportsService', () => {
       expect(result.reporter).toBeDefined();
       expect(result.reporter.uuidMember).toBe(mockReporter.uuidMember);
       expect(result.resource).toBeDefined();
-      expect(result.resource.uuidResource).toBe(mockResource.uuidResource);
+      if (result.resource) {
+        expect(result.resource.uuidResource).toBe(mockResource.uuidResource);
+      }
     });
 
     it('should throw NotFoundException when report does not exist', async () => {
@@ -661,6 +671,221 @@ describe('ReportsService', () => {
         where: { uuidReport: uuid },
         relations: ['reporter', 'resource', 'reportedMember']
       });
+    });
+  });
+
+  describe('update', () => {
+    it('should update a report with all fields', async () => {
+      // Arrange
+      const mockReporter = {
+        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        username: 'reporter',
+        status: 'active',
+      };
+
+      const mockResource = {
+        uuidResource: '123e4567-e89b-12d3-a456-426614174001',
+        title: 'Test Resource',
+        status: 'active',
+      };
+
+      const existingReport = {
+        uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+        type: ReportType.RESOURCE,
+        category: ReportCategory.INAPPROPRIATE,
+        reason: 'Test reason',
+        status: 'pending',
+        reporter: mockReporter,
+        resource: mockResource,
+        createdAt: new Date('2024-03-15'),
+        updatedAt: new Date('2024-03-15'),
+      };
+
+      const updateReportDto = {
+        type: ReportType.RESOURCE,
+        category: ReportCategory.HARASSMENT,
+        reason: 'Updated reason',
+        status: 'resolved',
+        uuidReporter: mockReporter.uuidMember,
+        uuidResource: mockResource.uuidResource
+      };
+
+      const updatedReport = {
+        ...existingReport,
+        ...updateReportDto,
+        updatedAt: new Date(),
+      };
+
+      mockReportsRepository.findOne
+        .mockResolvedValueOnce(existingReport)
+        .mockResolvedValueOnce(updatedReport);
+      mockReportsRepository.save.mockResolvedValue(updatedReport);
+
+      // Act
+      const result = await service.update(existingReport.uuidReport, updateReportDto);
+
+      // Assert
+      expect(mockReportsRepository.findOne).toHaveBeenNthCalledWith(1, {
+        where: { uuidReport: existingReport.uuidReport },
+        relations: ['reporter', 'resource', 'reportedMember']
+      });
+
+      expect(mockReportsRepository.save).toHaveBeenCalledWith({
+        ...existingReport,
+        ...updateReportDto
+      });
+
+      expect(mockReportsRepository.findOne).toHaveBeenNthCalledWith(2, {
+        where: { uuidReport: updatedReport.uuidReport },
+        relations: ['reporter', 'resource', 'reportedMember']
+      });
+
+      expect(result.type).toBe(updateReportDto.type);
+      expect(result.category).toBe(updateReportDto.category);
+      expect(result.reason).toBe(updateReportDto.reason);
+      expect(result.status).toBe(updateReportDto.status);
+    });
+
+    it('should throw NotFoundException when report does not exist', async () => {
+      // Arrange
+      const uuid = '123e4567-e89b-12d3-a456-426614174001';
+      const updateReportDto = {
+        type: ReportType.RESOURCE,
+        category: ReportCategory.HARASSMENT,
+        reason: 'Updated reason',
+        status: 'resolved',
+        uuidReporter: '123e4567-e89b-12d3-a456-426614174000',
+        uuidResource: '123e4567-e89b-12d3-a456-426614174001'
+      };
+
+      mockReportsRepository.findOne.mockResolvedValue(null);
+
+      // Act & Assert
+      await expect(service.update(uuid, updateReportDto)).rejects.toThrow(
+        new NotFoundException(`Report with UUID ${uuid} not found`)
+      );
+
+      expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
+        where: { uuidReport: uuid },
+        relations: ['reporter', 'resource', 'reportedMember']
+      });
+      expect(mockReportsRepository.save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('remove', () => {
+    it('should successfully remove a report when user is the creator', async () => {
+      // Arrange
+      const mockReporter = {
+        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        guildUsername: 'testuser',
+        communityRole: 'Member',
+      };
+
+      const mockResource = {
+        uuidResource: '123e4567-e89b-12d3-a456-426614174001',
+        title: 'Test Resource',
+        status: 'active',
+      };
+
+      const existingReport = {
+        uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+        type: ReportType.RESOURCE,
+        category: ReportCategory.INAPPROPRIATE,
+        reason: 'Test reason',
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      mockReportsRepository.findOne
+        .mockResolvedValueOnce({
+          ...existingReport,
+          reporter: mockReporter,
+          resource: mockResource,
+        })
+        .mockResolvedValueOnce({
+          ...existingReport,
+          reporter: mockReporter,
+          resource: mockResource,
+        });
+
+      mockReportsRepository.remove.mockResolvedValue(undefined);
+
+      // Act
+      await service.remove(existingReport.uuidReport, mockReporter.uuidMember);
+
+      // Assert
+      expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
+        where: { uuidReport: existingReport.uuidReport },
+        relations: ['reporter', 'resource', 'reportedMember']
+      });
+      expect(mockReportsRepository.remove).toHaveBeenCalledWith({
+        ...existingReport,
+        reporter: mockReporter,
+        resource: mockResource,
+      });
+    });
+
+    it('should throw NotFoundException when report does not exist', async () => {
+      // Arrange
+      const uuid = '123e4567-e89b-12d3-a456-426614174000';
+      const currentUserId = '123e4567-e89b-12d3-a456-426614174001';
+
+      mockReportsRepository.findOne.mockResolvedValue(null);
+
+      // Act & Assert
+      await expect(service.remove(uuid, currentUserId)).rejects.toThrow(
+        new NotFoundException(`Report with UUID ${uuid} not found`)
+      );
+      expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
+        where: { uuidReport: uuid },
+        relations: ['reporter', 'resource', 'reportedMember']
+      });
+      expect(mockReportsRepository.remove).not.toHaveBeenCalled();
+    });
+
+    it('should throw ForbiddenException when user is not the creator', async () => {
+      // Arrange
+      const mockReporter = {
+        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        guildUsername: 'testuser',
+        communityRole: 'Member',
+      };
+
+      const mockResource = {
+        uuidResource: '123e4567-e89b-12d3-a456-426614174001',
+        title: 'Test Resource',
+        status: 'active',
+      };
+
+      const existingReport = {
+        uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+        type: ReportType.RESOURCE,
+        category: ReportCategory.INAPPROPRIATE,
+        reason: 'Test reason',
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const currentUserId = '123e4567-e89b-12d3-a456-426614174999'; // Different user
+
+      mockReportsRepository.findOne.mockResolvedValue({
+        ...existingReport,
+        reporter: mockReporter,
+        resource: mockResource,
+      });
+
+      // Act & Assert
+      await expect(service.remove(existingReport.uuidReport, currentUserId)).rejects.toThrow(
+        new ForbiddenException('Vous ne pouvez supprimer que vos propres signalements')
+      );
+      expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
+        where: { uuidReport: existingReport.uuidReport },
+        relations: ['reporter', 'resource', 'reportedMember']
+      });
+      expect(mockReportsRepository.remove).not.toHaveBeenCalled();
     });
   });
 }); 
