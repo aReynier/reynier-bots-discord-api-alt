@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ForbiddenException, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, ForbiddenException, Headers } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
@@ -60,7 +60,7 @@ export class ReportsController {
     return this.reportsService.findOne(uuid_report);
   }
 
-  @Patch(':uuid_report')
+  @Put(':uuid_report')
   @ApiOperation({ 
     summary: 'Mettre à jour un signalement',
     description: 'Cette fonctionnalité est réservée aux modérateurs.'
@@ -79,9 +79,7 @@ export class ReportsController {
   @ApiResponse({ status: 403, description: 'Action non autorisée' })
   @ApiResponse({ status: 404, description: 'Signalement non trouvé' })
   update(@Param('uuid_report') uuid_report: string, @Body() updateReportDto: UpdateReportDto): Promise<ReportResponseDto> {
-    throw new ForbiddenException(
-      'Les utilisateurs ne peuvent pas modifier leurs signalements. Seuls les modérateurs peuvent mettre à jour le statut.'
-    );
+    return this.reportsService.update(uuid_report, updateReportDto);
   }
 
   @Delete(':uuid_report')
