@@ -509,4 +509,96 @@ describe('ReportsService', () => {
       });
     });
   });
+
+  describe('findAll', () => {
+    it('should return all reports with their relations', async () => {
+      // Arrange
+      const mockReporter = {
+        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        guildUsername: 'reporter',
+        status: 'active',
+      };
+
+      const mockResource = {
+        uuidResource: '123e4567-e89b-12d3-a456-426614174001',
+        title: 'Reported Resource',
+        status: 'active',
+      };
+
+      const mockReportedMember = {
+        uuidMember: '123e4567-e89b-12d3-a456-426614174002',
+        guildUsername: 'reported',
+        status: 'active',
+      };
+
+      const mockReports = [
+        {
+          uuidReport: '123e4567-e89b-12d3-a456-426614174003',
+          type: ReportType.RESOURCE,
+          category: ReportCategory.INAPPROPRIATE,
+          reason: 'Resource report',
+          status: 'pending',
+          reporter: mockReporter,
+          resource: mockResource,
+          createdAt: new Date('2024-03-15'),
+          updatedAt: new Date('2024-03-15'),
+        },
+        {
+          uuidReport: '123e4567-e89b-12d3-a456-426614174004',
+          type: ReportType.MEMBER,
+          category: ReportCategory.HARASSMENT,
+          reason: 'Member report',
+          status: 'pending',
+          reporter: mockReporter,
+          reportedMember: mockReportedMember,
+          createdAt: new Date('2024-03-14'),
+          updatedAt: new Date('2024-03-14'),
+        },
+      ];
+
+      mockReportsRepository.find.mockResolvedValue(mockReports);
+
+      // Act
+      const result = await service.findAll();
+
+      // Assert
+      expect(mockReportsRepository.find).toHaveBeenCalledWith({
+        relations: ['reporter', 'resource', 'reportedMember'],
+      });
+      expect(result).toBeDefined();
+      expect(result).toHaveLength(2);
+
+      // Vérifier le signalement de ressource
+      expect(result[0].type).toBe(ReportType.RESOURCE);
+      expect(result[0].reporter).toBeDefined();
+      expect(result[0].reporter.uuidMember).toBe(mockReporter.uuidMember);
+      expect(result[0].resource).toBeDefined();
+      expect(result[0].resource.uuidResource).toBe(mockResource.uuidResource);
+      expect(result[0].reportedMember).toBeUndefined();
+
+      // Vérifier le signalement de membre
+      expect(result[1].type).toBe(ReportType.MEMBER);
+      expect(result[1].reporter).toBeDefined();
+      expect(result[1].reporter.uuidMember).toBe(mockReporter.uuidMember);
+      expect(result[1].reportedMember).toBeDefined();
+      expect(result[1].reportedMember.uuidMember).toBe(mockReportedMember.uuidMember);
+      expect(result[1].resource).toBeUndefined();
+    });
+
+    it('should return empty array when no reports exist', async () => {
+      // Arrange
+      mockReportsRepository.find.mockResolvedValue([]);
+
+      // Act
+      const result = await service.findAll();
+
+      // Assert
+      expect(mockReportsRepository.find).toHaveBeenCalledWith({
+        relations: ['reporter', 'resource', 'reportedMember'],
+      });
+      expect(result).toBeDefined();
+      expect(result).toHaveLength(0);
+      expect(Array.isArray(result)).toBe(true);
+    });
+  });
 }); 
