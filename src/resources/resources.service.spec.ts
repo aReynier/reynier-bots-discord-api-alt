@@ -19,6 +19,7 @@ describe('ResourcesService', () => {
     create: vi.fn(),
     save: vi.fn(),
     findOne: vi.fn(),
+    find: vi.fn(),
   };
 
   const mockMemberRepository = {
@@ -231,6 +232,119 @@ describe('ResourcesService', () => {
           'comments.votes.member'
         ],
       });
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return all resources with their relations sorted by creation date', async () => {
+      // Arrange
+      const mockMember = {
+        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        username: 'testuser',
+        status: 'active',
+      };
+
+      const mockResources = [
+        {
+          uuidResource: '123e4567-e89b-12d3-a456-426614174001',
+          title: 'First Resource',
+          description: 'First Description',
+          content: 'First Content',
+          status: 'active',
+          creator: mockMember,
+          creatorUuid: mockMember.uuidMember,
+          comments: [
+            {
+              uuidComment: '123e4567-e89b-12d3-a456-426614174002',
+              content: 'Test Comment',
+              member: mockMember,
+            },
+          ],
+          votes: [
+            {
+              uuidVote: '123e4567-e89b-12d3-a456-426614174003',
+              voteType: 'upvote',
+              member: mockMember,
+            },
+          ],
+          reports: [],
+          createdAt: new Date('2024-03-15'),
+          updatedAt: new Date('2024-03-15'),
+        },
+        {
+          uuidResource: '123e4567-e89b-12d3-a456-426614174004',
+          title: 'Second Resource',
+          description: 'Second Description',
+          content: 'Second Content',
+          status: 'active',
+          creator: mockMember,
+          creatorUuid: mockMember.uuidMember,
+          comments: [],
+          votes: [],
+          reports: [],
+          createdAt: new Date('2024-03-14'),
+          updatedAt: new Date('2024-03-14'),
+        },
+      ];
+
+      mockResourceRepository.find.mockResolvedValue(mockResources);
+
+      // Act
+      const result = await service.findAll();
+
+      // Assert
+      expect(mockResourceRepository.find).toHaveBeenCalledWith({
+        relations: [
+          'creator',
+          'reports',
+          'reports.reporter',
+          'votes',
+          'votes.member',
+          'comments',
+          'comments.member',
+          'comments.votes',
+          'comments.votes.member'
+        ],
+        order: {
+          createdAt: 'DESC'
+        }
+      });
+      expect(result).toBeDefined();
+      expect(result).toHaveLength(2);
+      expect(result[0].title).toBe('First Resource');
+      expect(result[1].title).toBe('Second Resource');
+      expect(result[0].comments).toHaveLength(1);
+      expect(result[0].votes).toHaveLength(1);
+      expect(result[1].comments).toHaveLength(0);
+    });
+
+    it('should return empty array when no resources exist', async () => {
+      // Arrange
+      mockResourceRepository.find.mockResolvedValue([]);
+
+      // Act
+      const result = await service.findAll();
+
+      // Assert
+      expect(mockResourceRepository.find).toHaveBeenCalledWith({
+        relations: [
+          'creator',
+          'reports',
+          'reports.reporter',
+          'votes',
+          'votes.member',
+          'comments',
+          'comments.member',
+          'comments.votes',
+          'comments.votes.member'
+        ],
+        order: {
+          createdAt: 'DESC'
+        }
+      });
+      expect(result).toBeDefined();
+      expect(result).toHaveLength(0);
+      expect(Array.isArray(result)).toBe(true);
     });
   });
 }); 
