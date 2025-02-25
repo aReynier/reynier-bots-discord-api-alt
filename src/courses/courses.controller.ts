@@ -45,6 +45,24 @@ export class CoursesController {
     return this.coursesService.create(createCourseDto);
   }
 
+  @Get()
+  @ApiOperation({
+      summary: 'Récupérer toutes les formations',
+      description: 'Retourne la liste complète des formations avec leurs relations'
+  })
+  @ApiResponse({
+      status: HttpStatus.OK,
+      description: 'Liste des formations récupérée avec succès',
+      type: [Course]
+  })
+  @ApiResponse({
+      status: HttpStatus.BAD_REQUEST,
+      description: 'Erreur lors de la récupération des formations'
+  })
+  async findAll(): Promise<Course[]> {
+      return this.coursesService.findAll();
+  }
+
   @Get(':uuid_course')
   @ApiOperation({
     summary: 'Récupérer une formation par son UUID',
