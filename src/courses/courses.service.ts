@@ -19,7 +19,6 @@ export class CoursesService {
 
     async create(createCourseDto: CreateCourseDto): Promise<Course> {
         try {
-            // Vérifier si une formation existe déjà avec le même nom
             const existingCourse = await this.courseRepository.findOne({
                 where: { name: createCourseDto.name },
             });
@@ -27,8 +26,10 @@ export class CoursesService {
             if (existingCourse) {
                 throw new ConflictException(`Course with name ${createCourseDto.name} already exists`);
             }
-    
-            // Créer un rôle associé à la formation
+
+            let savedRole: Role | null = null;
+
+            if (createCourseDto.uuidRole) {
             const roleData = {
                 uuidRole: createCourseDto.uuidRole,
                 uuidGuild: createCourseDto.uuidGuild,
@@ -37,21 +38,19 @@ export class CoursesService {
                 rolePosition: 0,
                 hoist: false,
                 color: "#000000",
-            };
-    
-            const newRole = this.roleRepository.create(roleData);
-            const savedRole = await this.roleRepository.save(newRole);
-    
-            // Créer la formation
+            };    
+                const newRole = this.roleRepository.create(roleData);
+                savedRole = await this.roleRepository.save(newRole);
+            }
+
             const courseData = {
                 ...createCourseDto,
-                uuidRole: savedRole.uuidRole
+                uuidRole: savedRole?.uuidRole || undefined
             };
     
             const newCourse = this.courseRepository.create(courseData);
             const savedCourse = await this.courseRepository.save(newCourse);
 
-            // Charger le cours avec ses relations
             const courseWithRelations = await this.courseRepository.findOne({
                 where: { uuid: savedCourse.uuid },
                 relations: ['role']
@@ -118,7 +117,7 @@ export class CoursesService {
         }
         const result = await this.courseRepository.delete({ uuid });
         if (result.affected === 0) {
-            throw new BadRequestException('Failed to delete course'); // Correction ici
+            throw new BadRequestException('Failed to delete course');
         }
     }
 }
