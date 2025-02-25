@@ -47,6 +47,56 @@ export class ReportMemberResponseDto {
   xp: string;
 }
 
+export class ResourceResponseDto {
+  @ApiProperty({
+    description: 'UUID de la ressource',
+    example: '123e4567-e89b-12d3-a456-426614174000'
+  })
+  @Expose()
+  uuidResource: string;
+
+  @ApiProperty({
+    description: 'Titre de la ressource',
+    example: 'Guide TypeScript'
+  })
+  @Expose()
+  title: string;
+
+  @ApiProperty({
+    description: 'Statut de la ressource',
+    example: 'active'
+  })
+  @Expose()
+  status: string;
+
+  @Exclude()
+  createdAt: Date;
+
+  @Exclude()
+  updatedAt: Date;
+
+  @Exclude()
+  description: string;
+
+  @Exclude()
+  url: string;
+
+  @Exclude()
+  type: string;
+
+  @Exclude()
+  category: string;
+
+  @Exclude()
+  author: any;
+
+  @Exclude()
+  comments: any[];
+
+  @Exclude()
+  reports: any[];
+}
+
 export class ReportResponseDto {
   @ApiProperty({
     description: 'UUID du signalement',
@@ -115,4 +165,13 @@ export class ReportResponseDto {
   @Expose()
   @Type(() => ReportMemberResponseDto)
   reportedMember?: ReportMemberResponseDto;
+
+  @ApiProperty({
+    description: 'Ressource signalée (uniquement si type = resource)',
+    type: () => ResourceResponseDto,
+    required: false
+  })
+  @Expose()
+  @Type(() => ResourceResponseDto)
+  resource?: ResourceResponseDto;
 } 
