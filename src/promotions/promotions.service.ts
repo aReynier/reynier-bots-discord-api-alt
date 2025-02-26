@@ -49,13 +49,15 @@ export class PromotionsService {
   }
 
   async findAll(): Promise<Promotion[]> {
-    return await this.promotionRepository.find();
+    return await this.promotionRepository.find({
+      relations: ['followers', 'managers', 'category', 'course', 'campus', 'role', 'guild']
+    });
   }
 
   async findOne(uuid: string): Promise<Promotion> {
     const promotion = await this.promotionRepository.findOne({
       where: { uuid },
-      relations: ['followers', 'managers']
+      relations: ['followers', 'managers', 'category', 'course', 'campus', 'role', 'guild']
     });
     
     if (!promotion) {
