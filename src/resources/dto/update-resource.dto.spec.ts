@@ -1,16 +1,28 @@
 import { validate } from 'class-validator';
-import { CreateResourceDto } from './create-resource.dto';
+import { UpdateResourceDto } from './update-resource.dto';
 import { describe, it, expect } from 'vitest';
 
-describe('CreateResourceDto', () => {
-  it('should validate a valid DTO', async () => {
+describe('UpdateResourceDto', () => {
+  it('should validate a valid DTO with all fields', async () => {
     // Arrange
-    const dto = new CreateResourceDto();
+    const dto = new UpdateResourceDto();
     dto.title = 'Test Resource';
     dto.description = 'Test Description';
     dto.content = 'Test Content';
     dto.status = 'active';
-    dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+
+    // Act
+    const errors = await validate(dto);
+
+    // Assert
+    expect(errors.length).toBe(0);
+  });
+
+  it('should validate a valid DTO with partial fields', async () => {
+    // Arrange
+    const dto = new UpdateResourceDto();
+    dto.title = 'Test Resource';
+    dto.description = 'Test Description';
 
     // Act
     const errors = await validate(dto);
@@ -20,14 +32,10 @@ describe('CreateResourceDto', () => {
   });
 
   describe('title validation', () => {
-    it('should fail when title is empty', async () => {
+    it('should fail when title is empty string', async () => {
       // Arrange
-      const dto = new CreateResourceDto();
+      const dto = new UpdateResourceDto();
       dto.title = '';
-      dto.description = 'Test Description';
-      dto.content = 'Test Content';
-      dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -40,12 +48,8 @@ describe('CreateResourceDto', () => {
 
     it('should fail when title is too long', async () => {
       // Arrange
-      const dto = new CreateResourceDto();
+      const dto = new UpdateResourceDto();
       dto.title = 'a'.repeat(51);  // More than 50 characters
-      dto.description = 'Test Description';
-      dto.content = 'Test Content';
-      dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -58,14 +62,10 @@ describe('CreateResourceDto', () => {
   });
 
   describe('description validation', () => {
-    it('should fail when description is empty', async () => {
+    it('should fail when description is empty string', async () => {
       // Arrange
-      const dto = new CreateResourceDto();
-      dto.title = 'Test Resource';
+      const dto = new UpdateResourceDto();
       dto.description = '';
-      dto.content = 'Test Content';
-      dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -78,14 +78,10 @@ describe('CreateResourceDto', () => {
   });
 
   describe('content validation', () => {
-    it('should fail when content is empty', async () => {
+    it('should fail when content is empty string', async () => {
       // Arrange
-      const dto = new CreateResourceDto();
-      dto.title = 'Test Resource';
-      dto.description = 'Test Description';
+      const dto = new UpdateResourceDto();
       dto.content = '';
-      dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -100,12 +96,8 @@ describe('CreateResourceDto', () => {
   describe('status validation', () => {
     it('should fail when status is invalid', async () => {
       // Arrange
-      const dto = new CreateResourceDto();
-      dto.title = 'Test Resource';
-      dto.description = 'Test Description';
-      dto.content = 'Test Content';
+      const dto = new UpdateResourceDto();
       dto.status = 'invalid_status';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -121,12 +113,8 @@ describe('CreateResourceDto', () => {
       const validStatuses = ['active', 'inactive'];
       const results = await Promise.all(
         validStatuses.map(async (status) => {
-          const dto = new CreateResourceDto();
-          dto.title = 'Test Resource';
-          dto.description = 'Test Description';
-          dto.content = 'Test Content';
+          const dto = new UpdateResourceDto();
           dto.status = status;
-          dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
 
           // Act
           return validate(dto);
@@ -137,26 +125,6 @@ describe('CreateResourceDto', () => {
       results.forEach((errors) => {
         expect(errors.length).toBe(0);
       });
-    });
-  });
-
-  describe('uuidMember validation', () => {
-    it('should fail when uuidMember is not a valid UUID', async () => {
-      // Arrange
-      const dto = new CreateResourceDto();
-      dto.title = 'Test Resource';
-      dto.description = 'Test Description';
-      dto.content = 'Test Content';
-      dto.status = 'active';
-      dto.uuidMember = 'not-a-uuid';
-
-      // Act
-      const errors = await validate(dto);
-
-      // Assert
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('uuidMember');
-      expect(errors[0].constraints).toHaveProperty('isUuid');
     });
   });
 }); 
