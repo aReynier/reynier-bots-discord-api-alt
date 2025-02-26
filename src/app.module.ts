@@ -25,6 +25,7 @@ import { CommentsModule } from './comments/comments.module';
 import { DiscordUsersModule } from './discord-users/discord-users.module';
 import { CoursesModule } from './courses/courses.module';
 import { TagsModule } from './tags/tags.module';
+import { PollsModule } from './polls/polls.module';
 
 /**
  * Module principal de l'application
@@ -62,7 +63,8 @@ import { TagsModule } from './tags/tags.module';
     ReportsModule,
     CoursesModule,
     CommentsModule,
-    TagsModule
+    TagsModule,
+    PollsModule
   ],
   controllers: [],
   providers: [],
