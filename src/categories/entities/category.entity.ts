@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Channel } from '../../channels/entities/channel.entity';
 import { Guild } from '../../guilds/entities/guild.entity';
 import { Course } from '../../courses/entities/course.entity';
+import { Promotion } from 'src/promotions/entities/promotion.entity';
 
 @Entity('categories')
 export class Category {
@@ -78,4 +79,11 @@ export class Category {
   @ManyToOne(() => Guild, guild => guild.categories)
   @JoinColumn({ name: 'uuidGuild' })
   guild: Guild;
+
+  @ApiProperty({
+    description: 'Promotion associée à cette catégorie',
+    type: () => Promotion
+  })
+  @OneToOne(() => Promotion, promotion => promotion.category)
+  promotion: Promotion;
 }
