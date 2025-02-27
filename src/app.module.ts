@@ -29,6 +29,7 @@ import { PollsModule } from './polls/polls.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
+import { SignatureModule } from './signature/signature.module';
 
 /**
  * Module principal de l'application
@@ -72,7 +73,8 @@ import { AppController } from './app.controller';
     CoursesModule,
     CommentsModule,
     TagsModule,
-    PollsModule
+    PollsModule,
+    SignatureModule
   ],
   controllers: [AppController],
   providers: [],
