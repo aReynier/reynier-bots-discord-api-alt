@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { QuestionTemplatesService } from './question-templates.service';
-import { CreateQuestionTemplateDto } from './dto/create-question-template.dto';
+import { CreateQuestionPollTemplateDto } from './dto/create-question-poll-template.dto';
 import { UpdateQuestionTemplateDto } from './dto/update-question-template.dto';
 
 @Controller('question-templates')
@@ -8,8 +8,8 @@ export class QuestionTemplatesController {
   constructor(private readonly questionTemplatesService: QuestionTemplatesService) {}
 
   @Post()
-  create(@Body() createQuestionTemplateDto: CreateQuestionTemplateDto) {
-    return this.questionTemplatesService.create(createQuestionTemplateDto);
+  create(@Body() createQuestionPollTemplateDto: CreateQuestionPollTemplateDto) {
+    return this.questionTemplatesService.create(createQuestionPollTemplateDto);
   }
 
   @Get()
