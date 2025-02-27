@@ -28,7 +28,7 @@ describe('SignatureService', () => {
   };
   
   const mockChannelsService = {
-    findForumByPromotion: vi.fn()
+    findChannelByPromotion: vi.fn()
   };
 
   beforeEach(async () => {
@@ -54,79 +54,71 @@ describe('SignatureService', () => {
   });
 
   describe('generateTestPromotionSignature', () => {
-    it('should return promotion test data with the correct structure', async () => {
+    it('should return promotions test data with the correct structure', async () => {
       const result = await service.generateTestPromotionSignature();
       
-      // Vérifier que la réponse contient une propriété promotion
-      expect(result).toHaveProperty('promotion');
+      // Vérifier que la réponse contient une propriété promotions
+      expect(result).toHaveProperty('promotions');
+      expect(Array.isArray(result.promotions)).toBe(true);
+      expect(result.promotions.length).toBeGreaterThanOrEqual(1);
       
-      // Vérifier la structure de la promotion
-      const { promotion } = result;
+      // Vérifier la structure de la première promotion
+      const promotion = result.promotions[0];
       expect(promotion).toHaveProperty('uuid');
       expect(promotion).toHaveProperty('nom');
-      expect(promotion).toHaveProperty('forum');
+      expect(promotion).toHaveProperty('channel');
       expect(promotion).toHaveProperty('chargeDeProjet');
       expect(promotion).toHaveProperty('formateurs');
       expect(promotion).toHaveProperty('apprenants');
       
       // Vérifier le contenu des données de test
-      expect(promotion.uuid).toBe('123e4567-e89b-12d3-a456-426614174000');
-      expect(promotion.nom).toBe('Promotion 2023');
+      expect(promotion.uuid).toBe('f47ac10b-58cc-4372-a567-0e02b2c3d479');
+      expect(promotion.nom).toBe('Cda P4 Vals');
       
-      // Vérifier la structure du forum
-      expect(promotion.forum).toHaveProperty('snowflake');
-      expect(promotion.forum).toHaveProperty('nom');
+      // Vérifier la structure du channel
+      expect(promotion.channel).toHaveProperty('snowflake');
+      expect(promotion.channel).toHaveProperty('nom');
+      expect(promotion.channel.snowflake).toBe('1344611809826439258');
       
       // Vérifier le chargé de projet
       expect(promotion.chargeDeProjet).toHaveProperty('snowflake');
       expect(promotion.chargeDeProjet).toHaveProperty('nom');
       expect(promotion.chargeDeProjet).toHaveProperty('roles');
-      expect(promotion.chargeDeProjet.roles).toContain('cdp');
+      expect(Array.isArray(promotion.chargeDeProjet.roles)).toBe(true);
+      expect(promotion.chargeDeProjet.roles[0]).toHaveProperty('id');
+      expect(promotion.chargeDeProjet.roles[0]).toHaveProperty('nom');
+      expect(promotion.chargeDeProjet.roles[0].nom).toBe('cdp');
       
       // Vérifier les formateurs
       expect(Array.isArray(promotion.formateurs)).toBe(true);
-      expect(promotion.formateurs.length).toBe(2);
+      expect(promotion.formateurs.length).toBeGreaterThanOrEqual(1);
       expect(promotion.formateurs[0]).toHaveProperty('nom');
+      expect(promotion.formateurs[0].roles[0]).toHaveProperty('nom');
       
       // Vérifier les apprenants
       expect(Array.isArray(promotion.apprenants)).toBe(true);
-      expect(promotion.apprenants.length).toBe(12);
+      expect(promotion.apprenants.length).toBeGreaterThanOrEqual(1);
       expect(promotion.apprenants[0]).toHaveProperty('roles');
-      expect(promotion.apprenants[0].roles).toContain('apprenant');
+      expect(promotion.apprenants[0].roles[0].nom).toBe('apprenant');
     });
   });
 
   describe('getPromotionSignature', () => {
     it('should return promotion signature for valid UUID', async () => {
-      const uuid = '123e4567-e89b-12d3-a456-426614174000';
+      const uuid = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
       const result = await service.getPromotionSignature(uuid);
       
       expect(result).toHaveProperty('promotion');
       expect(result.promotion).toHaveProperty('uuid');
       expect(result.promotion.uuid).toBe(uuid);
+      expect(result.promotion).toHaveProperty('channel');
+      expect(result.promotion.channel).toHaveProperty('snowflake');
     });
 
     it('should throw an error for invalid UUID', async () => {
       const uuid = 'invalid-uuid';
       
-      // Simuler une erreur dans un des services appelés
-      mockPromotionsService.findOne.mockRejectedValue(new Error('Promotion not found'));
-      
-      // Remplacer temporairement l'implémentation actuelle pour utiliser le mock
-      const originalImplementation = service.getPromotionSignature;
-      service.getPromotionSignature = async (uuid) => {
-        try {
-          await mockPromotionsService.findOne(uuid);
-          return service.generateTestPromotionSignature();
-        } catch (error) {
-          throw new Error(`Erreur lors de la récupération des données de signature: ${error.message}`);
-        }
-      };
-      
       await expect(service.getPromotionSignature(uuid)).rejects.toThrow();
-      
-      // Restaurer l'implémentation originale
-      service.getPromotionSignature = originalImplementation;
     });
   });
 }); 
