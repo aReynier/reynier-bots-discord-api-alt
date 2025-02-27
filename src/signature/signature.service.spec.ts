@@ -53,6 +53,39 @@ describe('SignatureService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('getAllPromotions', () => {
+    it('should return all promotion signatures with the correct structure', async () => {
+      const result = await service.getAllPromotions();
+      
+      // Vérifier que la réponse contient une propriété promotions
+      expect(result).toHaveProperty('promotions');
+      expect(Array.isArray(result.promotions)).toBe(true);
+      expect(result.promotions.length).toBeGreaterThanOrEqual(1);
+      
+      // Vérifier que toutes les promotions ont la structure correcte
+      for (const promotion of result.promotions) {
+        expect(promotion).toHaveProperty('uuid');
+        expect(promotion).toHaveProperty('nom');
+        expect(promotion).toHaveProperty('channel');
+        expect(promotion).toHaveProperty('chargeDeProjet');
+        expect(promotion).toHaveProperty('formateurs');
+        expect(promotion).toHaveProperty('apprenants');
+        
+        // Vérifier la structure du channel
+        expect(promotion.channel).toHaveProperty('snowflake');
+        expect(promotion.channel).toHaveProperty('nom');
+        
+        // Vérifier le chargé de projet
+        expect(promotion.chargeDeProjet).toHaveProperty('roles');
+        expect(Array.isArray(promotion.chargeDeProjet.roles)).toBe(true);
+        
+        // Vérifier les formateurs et apprenants
+        expect(Array.isArray(promotion.formateurs)).toBe(true);
+        expect(Array.isArray(promotion.apprenants)).toBe(true);
+      }
+    });
+  });
+
   describe('generateTestPromotionSignature', () => {
     it('should return promotions test data with the correct structure', async () => {
       const result = await service.generateTestPromotionSignature();

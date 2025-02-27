@@ -8,6 +8,106 @@ import { PromotionSignatureDto, PromotionsSignatureResponseDto } from './dto/pro
 export class SignatureController {
   constructor(private readonly signatureService: SignatureService) {}
 
+  @Get('promotions')
+  @ApiOperation({ 
+    summary: 'Récupérer toutes les promotions',
+    description: 'Retourne la liste complète de toutes les promotions avec leurs signatures'
+  })
+  @ApiResponse({ 
+    status: HttpStatus.OK, 
+    description: 'Liste des promotions récupérée avec succès',
+    type: PromotionsSignatureResponseDto,
+    content: {
+      'application/json': {
+        example: {
+          promotions: [
+            {
+              uuid: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+              nom: 'Cda P4 Vals',
+              channel: {
+                snowflake: '1344611809826439258',
+                nom: 'Forum de la Cda P4 Vals'
+              },
+              chargeDeProjet: {
+                snowflake: '987654321098765432',
+                nom: 'Jean Dupont',
+                roles: [
+                  {
+                    id: '1344616774402052127',
+                    nom: 'cdp'
+                  },
+                  {
+                    id: '1344616774402052128',
+                    nom: 'cda-p4-vals'
+                  }
+                ]
+              },
+              formateurs: [
+                {
+                  snowflake: '111111111111111111',
+                  nom: 'Alice Martin',
+                  roles: [
+                    {
+                      id: '1344616774402052129',
+                      nom: 'formateur'
+                    },
+                    {
+                      id: '1344616774402052128',
+                      nom: 'cda-p4-vals'
+                    }
+                  ]
+                }
+              ],
+              apprenants: [
+                {
+                  snowflake: '843642001592811540',
+                  nom: 'Abel-Karine',
+                  roles: [
+                    {
+                      id: '1344616774402052126',
+                      nom: 'apprenant'
+                    },
+                    {
+                      id: '1344616774402052128',
+                      nom: 'cda-p4-vals'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              uuid: 'c9bf9e57-1685-4c89-bafb-ff5af830be8a',
+              nom: 'Promo PHP P2',
+              channel: {
+                snowflake: '1344611862003712050',
+                nom: 'Forum de la Promo PHP P2'
+              },
+              chargeDeProjet: {
+                snowflake: '876543210987654321',
+                nom: 'Marie Dubois',
+                roles: [
+                  {
+                    id: '1344616774402052127',
+                    nom: 'cdp'
+                  },
+                  {
+                    id: '1344616774402052130',
+                    nom: 'php-p2'
+                  }
+                ]
+              },
+              formateurs: [],
+              apprenants: []
+            }
+          ]
+        }
+      }
+    }
+  })
+  async getAllPromotions() {
+    return this.signatureService.getAllPromotions();
+  }
+
   @Get('promotion/:uuid')
   @ApiOperation({ 
     summary: 'Récupérer la signature d\'une promotion par son UUID',

@@ -17,6 +17,38 @@ export class SignatureService {
   ) {}
 
   /**
+   * Récupère toutes les promotions avec leurs signatures
+   */
+  async getAllPromotions(): Promise<{ promotions: PromotionSignatureDto[] }> {
+    try {
+      // Pour l'instant, on utilise les données de test
+      return await this.generateTestPromotionSignature();
+      
+      // En production, le code serait plutôt:
+      /*
+      const promotions = await this.promotionsService.findAll();
+      const result: PromotionSignatureDto[] = [];
+      
+      for (const promotion of promotions) {
+        const guild = await this.guildsService.findOne(promotion.uuidGuild);
+        const channel = await this.channelsService.findChannelByPromotion(promotion.uuid);
+        const members = await this.membersService.findByPromotion(promotion.uuid);
+        const roles = await this.rolesService.findByPromotion(promotion.uuid);
+        
+        // Assembler les données en suivant la structure du DTO
+        // ...
+        
+        result.push(assembledData);
+      }
+      
+      return { promotions: result };
+      */
+    } catch (error) {
+      throw new Error(`Erreur lors de la récupération des signatures des promotions: ${error.message}`);
+    }
+  }
+
+  /**
    * Génère des données de test pour la signature d'une promotion
    */
   async generateTestPromotionSignature(): Promise<{ promotions: PromotionSignatureDto[] }> {
