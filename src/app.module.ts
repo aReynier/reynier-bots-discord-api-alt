@@ -29,6 +29,7 @@ import { PollsModule } from './polls/polls.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
+import { SignatureModule } from './signature/signature.module';
 import { PollTemplatesModule } from './poll-templates/poll-templates.module';
 import { QuestionTemplatesModule } from './question-templates/question-templates.module';
 import { AnswerTemplatesModule } from './answer-templates/answer-templates.module';
@@ -76,6 +77,7 @@ import { AnswerTemplatesModule } from './answer-templates/answer-templates.modul
     CommentsModule,
     TagsModule,
     PollsModule,
+    SignatureModule,
     PollTemplatesModule,
     QuestionTemplatesModule,
     AnswerTemplatesModule
