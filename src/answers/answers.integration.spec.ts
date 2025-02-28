@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from 'src/config/typeorm.config';
 import { QuestionsModule } from 'src/questions/questions.module';
 import { PollsModule } from 'src/polls/polls.module';
+import { MembersModule } from 'src/members/members.module';
 
 describe('Answers Integration Tests', () => {
   let app: INestApplication;
@@ -30,6 +31,7 @@ describe('Answers Integration Tests', () => {
         AnswersModule,
         QuestionsModule,
         PollsModule,
+        MembersModule,
       ],
     }).compile();
 
