@@ -70,4 +70,36 @@ export class PickableDiscordUUIDFields {
   @Length(17, 19)
   uuidTag: string;
 
+  @ApiProperty({
+    description: 'Identifiant unique de la formation (Snowflake)',
+    minLength: 17,
+    maxLength: 19,
+    example: '726798891974243359',
+  })
+  @IsString()
+  @Matches(/^\d+$/)
+  @Length(17, 19)
+  uuidCourse: string;
+
+  @ApiProperty({
+    description: 'Identifiant unique du campus',
+    minLength: 17,
+    maxLength: 19,
+    example: '726798891974243359',
+  })
+  @IsString()
+  @Matches(/^\d+$/)
+  @Length(17, 19)
+  uuidCampus: string;
+
+  @ApiProperty({
+    description: 'Identifiant unique de la promotion',
+    minLength: 17,
+    maxLength: 19,
+    example: '726798891974243359',
+  })
+  @IsString()
+  @Matches(/^\d+$/)
+  @Length(17, 19)
+  uuidPromotion: string;
 }

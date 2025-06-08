@@ -5,17 +5,10 @@ import { IntersectionType } from '@nestjs/swagger';
 import { PickableInternUUIDFields } from 'src/utils/pickable-intern-uuid-fields';
 
 export class CreateGuildTemplateDto extends PickType(IntersectionType(PickableDiscordUUIDFields, PickableInternUUIDFields), [
+  'uuidGuildTemplate',
   'uuidGuild',
   'uuidCategory'
 ]) {
-  @ApiProperty({
-    description: 'ID Discord du template',
-    example: '123456789012345678'
-  })
-  @IsString()
-  @Length(17, 19)
-  uuid: string;
-
   @ApiProperty({
     description: 'Nom du template',
     example: 'Template Simplon'

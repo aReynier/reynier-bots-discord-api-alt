@@ -379,7 +379,7 @@ export class SignatureService {
       if (!existingGuild) {
         this.logger.log('Creating test guild...');
         await this.guildsService.create({
-          uuid: guildId,
+          uuidGuild: guildId,
           name: 'Test Discord Server',
           memberCount: '50', // Required field in Guild entity
           configuration: {
@@ -735,7 +735,7 @@ export class SignatureService {
       if (!existingGuild) {
         this.logger.log('Creating guild for specific promotion...');
         await this.guildsService.create({
-          uuid: guildId,
+          uuidGuild: guildId,
           name: 'Test Discord Server',
           memberCount: '50',
           configuration: {

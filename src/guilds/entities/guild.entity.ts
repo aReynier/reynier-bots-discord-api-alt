@@ -16,7 +16,7 @@ export class Guild {
     example: '123456789012345678',
   })
   @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_guild' })
-  uuid: string;
+  uuidGuild: string;
 
   @ApiProperty({
     description: 'Nom du serveur',

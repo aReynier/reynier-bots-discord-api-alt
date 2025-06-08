@@ -39,27 +39,6 @@ export class PickableInternUUIDFields {
   uuidGuildTemplate: string;
 
   @ApiProperty({
-    description: 'Identifiant unique du campus',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @IsUUID()
-  uuidCampus: string;
-
-  @ApiProperty({
-    description: 'Identifiant unique de la formation',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @IsUUID()
-  uuidCourse: string;
-
-  @ApiProperty({
-    description: 'Identifiant unique de la promotion',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @IsUUID()
-  uuidPromotion: string;
-
-  @ApiProperty({
     description: 'Identifiant unique de la ressource',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })

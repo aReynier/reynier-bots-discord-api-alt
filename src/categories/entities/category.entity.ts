@@ -9,7 +9,7 @@ import { GuildTemplate } from 'src/guilds-templates/entities/guild-template.enti
 @Entity('categories')
 export class Category {
   @ApiProperty({
-    description: 'ID Discord de la catégorie',
+    description: 'SF Discord de la catégorie',
     example: '123456789012345678'
   })
   @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_category' })

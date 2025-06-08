@@ -1,11 +1,12 @@
 import { IsString, IsEmail, MinLength, IsNotEmpty } from 'class-validator';
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { ApiProperty, PickType, IntersectionType } from '@nestjs/swagger';
 import { PickableDiscordUUIDFields } from 'src/utils/pickable-discord-uuid-fields';
+import { PickableInternUUIDFields } from 'src/utils/pickable-intern-uuid-fields';
 
-export class CreateDashboardAccountDto extends PickType(PickableDiscordUUIDFields, [
+export class CreateDashboardAccountDto extends PickType(IntersectionType(PickableDiscordUUIDFields, PickableInternUUIDFields), [
+    'uuidDashboardAccount',
     'uuidDiscord'
 ]) {
-
     @ApiProperty({
         description: 'Email associé au compte du dashboard',
         type: String,
@@ -24,6 +25,4 @@ export class CreateDashboardAccountDto extends PickType(PickableDiscordUUIDField
     @IsString()
     @MinLength(8)
     password: string;
-
-    uuidDiscord: string;
 }

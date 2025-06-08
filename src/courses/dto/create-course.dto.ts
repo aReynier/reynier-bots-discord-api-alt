@@ -4,11 +4,17 @@ import { PickableDiscordUUIDFields } from "src/utils/pickable-discord-uuid-field
 import { PickableDtoFields } from "src/utils/pickable-dto-fields";
 
 export class CreateCourseDto extends PickType(IntersectionType(PickableDiscordUUIDFields, PickableDtoFields), [
+    'uuidCourse',
     'name', 
     'uuidGuild', 
-    'uuidRole',
     'uuidCategory'
 ]) {
+    @ApiProperty({
+        description: 'Nom de la formation',
+        type: String,
+        example: 'Développeur web',
+    })
+    @IsNotEmpty()
     @MinLength(3)
     name: string;
 

@@ -9,17 +9,10 @@ enum ChannelType {
 }
 
 export class CreateChannelDto extends PickType(PickableDiscordUUIDFields, [
+  'uuidChannel',
   'uuidGuild',
   'uuidCategory'
 ]) {
-  @ApiProperty({
-    description: 'ID Discord du channel',
-    example: '123456789012345678'
-  })
-  @IsString()
-  @Length(17, 19)
-  uuid: string;
-
   @ApiProperty({
     description: 'Le nom du channel',
     example: 'général',

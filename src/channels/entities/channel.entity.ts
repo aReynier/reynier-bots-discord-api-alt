@@ -7,7 +7,7 @@ import { Guild } from '../../guilds/entities/guild.entity';
 @Entity('Channels')
 export class Channel {
   @ApiProperty({
-    description: 'ID Discord du channel',
+    description: 'SF Discord du channel',
     example: '123456789012345678'
   })
   @PrimaryColumn({ type: 'varchar', length: 19 , name: 'uuid_channel' })

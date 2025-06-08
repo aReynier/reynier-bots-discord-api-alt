@@ -1,11 +1,13 @@
-import { IsString, MaxLength, IsInt, Min, Matches, IsIn } from 'class-validator';
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { IsString, MaxLength, IsInt, Min, Matches, IsIn, IsUUID } from 'class-validator';
+import { ApiProperty, PickType, IntersectionType } from '@nestjs/swagger';
 import { PickableDiscordUUIDFields } from 'src/utils/pickable-discord-uuid-fields';
-
-export class CreateMemberDto extends PickType(PickableDiscordUUIDFields, [
+import { PickableInternUUIDFields } from 'src/utils/pickable-intern-uuid-fields';
+ 
+export class CreateMemberDto extends PickType(IntersectionType(PickableInternUUIDFields, PickableDiscordUUIDFields), [
+  'uuidMember',
   'uuidDiscord',
   'uuidGuild'
-]) {
+]) {     
   @ApiProperty({
     description: 'Nom d\'utilisateur du membre dans la guilde',
     example: 'JohnDoe',

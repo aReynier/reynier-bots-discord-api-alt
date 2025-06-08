@@ -2,5 +2,5 @@ import { OmitType, PartialType } from '@nestjs/swagger';
 import { CreateGuildTemplateDto } from './create-guild-template.dto';
 
 export class UpdateGuildTemplateDto extends PartialType(
-  OmitType(CreateGuildTemplateDto, ['uuid'] as const),
+  OmitType(CreateGuildTemplateDto, ['uuidGuildTemplate'] as const),
 ) {}
