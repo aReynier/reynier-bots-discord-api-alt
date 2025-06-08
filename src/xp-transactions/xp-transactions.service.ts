@@ -18,11 +18,11 @@ export class XpTransactionsService {
 
   async create(createXpTransactionDto: CreateXpTransactionDto): Promise<XpTransactionResponseDto> {
     const member = await this.memberRepository.findOne({
-      where: { uuidMember: createXpTransactionDto.uuidMember }
+      where: { idMember: createXpTransactionDto.idMember }
     });
 
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${createXpTransactionDto.uuidMember} not found`);
+      throw new NotFoundException(`Member with UUID ${createXpTransactionDto.idMember} not found`);
     }
 
     // Vérifier que la valeur est un nombre valide
@@ -69,19 +69,19 @@ export class XpTransactionsService {
     );
   }
 
-  async findByMember(uuidMember: string): Promise<XpTransactionResponseDto[]> {
+  async findByMember(idMember: string): Promise<XpTransactionResponseDto[]> {
     // Vérifier que le membre existe
     const member = await this.memberRepository.findOne({
-      where: { uuidMember }
+      where: { idMember }
     });
 
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${uuidMember} not found`);
+      throw new NotFoundException(`Member with UUID ${idMember} not found`);
     }
 
     // Récupérer toutes les transactions du membre
     const transactions = await this.xpTransactionRepository.find({
-      where: { member: { uuidMember } },
+      where: { member: { idMember } },
       relations: ['member'],
       order: {
         createdAt: 'DESC'

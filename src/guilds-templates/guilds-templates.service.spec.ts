@@ -40,7 +40,7 @@ describe('GuildsTemplatesService', () => {
   describe('create', () => {
     it('should create a new guild template', async () => {
       const createDto = {
-        uuid: '123456789012345678',
+        idGuildTemplate: '123456789012345678',
         name: 'Test Template',
         description: 'Test Description',
         configuration: {
@@ -80,15 +80,15 @@ describe('GuildsTemplatesService', () => {
   });
 
   describe('findOne', () => {
-    it('should return a guild template by uuid', async () => {
+    it('should return a guild template by id', async () => {
       const template = { id: 1, name: 'Template 1' };
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       mockRepository.findOne.mockResolvedValue(template);
 
-      const result = await service.findOne(uuid);
+      const result = await service.findOne(idGuildTemplate);
 
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid },
+        where: { idGuildTemplate },
         relations: ['guild', 'category']
       });
       expect(result).toEqual(template);
@@ -97,13 +97,13 @@ describe('GuildsTemplatesService', () => {
 
   describe('update', () => {
     it('should update a guild template', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       const updateDto = { name: 'Updated Template' };
       
       // Créer un objet template existant
       const existingTemplate = { 
         id: 1, 
-        uuid: '123456789012345678',
+        idGuildTemplate: '123456789012345678',
         name: 'Test Template', 
         description: 'Test Description',
         configuration: {
@@ -131,10 +131,10 @@ describe('GuildsTemplatesService', () => {
       });
       
       // Appeler la méthode update
-      const result = await service.update(uuid, updateDto);
+      const result = await service.update(idGuildTemplate, updateDto);
       
-      // Vérifier que findOneBy a été appelé avec le bon uuid
-      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      // Vérifier que findOneBy a été appelé avec le bon id
+      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idGuildTemplate });
       
       // Vérifier que save a été appelé
       expect(mockRepository.save).toHaveBeenCalled();
@@ -146,7 +146,7 @@ describe('GuildsTemplatesService', () => {
     });
     
     it('should return null if template not found', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       const updateDto = { name: 'Updated Template' };
       
       // Réinitialiser les mocks
@@ -155,21 +155,21 @@ describe('GuildsTemplatesService', () => {
       // Simuler le comportement du service
       mockRepository.findOneBy.mockResolvedValue(null);
 
-      const result = await service.update(uuid, updateDto);
+      const result = await service.update(idGuildTemplate, updateDto);
 
-      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idGuildTemplate });
       expect(result).toBeNull();
     });
   });
 
   describe('remove', () => {
     it('should delete a guild template', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       mockRepository.delete.mockResolvedValue({ affected: 1 });
 
-      await service.remove(uuid);
+      await service.remove(idGuildTemplate);
 
-      expect(mockRepository.delete).toHaveBeenCalledWith({ uuid });
+      expect(mockRepository.delete).toHaveBeenCalledWith({ idGuildTemplate });
     });
   });
 });

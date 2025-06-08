@@ -12,7 +12,7 @@ describe('Answer templates Integration Tests', () => {
 
   const testAnswer = {
     content: 'Test answer',
-    uuidQuestionTemplate: '123e4567-e89b-12d3-a456-426614174000'
+    idQuestionTemplate: '123e4567-e89b-12d3-a456-426614174000'
   };
 
   beforeAll(async () => {
@@ -53,7 +53,7 @@ describe('Answer templates Integration Tests', () => {
         .post('/answer-templates')
         .send({
           content: '',
-          uuidQuestionTemplate: 'invalid-uuid'
+          idQuestionTemplate: 'invalid-uuid'
         })
         .expect(400);
     });

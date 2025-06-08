@@ -30,16 +30,16 @@ export class CoursesService {
             const courseData = {
                 name: createCourseDto.name,
                 isCertified: createCourseDto.isCertified,
-                uuidGuild: createCourseDto.uuidGuild,
-                uuidCategory: createCourseDto.uuidCategory,
+                idGuild: createCourseDto.idGuild,
+                idCategory: createCourseDto.idCategory,
             };
 
             const newCourse = this.courseRepository.create(courseData);
             const savedCourse = await this.courseRepository.save(newCourse);
 
-            if (createCourseDto.uuidRole) {
+            if (createCourseDto.idRole) {
                 const role = await this.roleRepository.findOne({
-                    where: { uuidRole: createCourseDto.uuidRole }
+                    where: { idRole: createCourseDto.idRole }
                 });
 
                 if (role) {
@@ -47,7 +47,7 @@ export class CoursesService {
                         .createQueryBuilder()
                         .relation(Course, "roles")
                         .of(savedCourse)
-                        .add(role.uuidRole);
+                        .add(role.idRole);
                 }
             }
 

@@ -8,7 +8,7 @@ export class XpTransactionMemberResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose()
-  uuidMember: string;
+  idMember: string;
 
   @ApiProperty({
     description: 'Nom d\'utilisateur sur le serveur',
@@ -38,10 +38,10 @@ export class XpTransactionMemberResponseDto {
   status: string;
 
   @Exclude()
-  uuidDiscord: string;
+  idDiscord: string;
 
   @Exclude()
-  uuidGuild: string;
+  idGuild: string;
 
   @Exclude()
   xp: string;

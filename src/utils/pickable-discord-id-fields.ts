@@ -1,19 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Length, Matches } from 'class-validator';
 
-export class PickableDiscordUUIDFields {
+export class PickableDiscordIdFields {
 
   @ApiProperty({
     description: 'Identifiant unique du compte discord du membre (Snowflake)',
     minLength: 17,
     maxLength: 19,
-    default: 'discord_user_uuid',
+    default: 'discord_user_id',
     example: '726798891974243359',
   })
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidDiscord: string;
+  idDiscord: string;
 
   @ApiProperty({
     description: 'Identifiant unique du serveur (Snowflake)',
@@ -24,7 +24,7 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidGuild: string;
+  idGuild: string;
 
   @ApiProperty({
     description: 'Identifiant unique de category (Snowflake)',
@@ -35,7 +35,7 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidCategory: string;
+  idCategory: string;
 
   @ApiProperty({
     description: 'Identifiant unique de channel (Snowflake)',
@@ -46,7 +46,7 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidChannel: string;
+  idChannel: string;
 
   @ApiProperty({
     description: 'Identifiant unique de rôle (Snowflake)',
@@ -57,7 +57,7 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidRole: string;
+  idRole: string;
 
   @ApiProperty({
     description: 'Identifiant unique du tag (Snowflake)',
@@ -68,7 +68,7 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidTag: string;
+  idTag: string;
 
   @ApiProperty({
     description: 'Identifiant unique de la formation (Snowflake)',
@@ -79,7 +79,7 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidCourse: string;
+  idCourse: string;
 
   @ApiProperty({
     description: 'Identifiant unique du campus',
@@ -90,7 +90,7 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidCampus: string;
+  idCampus: string;
 
   @ApiProperty({
     description: 'Identifiant unique de la promotion',
@@ -101,5 +101,5 @@ export class PickableDiscordUUIDFields {
   @IsString()
   @Matches(/^\d+$/)
   @Length(17, 19)
-  uuidPromotion: string;
+  idPromotion: string;
 }

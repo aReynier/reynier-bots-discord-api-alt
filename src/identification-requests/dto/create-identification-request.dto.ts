@@ -1,9 +1,9 @@
 import { PickType } from '@nestjs/swagger';
 import { IsString, IsEmail, Length } from 'class-validator';
-import { PickableInternUUIDFields } from 'src/utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from 'src/utils/pickable-intern-id-fields';
 
-export class CreateIdentificationRequestDto extends PickType(PickableInternUUIDFields, [
-    'uuidMember'
+export class CreateIdentificationRequestDto extends PickType(PickableInternIdFields, [
+    'idMember'
 ]) {
 
   @IsString()
@@ -17,6 +17,6 @@ export class CreateIdentificationRequestDto extends PickType(PickableInternUUIDF
   @IsEmail()
   email: string;
 
-  uuidMember: string; 
+  idMember: string; 
 
 }

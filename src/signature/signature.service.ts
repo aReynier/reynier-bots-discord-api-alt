@@ -68,14 +68,14 @@ export class SignatureService {
   /**
    * Récupère une promotion spécifique par son UUID
    */
-  async getPromotionSignature(uuid: string): Promise<PromotionSignatureDto> {
+  async getPromotionSignature(idPromotion: string): Promise<PromotionSignatureDto> {
     const promotion = await this.promotionRepository.findOne({
-      where: { uuid },
+      where: { idPromotion },
       relations: ['category', 'followers', 'managers', 'role'],
     });
 
     if (!promotion) {
-      throw new Error(`Promotion with UUID ${uuid} not found`);
+      throw new Error(`Promotion with id ${idPromotion} not found`);
     }
 
     return this.mapPromotionToDto(promotion);
@@ -118,7 +118,7 @@ export class SignatureService {
     // Créer un DTO pour le channel/forum (s'il existe)
     const channel = promotion.category ? 
       { 
-        snowflake: promotion.category.uuid, 
+        snowflake: promotion.category.idCategory, 
         nom: promotion.category.name 
       } : 
       { 
@@ -128,27 +128,27 @@ export class SignatureService {
 
     // Créer un objet chargeDeProjet par défaut si aucun n'existe
     const defaultChargeDeProjet: MembreDto = {
-      snowflake: projectManager?.uuidDiscord || "000000000000000000",
+      snowflake: projectManager?.idDiscord || "000000000000000000",
       nom: projectManager?.guildUsername || "Chargé de projet non assigné",
       roles: defaultRoles('cdp', promotion.name)
     };
 
     return {
-      uuid: promotion.uuid,
+      idPromotion: promotion.idPromotion,
       nom: promotion.name,
       channel,
       chargeDeProjet: projectManager ? {
-        snowflake: projectManager.uuidDiscord,
+        snowflake: projectManager.idDiscord,
         nom: projectManager.guildUsername,
         roles: defaultRoles('cdp', promotion.name)
       } : defaultChargeDeProjet,
       formateurs: trainers.map(trainer => ({
-        snowflake: trainer.uuidDiscord,
+        snowflake: trainer.idDiscord,
         nom: trainer.guildUsername,
         roles: defaultRoles('formateur', promotion.name)
       })),
       apprenants: learners.map(learner => ({
-        snowflake: learner.uuidDiscord,
+        snowflake: learner.idDiscord,
         nom: learner.guildUsername,
         roles: defaultRoles('apprenant', promotion.name)
       }))
@@ -161,7 +161,7 @@ export class SignatureService {
   async generateTestPromotionSignature(): Promise<{ promotions: PromotionSignatureDto[] }> {
     const testData: PromotionSignatureDto[] = [
       {
-        uuid: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+        idPromotion: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
         nom: 'Cda P4 Vals',
         channel: {
           snowflake: '1344640530763485265',
@@ -271,7 +271,7 @@ export class SignatureService {
         ]
       },
       {
-        uuid: 'c9bf9e57-1685-4c89-bafb-ff5af830be8a',
+        idPromotion: 'c9bf9e57-1685-4c89-bafb-ff5af830be8a',
         nom: 'Promo PHP P2',
         channel: {
           snowflake: '1344611862003712050',
@@ -379,7 +379,7 @@ export class SignatureService {
       if (!existingGuild) {
         this.logger.log('Creating test guild...');
         await this.guildsService.create({
-          uuidGuild: guildId,
+          idGuild: guildId,
           name: 'Test Discord Server',
           memberCount: '50', // Required field in Guild entity
           configuration: {
@@ -392,84 +392,84 @@ export class SignatureService {
       // 1. Créer des catégories
       const categoryUuid = '123456789012345678';
       let category1 = await this.categoryRepository.findOne({
-        where: { uuid: categoryUuid }
+        where: { idCategory: categoryUuid }
       });
       
       if (!category1) {
         category1 = await this.categoryRepository.save({
-          uuid: categoryUuid,
+          idCategory: categoryUuid,
           name: 'Formation Dev Web',
           position: 1,
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
       // 2. Créer des rôles s'ils n'existent pas déjà
       const rolePromotionUuid = '111222333444555666';
       let rolePromotion = await this.roleRepository.findOne({
-        where: { uuidRole: rolePromotionUuid }
+        where: { idRole: rolePromotionUuid }
       });
       
       if (!rolePromotion) {
         rolePromotion = await this.roleRepository.save({
-          uuidRole: rolePromotionUuid,
+          idRole: rolePromotionUuid,
           name: 'Promotion Dev Web 2024',
           memberCount: 25,
           rolePosition: 3,
           hoist: true,
           color: '#FF5733',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
       const roleLearnerUuid = '222333444555666777';
       let roleLearner = await this.roleRepository.findOne({
-        where: { uuidRole: roleLearnerUuid }
+        where: { idRole: roleLearnerUuid }
       });
       
       if (!roleLearner) {
         roleLearner = await this.roleRepository.save({
-          uuidRole: roleLearnerUuid,
+          idRole: roleLearnerUuid,
           name: 'Apprenant',
           memberCount: 20,
           rolePosition: 2,
           hoist: true,
           color: '#33FF57',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
       const roleTrainerUuid = '333444555666777888';
       let roleTrainer = await this.roleRepository.findOne({
-        where: { uuidRole: roleTrainerUuid }
+        where: { idRole: roleTrainerUuid }
       });
       
       if (!roleTrainer) {
         roleTrainer = await this.roleRepository.save({
-          uuidRole: roleTrainerUuid,
+          idRole: roleTrainerUuid,
           name: 'Formateur',
           memberCount: 3,
           rolePosition: 4,
           hoist: true,
           color: '#5733FF',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
       const rolePMUuid = '444555666777888999';
       let rolePM = await this.roleRepository.findOne({
-        where: { uuidRole: rolePMUuid }
+        where: { idRole: rolePMUuid }
       });
       
       if (!rolePM) {
         rolePM = await this.roleRepository.save({
-          uuidRole: rolePMUuid,
+          idRole: rolePMUuid,
           name: 'Chef de Projet',
           memberCount: 1,
           rolePosition: 5,
           hoist: true,
           color: '#33FFFF',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
@@ -485,8 +485,8 @@ export class SignatureService {
           name: 'forum-dev-web',
           type: 'GUILD_FORUM',
           channelPosition: 1,
-          uuidCategory: category1.uuid,
-          uuidGuild: guildId
+          idCategory: category1.idCategory,
+          idGuild: guildId
         });
       }
       
@@ -494,12 +494,12 @@ export class SignatureService {
       // Project Manager Discord User
       const pmDiscordId = '900000000000000001';
       let pmDiscordUser = await this.discordUserRepository.findOne({
-        where: { uuidDiscord: pmDiscordId }
+        where: { idDiscord: pmDiscordId }
       });
       
       if (!pmDiscordUser) {
         pmDiscordUser = await this.discordUserRepository.save({
-          uuidDiscord: pmDiscordId,
+          idDiscord: pmDiscordId,
           discordUsername: 'pm_user',
           discriminator: '0001'
         });
@@ -510,12 +510,12 @@ export class SignatureService {
       for (let i = 1; i <= 3; i++) {
         const discordId = `91000000000000000${i}`;
         let trainerDiscordUser = await this.discordUserRepository.findOne({
-          where: { uuidDiscord: discordId }
+          where: { idDiscord: discordId }
         });
         
         if (!trainerDiscordUser) {
           trainerDiscordUser = await this.discordUserRepository.save({
-            uuidDiscord: discordId,
+            idDiscord: discordId,
             discordUsername: `trainer${i}`,
             discriminator: `100${i}`
           });
@@ -528,12 +528,12 @@ export class SignatureService {
       for (let i = 1; i <= 15; i++) {
         const discordId = `92000000000000000${i}`.substring(0, 19);
         let learnerDiscordUser = await this.discordUserRepository.findOne({
-          where: { uuidDiscord: discordId }
+          where: { idDiscord: discordId }
         });
         
         if (!learnerDiscordUser) {
           learnerDiscordUser = await this.discordUserRepository.save({
-            uuidDiscord: discordId,
+            idDiscord: discordId,
             discordUsername: `learner${i}`,
             discriminator: `200${i < 10 ? '0' + i : i}`
           });
@@ -545,19 +545,19 @@ export class SignatureService {
       // Project Manager
       let projectManager;
       const existingPMMember = await this.memberRepository.findOne({
-        where: { uuidDiscord: pmDiscordId }
+        where: { idDiscord: pmDiscordId }
       });
       
       if (!existingPMMember) {
         projectManager = await this.memberRepository.save({
-          uuidMember: uuidv4(),
+          idMember: uuidv4(),
           guildUsername: 'pm_user',
           xp: '2500',
           level: 5,
           communityRole: 'ProjectManager',
           status: 'Active',
-          uuidGuild: guildId,
-          uuidDiscord: pmDiscordId
+          idGuild: guildId,
+          idDiscord: pmDiscordId
         });
       } else {
         projectManager = existingPMMember;
@@ -570,19 +570,19 @@ export class SignatureService {
         let trainer;
         
         const existingTrainer = await this.memberRepository.findOne({
-          where: { uuidDiscord: discordId }
+          where: { idDiscord: discordId }
         });
         
         if (!existingTrainer) {
           trainer = await this.memberRepository.save({
-            uuidMember: uuidv4(),
+            idMember: uuidv4(),
             guildUsername: `trainer${i}`,
             xp: `${1500 + (i * 100)}`,
             level: 4,
             communityRole: 'Trainer',
             status: 'Active',
-            uuidGuild: guildId,
-            uuidDiscord: discordId
+            idGuild: guildId,
+            idDiscord: discordId
           });
         } else {
           trainer = existingTrainer;
@@ -598,19 +598,19 @@ export class SignatureService {
         let learner;
         
         const existingLearner = await this.memberRepository.findOne({
-          where: { uuidDiscord: discordId }
+          where: { idDiscord: discordId }
         });
         
         if (!existingLearner) {
           learner = await this.memberRepository.save({
-            uuidMember: uuidv4(),
+            idMember: uuidv4(),
             guildUsername: `learner${i}`,
             xp: `${500 + (i * 50)}`,
             level: 2,
             communityRole: 'Learner',
             status: 'Active',
-            uuidGuild: guildId,
-            uuidDiscord: discordId
+            idGuild: guildId,
+            idDiscord: discordId
           });
         } else {
           learner = existingLearner;
@@ -632,8 +632,8 @@ export class SignatureService {
         course = await this.courseRepository.save({
           name: 'Développeur Web',
           isCertified: true,
-          uuidGuild: guildId,
-          uuidCategory: category1.uuid
+          idGuild: guildId,
+          idCategory: category1.idCategory
         });
       } else {
         course = existingCourse;
@@ -645,20 +645,20 @@ export class SignatureService {
       
       // Vérifier si la promotion existe déjà
       const existingPromotion = await this.promotionRepository.findOne({
-        where: { name: promotionName }
+        where: { idPromotion: uuidv4() }
       });
       
       if (!existingPromotion) {
         promotion = new Promotion();
-        promotion.uuid = uuidv4();
+        promotion.idPromotion = uuidv4();
         promotion.name = promotionName;
         promotion.startDate = new Date('2024-01-15');
         promotion.endDate = new Date('2024-12-15');
         promotion.status = 'active';
-        promotion.uuidCourse = course.uuid;
-        promotion.uuidGuild = guildId;
-        promotion.uuidRole = rolePromotion.uuidRole;
-        promotion.uuidCategory = category1.uuid;
+        promotion.idCourse = course.idPromotion;
+        promotion.idGuild = guildId;
+        promotion.idRole = rolePromotion.idRole;
+        promotion.idCategory = category1.idCategory;
         
         // Sauvegarder la promotion
         promotion = await this.promotionRepository.save(promotion);
@@ -669,7 +669,7 @@ export class SignatureService {
       // 6. Établir les relations entre promotion et membres
       // Ajouter les followers (learners)
       const promotionWithFollowers = await this.promotionRepository.findOne({
-        where: { uuid: promotion.uuid },
+        where: { idPromotion: promotion.idPromotion },
         relations: ['followers'],
       });
       
@@ -683,7 +683,7 @@ export class SignatureService {
       
       // Ajouter les managers (PM et trainers)
       const promotionWithManagers = await this.promotionRepository.findOne({
-        where: { uuid: promotion.uuid },
+        where: { idPromotion: promotion.idPromotion },
         relations: ['managers'],
       });
       
@@ -699,7 +699,7 @@ export class SignatureService {
       
       // Récupérer la promotion complète avec toutes les relations
       const result = await this.promotionRepository.findOne({
-        where: { uuid: promotion.uuid },
+        where: { idPromotion: promotion.idPromotion },
         relations: ['category', 'followers', 'managers', 'role'],
       });
       
@@ -735,7 +735,7 @@ export class SignatureService {
       if (!existingGuild) {
         this.logger.log('Creating guild for specific promotion...');
         await this.guildsService.create({
-          uuidGuild: guildId,
+          idGuild: guildId,
           name: 'Test Discord Server',
           memberCount: '50',
           configuration: {
@@ -748,15 +748,15 @@ export class SignatureService {
       // 1. Créer/récupérer la catégorie
       const categoryUuid = '1344640530763485265';
       let category = await this.categoryRepository.findOne({
-        where: { uuid: categoryUuid }
+        where: { idCategory: categoryUuid }
       });
       
       if (!category) {
         category = await this.categoryRepository.save({
-          uuid: categoryUuid,
+          idCategory: categoryUuid,
           name: 'Forum de la Cda P4 Vals',
           position: 1,
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
@@ -764,72 +764,72 @@ export class SignatureService {
       // Rôle CDP
       const roleCdpUuid = '1344616774402052127';
       let roleCdp = await this.roleRepository.findOne({
-        where: { uuidRole: roleCdpUuid }
+        where: { idRole: roleCdpUuid }
       });
       
       if (!roleCdp) {
         roleCdp = await this.roleRepository.save({
-          uuidRole: roleCdpUuid,
+          idRole: roleCdpUuid,
           name: 'cdp',
           memberCount: 1,
           rolePosition: 5,
           hoist: true,
           color: '#33FFFF',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
       // Rôle promotion
       const rolePromoUuid = '1344616774402052128';
       let rolePromo = await this.roleRepository.findOne({
-        where: { uuidRole: rolePromoUuid }
+        where: { idRole: rolePromoUuid }
       });
       
       if (!rolePromo) {
         rolePromo = await this.roleRepository.save({
-          uuidRole: rolePromoUuid,
+          idRole: rolePromoUuid,
           name: 'cda-p4-vals',
           memberCount: 10,
           rolePosition: 3,
           hoist: true,
           color: '#FF5733',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
       // Rôle formateur
       const roleFormateurUuid = '1344616774402052129';
       let roleFormateur = await this.roleRepository.findOne({
-        where: { uuidRole: roleFormateurUuid }
+        where: { idRole: roleFormateurUuid }
       });
       
       if (!roleFormateur) {
         roleFormateur = await this.roleRepository.save({
-          uuidRole: roleFormateurUuid,
+          idRole: roleFormateurUuid,
           name: 'formateur',
           memberCount: 2,
           rolePosition: 4,
           hoist: true,
           color: '#5733FF',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
       // Rôle apprenant
       const roleApprenantUuid = '1344616774402052126';
       let roleApprenant = await this.roleRepository.findOne({
-        where: { uuidRole: roleApprenantUuid }
+        where: { idRole: roleApprenantUuid }
       });
       
       if (!roleApprenant) {
         roleApprenant = await this.roleRepository.save({
-          uuidRole: roleApprenantUuid,
+          idRole: roleApprenantUuid,
           name: 'apprenant',
           memberCount: 5,
           rolePosition: 2,
           hoist: true,
           color: '#33FF57',
-          uuidGuild: guildId
+          idGuild: guildId
         });
       }
       
@@ -845,8 +845,8 @@ export class SignatureService {
           name: 'Forum de la Cda P4 Vals',
           type: 'GUILD_FORUM',
           channelPosition: 1,
-          uuidCategory: category.uuid,
-          uuidGuild: guildId
+          idCategory: category.idCategory,
+          idGuild: guildId
         });
       }
       
@@ -854,12 +854,12 @@ export class SignatureService {
       // Chargé de projet
       const cdpDiscordId = '987654321098765432';
       let cdpDiscordUser = await this.discordUserRepository.findOne({
-        where: { uuidDiscord: cdpDiscordId }
+        where: { idDiscord: cdpDiscordId }
       });
       
       if (!cdpDiscordUser) {
         cdpDiscordUser = await this.discordUserRepository.save({
-          uuidDiscord: cdpDiscordId,
+          idDiscord: cdpDiscordId,
           discordUsername: 'Jean Dupont',
           discriminator: '0001'
         });
@@ -874,12 +874,12 @@ export class SignatureService {
         const name = trainerNames[i];
         
         let trainerDiscordUser = await this.discordUserRepository.findOne({
-          where: { uuidDiscord: discordId }
+          where: { idDiscord: discordId }
         });
         
         if (!trainerDiscordUser) {
           trainerDiscordUser = await this.discordUserRepository.save({
-            uuidDiscord: discordId,
+            idDiscord: discordId,
             discordUsername: name,
             discriminator: `100${i+1}`
           });
@@ -909,12 +909,12 @@ export class SignatureService {
         
         // Vérifie si l'utilisateur existe déjà (pour Yohan notamment)
         let learnerDiscordUser = await this.discordUserRepository.findOne({
-          where: { uuidDiscord: discordId }
+          where: { idDiscord: discordId }
         });
         
         if (!learnerDiscordUser) {
           learnerDiscordUser = await this.discordUserRepository.save({
-            uuidDiscord: discordId,
+            idDiscord: discordId,
             discordUsername: name,
             discriminator: `200${i+1}`
           });
@@ -925,19 +925,19 @@ export class SignatureService {
       // Chargé de projet
       let projectManager;
       const existingPMMember = await this.memberRepository.findOne({
-        where: { uuidDiscord: cdpDiscordId }
+        where: { idDiscord: cdpDiscordId }
       });
       
       if (!existingPMMember) {
         projectManager = await this.memberRepository.save({
-          uuidMember: uuidv4(),
+          idMember: uuidv4(),
           guildUsername: 'Jean Dupont',
           xp: '2500',
           level: 5,
           communityRole: 'ProjectManager',
           status: 'Active',
-          uuidGuild: guildId,
-          uuidDiscord: cdpDiscordId
+          idGuild: guildId,
+          idDiscord: cdpDiscordId
         });
       } else {
         projectManager = existingPMMember;
@@ -952,7 +952,7 @@ export class SignatureService {
         // Pour Yohan qui a un double rôle (formateur et apprenant)
         if (discordId === '223812446312202251') {
           let yohanMember = await this.memberRepository.findOne({
-            where: { uuidDiscord: discordId }
+            where: { idDiscord: discordId }
           });
           
           if (yohanMember) {
@@ -965,14 +965,14 @@ export class SignatureService {
           } else {
             // S'il n'existe pas, le créer comme formateur
             const trainer = await this.memberRepository.save({
-              uuidMember: uuidv4(),
+              idMember: uuidv4(),
               guildUsername: name,
               xp: '2000',
               level: 4,
               communityRole: 'Trainer', // On le crée d'abord comme formateur
               status: 'Active',
-              uuidGuild: guildId,
-              uuidDiscord: discordId
+              idGuild: guildId,
+              idDiscord: discordId
             });
             trainers.push(trainer);
           }
@@ -980,19 +980,19 @@ export class SignatureService {
           // Autres formateurs (pas Yohan)
           let trainer;
           const existingTrainer = await this.memberRepository.findOne({
-            where: { uuidDiscord: discordId }
+            where: { idDiscord: discordId }
           });
           
           if (!existingTrainer) {
             trainer = await this.memberRepository.save({
-              uuidMember: uuidv4(),
+              idMember: uuidv4(),
               guildUsername: name,
               xp: `${1500 + (i * 100)}`,
               level: 4,
               communityRole: 'Trainer',
               status: 'Active',
-              uuidGuild: guildId,
-              uuidDiscord: discordId
+              idGuild: guildId,
+              idDiscord: discordId
             });
           } else {
             trainer = existingTrainer;
@@ -1011,7 +1011,7 @@ export class SignatureService {
         // Traitement spécial pour Yohan (qui est aussi formateur)
         if (discordId === '223812446312202251') {
           let yohanMember = await this.memberRepository.findOne({
-            where: { uuidDiscord: discordId }
+            where: { idDiscord: discordId }
           });
           
           if (yohanMember) {
@@ -1023,19 +1023,19 @@ export class SignatureService {
           // Autres apprenants
           let learner;
           const existingLearner = await this.memberRepository.findOne({
-            where: { uuidDiscord: discordId }
+            where: { idDiscord: discordId }
           });
           
           if (!existingLearner) {
             learner = await this.memberRepository.save({
-              uuidMember: uuidv4(),
+              idMember: uuidv4(),
               guildUsername: name,
               xp: `${500 + (i * 50)}`,
               level: 2,
               communityRole: 'Learner',
               status: 'Active',
-              uuidGuild: guildId,
-              uuidDiscord: discordId
+              idGuild: guildId,
+              idDiscord: discordId
             });
           } else {
             learner = existingLearner;
@@ -1057,8 +1057,8 @@ export class SignatureService {
         course = await this.courseRepository.save({
           name: 'Cda P4 Vals',
           isCertified: true,
-          uuidGuild: guildId,
-          uuidCategory: category.uuid
+          idGuild: guildId,
+          idCategory: category.idCategory
         });
       } else {
         course = existingCourse;
@@ -1066,24 +1066,24 @@ export class SignatureService {
       
       // 7. Créer/récupérer la promotion
       let promotion;
-      const promotionUuid = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
+      const promotionId = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
       
       // Vérifier si la promotion existe déjà
       const existingPromotion = await this.promotionRepository.findOne({
-        where: { uuid: promotionUuid }
+        where: { idPromotion: promotionId }
       });
       
       if (!existingPromotion) {
         promotion = new Promotion();
-        promotion.uuid = promotionUuid;
+        promotion.idPromotion = uuidv4();
         promotion.name = 'Cda P4 Vals';
         promotion.startDate = new Date('2024-01-15');
         promotion.endDate = new Date('2024-12-15');
         promotion.status = 'active';
-        promotion.uuidCourse = course.uuid;
-        promotion.uuidGuild = guildId;
-        promotion.uuidRole = rolePromo.uuidRole;
-        promotion.uuidCategory = category.uuid;
+        promotion.idCourse = course.idPromotion;
+        promotion.idGuild = guildId;
+        promotion.idRole = rolePromo.idRole;
+        promotion.idCategory = category.idCategory;
         
         // Sauvegarder la promotion
         promotion = await this.promotionRepository.save(promotion);
@@ -1094,7 +1094,7 @@ export class SignatureService {
       // 8. Établir les relations entre promotion et membres
       // Ajouter les followers (learners)
       const promotionWithFollowers = await this.promotionRepository.findOne({
-        where: { uuid: promotion.uuid },
+        where: { idPromotion: promotion.idPromotion },
         relations: ['followers'],
       });
       
@@ -1106,7 +1106,7 @@ export class SignatureService {
       
       // Ajouter les managers (PM et trainers)
       const promotionWithManagers = await this.promotionRepository.findOne({
-        where: { uuid: promotion.uuid },
+        where: { idPromotion: promotion.idPromotion },
         relations: ['managers'],
       });
       
@@ -1120,7 +1120,7 @@ export class SignatureService {
       
       // Récupérer la promotion complète avec toutes les relations
       const result = await this.promotionRepository.findOne({
-        where: { uuid: promotion.uuid },
+        where: { idPromotion: promotion.idPromotion },
         relations: ['category', 'followers', 'managers', 'role'],
       });
       

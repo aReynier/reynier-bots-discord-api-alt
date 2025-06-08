@@ -12,7 +12,7 @@ export class Campus {
     example: '123456789012345678'
   })
   @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_campus' })
-  uuidCampus: string;
+  idCampus: string;
 
   @ApiProperty({
     description: 'Nom du campus',
@@ -27,7 +27,7 @@ export class Campus {
     example: '123456789012345678'
   })
   @Column({ name: 'uuid_guild', type: 'varchar', length: 19 })
-  uuidGuild: string;
+  idGuild: string;
 
   @ApiProperty({
     description: 'Date de création'
@@ -50,7 +50,7 @@ export class Campus {
   guild: Guild;
 
   @Column({ type: 'varchar', name: 'uuid_role' })
-  uuidRole: string;
+  idRole: string;
 
   @OneToOne(() => Role, role => role.campus)
   @JoinColumn({ name: 'uuid_role' })

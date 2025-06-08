@@ -13,8 +13,8 @@ describe('CoursesController', () => {
     uuid: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Développeur web',
     isCertified: true,
-    uuidCategory: '123456789012345678',
-    uuidGuild: '123456789012345678',
+    idCategory: '123456789012345678',
+    idGuild: '123456789012345678',
     createdAt: new Date(),
     updatedAt: null,
   };
@@ -47,9 +47,9 @@ describe('CoursesController', () => {
       const dto: CreateCourseDto = {
         name: 'Développeur web',
         isCertified: true,
-        uuidCategory: '123456789012345678',
-        uuidGuild: '123456789012345678',
-        uuidRole: ''
+        idCategory: '123456789012345678',
+        idGuild: '123456789012345678',
+        idRole: ''
       };
 
       mockService.create.mockResolvedValue({

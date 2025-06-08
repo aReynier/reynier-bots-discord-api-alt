@@ -44,11 +44,11 @@ describe('PollsController', () => {
   describe('create', () => {
     const createPollDto: CreatePollDto = {
       title: 'Test Poll',
-      uuidMessage: '12345678901234567',
+      idMessage: '12345678901234567',
       isAnonymous: false,
       isClosed: false,
       duration: 24,
-      uuidMember: '550e8400-e29b-41d4-a716-446655440000',
+      idMember: '550e8400-e29b-41d4-a716-446655440000',
       questions: [
         {
           content: 'Test Question',
@@ -63,7 +63,7 @@ describe('PollsController', () => {
 
     it('should create a new poll', async () => {
       const expectedResult = {
-        uuid: '550e8400-e29b-41d4-a716-446655440000',
+        idPoll: '550e8400-e29b-41d4-a716-446655440000',
         ...createPollDto,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -82,9 +82,9 @@ describe('PollsController', () => {
     it('should return an array of polls', async () => {
       const expectedResult = [
         {
-          uuid: '550e8400-e29b-41d4-a716-446655440000',
+          idPoll: '550e8400-e29b-41d4-a716-446655440000',
           title: 'Poll 1',
-          uuidMessage: '12345678901234567',
+          idMessage: '12345678901234567',
           isTemplate: false,
           isAnonymous: false,
           isClosed: false,
@@ -114,13 +114,13 @@ describe('PollsController', () => {
   });
 
   describe('findOne', () => {
-    const uuid = '550e8400-e29b-41d4-a716-446655440000';
+    const idPoll = '550e8400-e29b-41d4-a716-446655440000';
 
     it('should return a single poll', async () => {
       const expectedResult = {
-        uuid,
+        idPoll,
         title: 'Test Poll',
-        uuidMessage: '12345678901234567',
+        idMessage: '12345678901234567',
         isTemplate: false,
         isAnonymous: false,
         isClosed: false,
@@ -141,28 +141,28 @@ describe('PollsController', () => {
 
       mockPollsService.findOne.mockResolvedValue(expectedResult);
 
-      const result = await controller.findOne(uuid);
+      const result = await controller.findOne(idPoll);
 
       expect(result).toEqual(expectedResult);
-      expect(mockPollsService.findOne).toHaveBeenCalledWith(uuid);
+      expect(mockPollsService.findOne).toHaveBeenCalledWith(idPoll);
     });
 
     it('should throw NotFoundException when poll is not found', async () => {
       mockPollsService.findOne.mockRejectedValue(new NotFoundException());
 
-      await expect(controller.findOne(uuid)).rejects.toThrow(NotFoundException);
-      expect(mockPollsService.findOne).toHaveBeenCalledWith(uuid);
+      await expect(controller.findOne(idPoll)).rejects.toThrow(NotFoundException);
+      expect(mockPollsService.findOne).toHaveBeenCalledWith(idPoll);
     });
   });
 
   describe('update', () => {
-    const uuid = '550e8400-e29b-41d4-a716-446655440000';
+    const idPoll = '550e8400-e29b-41d4-a716-446655440000';
     const updatePollDto: UpdatePollDto = {
       title: 'Updated Poll',
       isAnonymous: true,
       isClosed: false,
       duration: 48,
-      uuidMember: '550e8400-e29b-41d4-a716-446655440000',
+      idMember: '550e8400-e29b-41d4-a716-446655440000',
       questions: [
         {
           content: 'Updated Question',
@@ -177,50 +177,50 @@ describe('PollsController', () => {
 
     it('should update a poll', async () => {
       const expectedResult = {
-        uuid,
+        idPoll,
         ...updatePollDto,
-        uuidMessage: '12345678901234567',
+        idMessage: '12345678901234567',
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
       mockPollsService.update.mockResolvedValue(expectedResult);
 
-      const result = await controller.update(uuid, updatePollDto);
+      const result = await controller.update(idPoll, updatePollDto);
 
       expect(result).toEqual(expectedResult);
-      expect(mockPollsService.update).toHaveBeenCalledWith(uuid, updatePollDto);
+      expect(mockPollsService.update).toHaveBeenCalledWith(idPoll, updatePollDto);
     });
 
     it('should throw NotFoundException when poll to update is not found', async () => {
       mockPollsService.update.mockRejectedValue(new NotFoundException());
 
-      await expect(controller.update(uuid, updatePollDto)).rejects.toThrow(
+      await expect(controller.update(idPoll, updatePollDto)).rejects.toThrow(
         NotFoundException,
       );
-      expect(mockPollsService.update).toHaveBeenCalledWith(uuid, updatePollDto);
+      expect(mockPollsService.update).toHaveBeenCalledWith(idPoll, updatePollDto);
     });
   });
 
   describe('remove', () => {
-    const uuid = '550e8400-e29b-41d4-a716-446655440000';
+    const idPoll = '550e8400-e29b-41d4-a716-446655440000';
 
     it('should delete a poll', async () => {
       const expectedResult = { affected: 1, raw: [] };
 
       mockPollsService.remove.mockResolvedValue(expectedResult);
 
-      const result = await controller.remove(uuid);
+      const result = await controller.remove(idPoll);
 
       expect(result).toEqual(expectedResult);
-      expect(mockPollsService.remove).toHaveBeenCalledWith(uuid);
+      expect(mockPollsService.remove).toHaveBeenCalledWith(idPoll);
     });
 
     it('should throw NotFoundException when poll to delete is not found', async () => {
       mockPollsService.remove.mockRejectedValue(new NotFoundException());
 
-      await expect(controller.remove(uuid)).rejects.toThrow(NotFoundException);
-      expect(mockPollsService.remove).toHaveBeenCalledWith(uuid);
+      await expect(controller.remove(idPoll)).rejects.toThrow(NotFoundException);
+      expect(mockPollsService.remove).toHaveBeenCalledWith(idPoll);
     });
   });
 });

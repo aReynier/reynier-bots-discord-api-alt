@@ -15,7 +15,7 @@ describe('CommentsService', () => {
   const mockCreateDto: CreateCommentDto = {
     content: 'Test comment',
     status: 'active',
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
     uuidResource: '123e4567-e89b-12d3-a456-426614174002'
   };
 
@@ -29,7 +29,7 @@ describe('CommentsService', () => {
     content: 'Test comment',
     status: 'active',
     createdAt: new Date(),
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
     uuidResource: '123e4567-e89b-12d3-a456-426614174002'
   } as Comment;
 

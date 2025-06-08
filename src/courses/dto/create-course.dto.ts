@@ -1,13 +1,13 @@
 import { IsString, IsNotEmpty, IsBoolean, Length, Matches, IsOptional, MinLength } from "class-validator";
 import { ApiProperty, IntersectionType, PickType } from "@nestjs/swagger";
-import { PickableDiscordUUIDFields } from "src/utils/pickable-discord-uuid-fields";
+import { PickableDiscordIdFields} from "src/utils/pickable-discord-id-fields";
 import { PickableDtoFields } from "src/utils/pickable-dto-fields";
 
-export class CreateCourseDto extends PickType(IntersectionType(PickableDiscordUUIDFields, PickableDtoFields), [
-    'uuidCourse',
+export class CreateCourseDto extends PickType(IntersectionType(PickableDiscordIdFields, PickableDtoFields), [
+    'idCourse',
     'name', 
-    'uuidGuild', 
-    'uuidCategory'
+    'idGuild', 
+    'idCategory'
 ]) {
     @ApiProperty({
         description: 'Nom de la formation',
@@ -28,5 +28,5 @@ export class CreateCourseDto extends PickType(IntersectionType(PickableDiscordUU
     isCertified: boolean;
 
     @IsOptional()
-    uuidRole: string;
+    idRole: string;
 }

@@ -34,8 +34,8 @@ export class ModeratorActionsController {
     description: 'Permet à un modérateur de prendre une action suite à un signalement'
   })
   @ApiHeader({
-    name: 'X-Member-UUID',
-    description: 'UUID du modérateur',
+    name: 'X-Member-id',
+    description: 'id du modérateur',
     required: true
   })
   @ApiBody({ type: CreateModeratorActionDto })
@@ -50,9 +50,9 @@ export class ModeratorActionsController {
   async create(
     @Body(new ValidationPipe({ transform: true }))
     createDto: CreateModeratorActionDto,
-    @Headers('X-Member-UUID') currentUserId: string
+    @Headers('X-Member-id') currentUserId: string
   ): Promise<ModeratorAction> {
-    if (currentUserId !== createDto.uuidMember) {
+    if (currentUserId !== createDto.idMember) {
       throw new UnauthorizedException('Vous n\'êtes pas autorisé à effectuer cette action');
     }
 
@@ -80,18 +80,18 @@ export class ModeratorActionsController {
 
   /**
    * Récupère une action de modération spécifique
-   * @param uuid UUID de l'action à récupérer
+   * @param id UUID de l'action à récupérer
    * @returns L'action trouvée avec un statut 200
    */
-  @Get(':uuid')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ 
-    summary: 'Récupérer une action de modération par son UUID',
+    summary: 'Récupérer une action de modération par son id',
     description: 'Retourne les détails d\'une action de modération spécifique.'
   })
   @ApiParam({ 
-    name: 'uuid',
-    description: 'UUID de l\'action de modération',
+    name: 'id',
+    description: 'id de l\'action de modération',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -100,39 +100,39 @@ export class ModeratorActionsController {
     type: ModeratorAction 
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Action de modération non trouvée' })
-  async findOne(@Param('uuid') uuid: string): Promise<ModeratorAction> {
-    return this.moderatorActionsService.findOne(uuid);
+  async findOne(@Param('id') id: string): Promise<ModeratorAction> {
+    return this.moderatorActionsService.findOne(id);
   }
 
   /**
    * Supprime une action de modération
-   * @param uuid UUID de l'action à supprimer
+   * @param id id de l'action à supprimer
    * @returns Message de confirmation avec un statut 200
    */
-  @Delete(':uuid')
+  @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ 
     summary: 'Supprimer une action de modération',
     description: 'Les actions de modération ne peuvent pas être supprimées.'
   })
   @ApiParam({ 
-    name: 'uuid',
-    description: 'UUID de l\'action de modération',
+    name: 'id',
+    description: 'id de l\'action de modération',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Opération non autorisée' })
-  async remove(@Param('uuid') uuid: string): Promise<void> {
-    await this.moderatorActionsService.remove(uuid);
+  async remove(@Param('id') id: string): Promise<void> {
+    await this.moderatorActionsService.remove(id);
   }
 
-  @Get('report/:reportUuid')
+  @Get('report/:idReport')
   @ApiOperation({ 
     summary: 'Récupérer les actions de modération pour un signalement',
     description: 'Retourne la liste des actions de modération liées à un signalement spécifique.'
   })
   @ApiParam({ 
-    name: 'reportUuid',
-    description: 'UUID du signalement',
+    name: 'idReport',
+    description: 'id du signalement',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -141,7 +141,7 @@ export class ModeratorActionsController {
     type: [ModeratorAction] 
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Signalement non trouvé' })
-  async findByReport(@Param('reportUuid') reportUuid: string): Promise<ModeratorAction[]> {
-    return this.moderatorActionsService.findByReport(reportUuid);
+  async findByReport(@Param('idReport') idReport: string): Promise<ModeratorAction[]> {
+    return this.moderatorActionsService.findByReport(idReport);
   }
 }

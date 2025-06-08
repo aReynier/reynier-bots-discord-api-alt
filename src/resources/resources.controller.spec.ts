@@ -45,14 +45,14 @@ describe('ResourcesController', () => {
         description: 'Test Description',
         content: 'Test Content',
         status: 'active',
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
       };
 
       const expectedResult = {
         uuidResource: '123e4567-e89b-12d3-a456-426614174001',
         ...createResourceDto,
         creator: {
-          uuidMember: createResourceDto.uuidMember,
+          idMember: createResourceDto.idMember,
           username: 'testuser',
         },
         createdAt: new Date(),
@@ -81,7 +81,7 @@ describe('ResourcesController', () => {
           content: 'First Content',
           status: 'active',
           creator: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+            idMember: '123e4567-e89b-12d3-a456-426614174000',
             username: 'testuser',
           },
           createdAt: new Date(),
@@ -94,7 +94,7 @@ describe('ResourcesController', () => {
           content: 'Second Content',
           status: 'active',
           creator: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+            idMember: '123e4567-e89b-12d3-a456-426614174000',
             username: 'testuser',
           },
           createdAt: new Date(),
@@ -124,7 +124,7 @@ describe('ResourcesController', () => {
         content: 'Test Content',
         status: 'active',
         creator: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           username: 'testuser',
         },
         createdAt: new Date(),
@@ -169,7 +169,7 @@ describe('ResourcesController', () => {
         content: 'Original Content',
         status: 'active',
         creator: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           username: 'testuser',
         },
         createdAt: new Date(),
@@ -240,7 +240,7 @@ describe('ResourcesController', () => {
           uuidComment: '123e4567-e89b-12d3-a456-426614174002',
           content: 'First Comment',
           member: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+            idMember: '123e4567-e89b-12d3-a456-426614174000',
             username: 'testuser',
           },
           createdAt: new Date(),
@@ -250,7 +250,7 @@ describe('ResourcesController', () => {
           uuidComment: '123e4567-e89b-12d3-a456-426614174003',
           content: 'Second Comment',
           member: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+            idMember: '123e4567-e89b-12d3-a456-426614174000',
             username: 'testuser',
           },
           createdAt: new Date(),

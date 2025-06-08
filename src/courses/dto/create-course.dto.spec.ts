@@ -7,8 +7,8 @@ describe('CreateCourseDto', () => {
         const dto = new CreateCourseDto();
         dto.name = 'Développeur web';
         dto.isCertified = true;
-        dto.uuidGuild = '123456789012345678';
-        dto.uuidCategory = '123456789012345678';
+        dto.idGuild = '123456789012345678';
+        dto.idCategory = '123456789012345678';
 
         const errors = await validate(dto);
         expect(errors).toHaveLength(0);
@@ -24,16 +24,16 @@ describe('CreateCourseDto', () => {
         const errorProperties = errors.map(error => error.property);
         expect(errorProperties).toContain('name');
         expect(errorProperties).toContain('isCertified');
-        expect(errorProperties).toContain('uuidGuild');
-        expect(errorProperties).toContain('uuidCategory');
+        expect(errorProperties).toContain('idGuild');
+        expect(errorProperties).toContain('idCategory');
     });
 
     it('should fail validation for short name', async () => {
         const dto = new CreateCourseDto();
         dto.name = 'cd';
         dto.isCertified = true;
-        dto.uuidGuild = '123456789012345678';
-        dto.uuidCategory = '123456789012345678';
+        dto.idGuild = '123456789012345678';
+        dto.idCategory = '123456789012345678';
 
         const errors = await validate(dto);
         expect(errors).toHaveLength(1);

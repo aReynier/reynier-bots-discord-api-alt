@@ -39,7 +39,7 @@ export class CreateCommentDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @IsUUID('4', { message: 'L\'UUID du membre doit être un UUID valide' })
-  uuidMember: string;
+  idMember: string;
 
   @ApiProperty({
     description: 'UUID de la ressource commentée',

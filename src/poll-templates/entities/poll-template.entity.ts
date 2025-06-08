@@ -5,12 +5,12 @@ import { QuestionTemplate } from 'src/question-templates/entities/question-templ
 
 @Entity('poll-templates')
 export class PollTemplate {
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_poll_template' })
+  @PrimaryGeneratedColumn('uuid', { name: 'id_poll_template' })
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
     description: "The unique identifier of the poll template"
   })
-  uuid: string;
+  idPollTemplate: string;
 
   @Column({ type: 'varchar', length: 50 })
   @ApiProperty({

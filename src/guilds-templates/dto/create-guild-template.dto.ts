@@ -1,13 +1,13 @@
 import { IsString, MaxLength, Length, IsOptional, IsJSON } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { PickableDiscordUUIDFields } from 'src/utils/pickable-discord-uuid-fields';
+import { PickableDiscordIdFields} from 'src/utils/pickable-discord-id-fields';
 import { IntersectionType } from '@nestjs/swagger';
-import { PickableInternUUIDFields } from 'src/utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from 'src/utils/pickable-intern-id-fields';
 
-export class CreateGuildTemplateDto extends PickType(IntersectionType(PickableDiscordUUIDFields, PickableInternUUIDFields), [
-  'uuidGuildTemplate',
-  'uuidGuild',
-  'uuidCategory'
+export class CreateGuildTemplateDto extends PickType(IntersectionType(PickableDiscordIdFields, PickableInternIdFields), [
+  'idGuildTemplate',
+  'idGuild',
+  'idCategory'
 ]) {
   @ApiProperty({
     description: 'Nom du template',

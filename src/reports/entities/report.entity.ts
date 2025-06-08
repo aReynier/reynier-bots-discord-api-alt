@@ -23,7 +23,7 @@ export class Report {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @PrimaryGeneratedColumn('uuid', { name: 'uuid_report' })
-  uuidReport: string;
+  idReport: string;
 
   @ApiProperty({
     description: 'Type de l\'élément signalé (ressource ou membre)',

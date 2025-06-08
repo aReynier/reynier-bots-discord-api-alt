@@ -18,12 +18,12 @@ describe('CoursesService', () => {
     isCertified: true,
     createdAt: new Date(),
     updatedAt: null,
-    uuidCategory: '123456789012345678',
-    uuidGuild: '123456789012345678',
+    idCategory: '123456789012345678',
+    idGuild: '123456789012345678',
   };
 
   const mockRole = {
-    uuidRole: '123456789012345678',
+    idRole: '123456789012345678',
     name: 'Test Role',
     memberCount: 0,
     rolePosition: 1,
@@ -31,7 +31,7 @@ describe('CoursesService', () => {
     color: '#000000',
     createdAt: new Date(),
     updatedAt: null,
-    uuidGuild: '123456789012345678',
+    idGuild: '123456789012345678',
   };
 
   const mockRepository = {
@@ -77,9 +77,9 @@ describe('CoursesService', () => {
       const dto = {
           name: 'Développeur web',
           isCertified: true,
-          uuidCategory: '123456789012345678',
-          uuidGuild: '123456789012345678',
-          uuidRole: ''
+          idCategory: '123456789012345678',
+          idGuild: '123456789012345678',
+          idRole: ''
       };  
 
       mockRepository.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce(mockCourse);
@@ -94,9 +94,9 @@ describe('CoursesService', () => {
       const dto = {
           name: 'Développeur web',
           isCertified: true,
-          uuidCategory: '123456789012345678',
-          uuidGuild: '123456789012345678',
-          uuidRole: '123456789012345678'
+          idCategory: '123456789012345678',
+          idGuild: '123456789012345678',
+          idRole: '123456789012345678'
       } as CreateCourseDto;  // Utiliser type assertion
 
       mockRepository.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce(mockCourse);
@@ -112,10 +112,10 @@ describe('CoursesService', () => {
       const dto = {
         uuid: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Développeur web',
-        uuidCategory: '123456789012345678',
-        uuidGuild: '123456789012345678',
+        idCategory: '123456789012345678',
+        idGuild: '123456789012345678',
         isCertified: true,
-        uuidRole: '123456789012345678'
+        idRole: '123456789012345678'
       };
 
       mockRepository.findOne.mockResolvedValue(mockCourse);

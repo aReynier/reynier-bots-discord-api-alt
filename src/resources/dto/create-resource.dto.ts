@@ -1,10 +1,10 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsString, MaxLength, IsEnum, IsNotEmpty } from 'class-validator';
-import { PickableInternUUIDFields } from '../../utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from '../../utils/pickable-intern-id-fields';
 import { PickableDtoFields } from '../../utils/pickable-dto-fields';
 
-export class CreateResourceDto extends PickType(PickableInternUUIDFields, [
-  'uuidMember' // Pour le créateur
+export class CreateResourceDto extends PickType(PickableInternIdFields, [
+  'idMember' // Pour le créateur
 ]) {
   @ApiProperty({
     description: 'Le titre de la ressource',

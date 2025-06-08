@@ -4,7 +4,7 @@ import { IsOptional, IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateCategoryDto extends PartialType(
-  OmitType(CreateCategoryDto, ['uuidCategory', 'uuidGuild'] as const),
+  OmitType(CreateCategoryDto, ['idCategory', 'idGuild'] as const),
 ) {
   @ApiProperty({
     description: 'ID Discord du template de serveur associé',
@@ -14,5 +14,5 @@ export class UpdateCategoryDto extends PartialType(
   @IsString()
   @Length(17, 19)
   @IsOptional()
-  uuidGuildTemplate?: string;
+  idGuildTemplate?: string;
 }

@@ -27,9 +27,9 @@ export class DashboardAccount {
     updatedAt: Date;
 
     @Column({ type: 'uuid', name: 'uuid_discord' })
-    uuidDiscord: string;
+    idDiscord: string;
 
     @OneToOne(() => DiscordUser, discordUser => discordUser.dashboardAccount)
-    @JoinColumn({ name: 'uuidDiscord' })
+    @JoinColumn({ name: 'idDiscord' })
     discordUser: DiscordUser;
 }

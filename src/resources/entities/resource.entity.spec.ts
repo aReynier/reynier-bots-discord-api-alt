@@ -43,17 +43,17 @@ describe('Resource Entity', () => {
   describe('Relationships', () => {
     it('should have a creator relationship with Member', () => {
       const member = new Member();
-      member.uuidMember = resource.creatorUuid;
+      member.idMember = resource.creatorUuid;
       resource.creator = member;
 
       expect(resource.creator).toBeDefined();
       expect(resource.creator).toBeInstanceOf(Member);
-      expect(resource.creator.uuidMember).toBe(resource.creatorUuid);
+      expect(resource.creator.idMember).toBe(resource.creatorUuid);
     });
 
     it('should have a reports relationship', () => {
       const report = new Report();
-      report.uuidReport = '123e4567-e89b-12d3-a456-426614174002';
+      report.idReport = '123e4567-e89b-12d3-a456-426614174002';
       resource.reports = [report];
 
       expect(resource.reports).toBeDefined();
@@ -94,7 +94,7 @@ describe('Resource Entity', () => {
         createdAt: '2024-02-25T12:00:00Z',
         updatedAt: '2024-02-25T12:00:00Z',
         creator: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
         },
         reports: [],
         comments: [],

@@ -34,8 +34,8 @@ export class Category {
     description: 'ID Discord du serveur associé',
     example: '123456789012345678'
   })
-  @Column({ name: 'uuidGuild', type: 'varchar', length: 19 })
-  uuidGuild: string;
+  @Column({ name: 'idGuild', type: 'varchar', length: 19 })
+  idGuild: string;
 
   @ApiProperty({
     description: 'Date de création'
@@ -76,7 +76,7 @@ export class Category {
     type: () => Guild
   })
   @ManyToOne(() => Guild, guild => guild.categories)
-  @JoinColumn({ name: 'uuidGuild' })
+  @JoinColumn({ name: 'idGuild' })
   guild: Guild;
 
   @ApiProperty({
@@ -91,14 +91,14 @@ export class Category {
     example: '123456789012345678',
     required: false
   })
-  @Column({ name: 'uuid_guild_template', type: 'varchar', length: 19, nullable: true })
-  uuidGuildTemplate: string;
+  @Column({ name: 'id_guild_template', type: 'varchar', length: 19, nullable: true })
+  idGuildTemplate: string;
 
   @ApiProperty({
     description: 'Template de serveur associé à cette catégorie',
     type: () => GuildTemplate
   })
   @OneToOne(() => GuildTemplate, guildTemplate => guildTemplate.category)
-  @JoinColumn({ name: 'uuid_guild_template' })
+  @JoinColumn({ name: 'id_guild_template' })
   guildTemplate: GuildTemplate;
 }

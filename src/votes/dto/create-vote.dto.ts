@@ -1,10 +1,10 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsUUID, ValidateIf } from 'class-validator';
 import { VoteType } from '../entities/vote.entity';
-import { PickableInternUUIDFields } from '../../utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from '../../utils/pickable-intern-id-fields';
 
-export class CreateVoteDto extends PickType(PickableInternUUIDFields, [
-  'uuidMember' // Pour le membre qui vote
+export class CreateVoteDto extends PickType(PickableInternIdFields, [
+  'idMember' // Pour le membre qui vote
 ]) {
   @ApiProperty({
     description: 'Type de vote (upvote ou downvote)',

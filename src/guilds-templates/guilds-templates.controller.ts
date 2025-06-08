@@ -25,31 +25,31 @@ export class GuildsTemplatesController {
     return this.guildsTemplatesService.findAll();
   }
 
-  @Get(':uuid')
-  @ApiOperation({ summary: 'Récupérer un template de serveur par son UUID' })
+  @Get(':id')
+  @ApiOperation({ summary: 'Récupérer un template de serveur par son id' })
   @ApiResponse({ status: 200, description: 'Le template a été trouvé.', type: GuildTemplate })
   @ApiResponse({ status: 404, description: 'Template non trouvé' })
-  findOne(@Param('uuid') uuid: string) {
-    return this.guildsTemplatesService.findOne(uuid);
+  findOne(@Param('id') idGuildTemplate: string) {
+    return this.guildsTemplatesService.findOne(idGuildTemplate);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ summary: 'Mettre à jour un template de serveur' })
   @ApiResponse({ status: 200, description: 'Le template a été mis à jour avec succès.', type: GuildTemplate })
   @ApiResponse({ status: 404, description: 'Template non trouvé' })
-  async update(@Param('uuid') uuid: string, @Body() updateGuildTemplateDto: UpdateGuildTemplateDto) {
-    const guildTemplate = await this.guildsTemplatesService.update(uuid, updateGuildTemplateDto);
+  async update(@Param('id') idGuildTemplate: string, @Body() updateGuildTemplateDto: UpdateGuildTemplateDto) {
+    const guildTemplate = await this.guildsTemplatesService.update(idGuildTemplate, updateGuildTemplateDto);
     if (!guildTemplate) {
-      throw new NotFoundException(`Guild template with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Guild template with id "${idGuildTemplate}" not found`);
     }
     return guildTemplate;
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ summary: 'Supprimer un template de serveur' })
   @ApiResponse({ status: 200, description: 'Le template a été supprimé avec succès.' })
   @ApiResponse({ status: 404, description: 'Template non trouvé' })
-  remove(@Param('uuid') uuid: string) {
-    return this.guildsTemplatesService.remove(uuid);
+  remove(@Param('id') idGuildTemplate: string) {
+    return this.guildsTemplatesService.remove(idGuildTemplate);
   }
 }

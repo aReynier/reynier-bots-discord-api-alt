@@ -14,7 +14,7 @@ describe('XpTransactionsService', () => {
   let memberRepository: Repository<Member>;
 
   const mockMember = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+    idMember: '123e4567-e89b-12d3-a456-426614174000',
     guildUsername: 'TestUser',
     communityRole: 'Member',
   } as Member;
@@ -31,7 +31,7 @@ describe('XpTransactionsService', () => {
   } as XpTransaction;
 
   const mockCreateDto: CreateXpTransactionDto = {
-    uuidMember: mockMember.uuidMember,
+    idMember: mockMember.idMember,
     transactionType: XpTransactionType.GAIN,
     source: XpTransactionSource.VOTE,
     transactionValue: '100.00',
@@ -99,9 +99,9 @@ describe('XpTransactionsService', () => {
 
   describe('findByMember', () => {
     it('devrait retourner les transactions XP d\'un membre', async () => {
-      const result = await service.findByMember(mockMember.uuidMember);
+      const result = await service.findByMember(mockMember.idMember);
       expect(result).toHaveLength(1);
-      expect(result[0].member.uuidMember).toBe(mockMember.uuidMember);
+      expect(result[0].member.idMember).toBe(mockMember.idMember);
     });
 
     it('devrait lever une exception si le membre n\'existe pas', async () => {

@@ -21,21 +21,21 @@ export class ResourcesService {
   ) {}
 
   async create(createResourceDto: CreateResourceDto): Promise<ResourceResponseDto> {
-    const { uuidMember, ...resourceData } = createResourceDto;
+    const { idMember, ...resourceData } = createResourceDto;
     
     // On cherche le membre
     const member = await this.membersRepository.findOne({
-      where: { uuidMember }
+      where: { idMember }
     });
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${uuidMember} not found`);
+      throw new NotFoundException(`Member with UUID ${idMember} not found`);
     }
 
     // On crée la ressource avec le membre et son UUID
     const resource = this.resourcesRepository.create({
       ...resourceData,
       creator: member,
-      creatorUuid: member.uuidMember
+      creatorUuid: member.idMember
     });
     
     const savedResource = await this.resourcesRepository.save(resource);

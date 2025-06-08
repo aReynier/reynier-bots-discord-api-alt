@@ -71,11 +71,11 @@ export class Course {
   guild: Guild;
 
   @ApiProperty({
-    description: 'UUID unique de la guilde',
+    description: 'SF unique de la guilde',
     example: '123456789012345678',
   })
   @Column({ name: 'uuid_guild', type: 'varchar', length: 19})
-    uuidGuild: string;
+    idGuild: string;
   
   @ApiProperty({
     description: 'Catégorie associée à la formation',
@@ -97,7 +97,7 @@ export class Course {
     type: 'varchar',
     length: 19
   })
-  uuidCategory: string;
+  idCategory: string;
   
   @ApiProperty({
     description: 'Rôles associés aux formations',
@@ -115,7 +115,7 @@ export class Course {
     }],
     inverseJoinColumns: [{
         name: 'uuid_role',
-        referencedColumnName: 'uuidRole'
+        referencedColumnName: 'idRole'
     }]
   })
   roles: Role[];

@@ -28,7 +28,7 @@ describe('CategoriesService', () => {
   it('should create a new category', async () => {
     const dto: CreateCategoryDto = {
       uuid: '123456789012345678',
-      uuidGuild: '987654321098765432',
+      idGuild: '987654321098765432',
       name: 'Test Category',
       position: 1,
     };
@@ -42,7 +42,7 @@ describe('CategoriesService', () => {
   });
 
   it('should return an array of categories', async () => {
-    const result = [{ uuid: '123456789012345678', uuidGuild: '987654321098765432', name: 'Test Category', position: 1 }];
+    const result = [{ uuid: '123456789012345678', idGuild: '987654321098765432', name: 'Test Category', position: 1 }];
     mockRepository.find.mockResolvedValue(result);
     expect(await service.findAll()).toEqual(result);
     expect(mockRepository.find).toHaveBeenCalledWith({
@@ -57,7 +57,7 @@ describe('CategoriesService', () => {
   });
 
   it('should return a single category', async () => {
-    const result = { uuid: '123456789012345678', uuidGuild: '987654321098765432', name: 'Test Category', position: 1 };
+    const result = { uuid: '123456789012345678', idGuild: '987654321098765432', name: 'Test Category', position: 1 };
     mockRepository.findOne.mockResolvedValue(result);
     expect(await service.findOne('123456789012345678')).toEqual(result);
     expect(mockRepository.findOne).toHaveBeenCalledWith({
@@ -74,7 +74,7 @@ describe('CategoriesService', () => {
 
   it('should update a category', async () => {
     const dto: UpdateCategoryDto = { name: 'Updated Category', position: 2 };
-    const result = { uuid: '123456789012345678', uuidGuild: '987654321098765432', name: 'Updated Category', position: 2 };
+    const result = { uuid: '123456789012345678', idGuild: '987654321098765432', name: 'Updated Category', position: 2 };
     mockRepository.findOneBy.mockResolvedValue(result);
     mockRepository.save.mockResolvedValue(result);
 

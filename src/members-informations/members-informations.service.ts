@@ -20,12 +20,12 @@ export class MembersInformationsService {
     return this.memberInformationsRepository.find();
   }
 
-  findOne(uuid: string) {
-    return this.memberInformationsRepository.findOneBy({ uuid });
+  findOne(idMemberInfos: string) {
+    return this.memberInformationsRepository.findOneBy({ idMemberInfos });
   }
 
-  async update(uuid: string, updateMemberInformationDto: UpdateMemberInformationsDto) {
-    const memberInfo = await this.memberInformationsRepository.findOneBy({ uuid });
+  async update(idMemberInfos: string, updateMemberInformationDto: UpdateMemberInformationsDto) {
+    const memberInfo = await this.memberInformationsRepository.findOneBy({ idMemberInfos });
     if (!memberInfo) {
       return null;
     }
@@ -40,7 +40,7 @@ export class MembersInformationsService {
     return this.memberInformationsRepository.save(memberInfo);
   }
 
-  remove(uuid: string) {
-    return this.memberInformationsRepository.delete(uuid);
+  remove(idMemberInfos: string) {
+    return this.memberInformationsRepository.delete(idMemberInfos);
   }
 }

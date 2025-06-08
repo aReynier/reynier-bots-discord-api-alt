@@ -28,7 +28,7 @@ export class DashboardAccountController {
         return this.dashboardAccountService.create(createDashboardAccountDto);
     }
   
-    @Get(':uuidDashboardAccount')
+    @Get(':idDashboardAccount')
     @ApiOperation({ summary: 'Récupérer un compte dashboard par son UUID' })
     @ApiResponse({ 
         status: HttpStatus.OK, 
@@ -39,11 +39,11 @@ export class DashboardAccountController {
         status: HttpStatus.NOT_FOUND, 
         description: 'Compte non trouvé'
     })
-    async getByUUID(@Param('uuidDashboardAccount') uuidDashboardAccount: string): Promise<DashboardAccount> {
-        return this.dashboardAccountService.getByUUID(uuidDashboardAccount);
+    async getByUUID(@Param('idDashboardAccount') idDashboardAccount: string): Promise<DashboardAccount> {
+        return this.dashboardAccountService.getByUUID(idDashboardAccount);
     }
 
-    @Put(':uuidDashboardAccount')
+    @Put(':idDashboardAccount')
     @ApiOperation({ summary: 'Mettre à jour un compte dashboard' })
     @ApiResponse({ 
         status: HttpStatus.OK, 
@@ -59,13 +59,13 @@ export class DashboardAccountController {
         description: 'Données invalides fournies'
     })
     async updateByUUID(
-        @Param('uuidDashboardAccount') uuidDashboardAccount: string,
+        @Param('idDashboardAccount') idDashboardAccount: string,
         @Body() updateDashboardAccountDto: UpdateDashboardAccountDto,
     ): Promise<DashboardAccount> {
-        return this.dashboardAccountService.updateByUUID(uuidDashboardAccount, updateDashboardAccountDto);
+        return this.dashboardAccountService.updateByUUID(idDashboardAccount, updateDashboardAccountDto);
     }
 
-    @Delete(':uuidDashboardAccount')
+    @Delete(':idDashboardAccount')
     @ApiOperation({ summary: 'Supprimer un compte dashboard' })
     @ApiResponse({ 
         status: HttpStatus.NO_CONTENT, 
@@ -75,7 +75,7 @@ export class DashboardAccountController {
         status: HttpStatus.NOT_FOUND, 
         description: 'Compte non trouvé'
     })
-    async deleteByUUID(@Param('uuidDashboardAccount') uuidDashboardAccount: string): Promise<void> {
-        return this.dashboardAccountService.deleteByUUID(uuidDashboardAccount);
+    async deleteByUUID(@Param('idDashboardAccount') idDashboardAccount: string): Promise<void> {
+        return this.dashboardAccountService.deleteByUUID(idDashboardAccount);
     }
 }

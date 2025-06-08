@@ -5,12 +5,12 @@ import { Member } from 'src/members/entities/member.entity';
 
 @Entity('polls')
 export class Poll {
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_poll' })
+  @PrimaryGeneratedColumn('uuid', { name: 'id_poll' })
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
     description: "The unique identifier of the poll"
   })
-  uuid: string;
+  idPoll: string;
 
   @Column({ type: 'varchar', length: 50 })
   @ApiProperty({
@@ -20,13 +20,13 @@ export class Poll {
   })
   title: string;
 
-  @Column({ type: 'varchar', length: 19, name: 'uuid_message' })
+  @Column({ type: 'varchar', length: 19, name: 'id_message' })
   @ApiProperty({
     maxLength: 19,
     example: '1234567890123456789',
     description: "The ID of the associated message, used to link the poll to a specific message."
   })
-  uuidMessage: string;
+  idMessage: string;
 
   @Column({ type: 'boolean', name: 'is_anonymous' })
   @ApiProperty({
@@ -71,7 +71,7 @@ export class Poll {
   //     type: () => Member
   // })
   @ManyToOne(() => Member, (author) => author.polls, {nullable: false})
-  @JoinColumn({ name: 'uuid_author' })
+  @JoinColumn({ name: 'id_author' })
   author: Member;
 
   @CreateDateColumn({

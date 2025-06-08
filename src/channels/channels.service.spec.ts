@@ -13,8 +13,8 @@ describe('ChannelsService', () => {
     name: 'test-channel',
     type: 'text',
     channelPosition: 1,
-    uuidCategory: '234567890123456789',
-    uuidGuild: '345678901234567890',
+    idCategory: '234567890123456789',
+    idGuild: '345678901234567890',
     createdAt: new Date(),
     updatedAt: new Date(),
     category: null,
@@ -48,8 +48,8 @@ describe('ChannelsService', () => {
         name: 'test-channel',
         type: 'text',
         channelPosition: 1,
-        uuidCategory: '234567890123456789',
-        uuidGuild: '345678901234567890'
+        idCategory: '234567890123456789',
+        idGuild: '345678901234567890'
       };
 
       mockRepository.create.mockReturnValue(mockChannel);

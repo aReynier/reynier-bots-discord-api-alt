@@ -9,8 +9,8 @@ export class GuildTemplate {
     description: 'ID Discord du template',
     example: '123456789012345678'
   })
-  @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_guild_template' })
-  uuid: string;
+  @PrimaryColumn({ type: 'varchar', length: 19, name: 'id_guild_template' })
+  idGuildTemplate: string;
 
   @ApiProperty({
     description: 'Nom du template',
@@ -28,12 +28,12 @@ export class GuildTemplate {
   description: string;
 
   @ApiProperty({
-    description: 'UUID Discord du serveur associé',
+    description: 'id Discord du serveur associé',
     example: '123456789012345678',
     required: false
   })
-  @Column({ name: 'uuidGuild', type: 'varchar', length: 19, nullable: true })
-  uuidGuild: string;
+  @Column({ name: 'id_guild', type: 'varchar', length: 19, nullable: true })
+  idGuild: string;
 
   @ApiProperty({
     description: 'Configuration du template',
@@ -73,7 +73,7 @@ export class GuildTemplate {
     required: false
   })
   @OneToOne(() => Guild, guild => guild.template)
-  @JoinColumn({ name: 'uuidGuild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Guild;
 
   @ApiProperty({
@@ -81,14 +81,14 @@ export class GuildTemplate {
     example: '123456789012345678',
     required: false
   })
-  @Column({ name: 'uuid_category', type: 'varchar', length: 19, nullable: true })
-  uuidCategory: string;
+  @Column({ name: 'id_category', type: 'varchar', length: 19, nullable: true })
+  idCategory: string;
 
   @ApiProperty({
     description: 'Catégorie associée à ce template',
     type: () => Category
   })
   @OneToOne(() => Category, category => category.guildTemplate)
-  @JoinColumn({ name: 'uuid_category' })
+  @JoinColumn({ name: 'id_category' })
   category: Category;
 }

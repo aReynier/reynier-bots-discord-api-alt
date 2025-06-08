@@ -41,7 +41,7 @@ describe('AnswersService', () => {
     it('should create a new answer', async () => {
       const createAnswerQuestionDto: CreateAnswerQuestionTemplateDto = {
         content: 'Test answer',
-        uuidQuestionTemplate: '123e4567-e89b-12d3-a456-426614174000'
+        idQuestionTemplate: '123e4567-e89b-12d3-a456-426614174000'
       };
 
       const answer = { uuid: 'test-uuid', ...createAnswerQuestionDto };

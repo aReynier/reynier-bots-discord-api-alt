@@ -23,10 +23,10 @@ export class VotesService {
   async create(createVoteDto: CreateVoteDto): Promise<Vote> {
     // Vérifier que le membre existe
     const member = await this.memberRepository.findOne({
-      where: { uuidMember: createVoteDto.uuidMember }
+      where: { idMember: createVoteDto.idMember }
     });
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${createVoteDto.uuidMember} not found`);
+      throw new NotFoundException(`Member with UUID ${createVoteDto.idMember} not found`);
     }
 
     // Vérifier si c'est un vote sur une ressource ou un commentaire
@@ -45,7 +45,7 @@ export class VotesService {
       // Vérifier si le membre a déjà voté pour cette ressource
       const existingVote = await this.voteRepository.findOne({
         where: {
-          member: { uuidMember: member.uuidMember },
+          member: { idMember: member.idMember },
           resource: { uuidResource: resource.uuidResource }
         }
       });
@@ -64,7 +64,7 @@ export class VotesService {
       // Vérifier si le membre a déjà voté pour ce commentaire
       const existingVote = await this.voteRepository.findOne({
         where: {
-          member: { uuidMember: member.uuidMember },
+          member: { idMember: member.idMember },
           comment: { uuidComment: comment.uuidComment }
         }
       });

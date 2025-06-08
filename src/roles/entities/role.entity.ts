@@ -9,11 +9,11 @@ import { Promotion } from 'src/promotions/entities/promotion.entity';
 @Entity('roles')
 export class Role {
   @ApiProperty({
-    description: 'UUID unique du rôle',
+    description: 'SF unique du rôle',
     example: '172653890987364567'
   })
-  @PrimaryColumn({ type: 'varchar', length: 19,  name: 'uuid_role' })
-  uuidRole: string;
+  @PrimaryColumn({ type: 'varchar', length: 19,  name: 'id_role' })
+  idRole: string;
 
   @ApiProperty({
     description: 'Nom du rôle',
@@ -66,18 +66,18 @@ export class Role {
   updatedAt: Date;
 
   @ApiProperty({
-    description: 'UUID de la guilde à laquelle appartient le rôle',
+    description: 'id de la guilde à laquelle appartient le rôle',
     example: '123456789012345678'
   })
-  @Column('uuid', { name: 'uuid_guild', nullable: false })
-  uuidGuild: string;
+  @Column('uuid', { name: 'id_guild', nullable: false })
+  idGuild: string;
 
   @ApiProperty({
     description: 'Relation avec la guilde',
     type: () => Guild
   })
   @ManyToOne(() => Guild, guild => guild.roles, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'uuid_guild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Guild;
 
   @ApiProperty({

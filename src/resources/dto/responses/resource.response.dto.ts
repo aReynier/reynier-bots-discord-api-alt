@@ -9,7 +9,7 @@ export class ResourceCreatorResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose()
-  uuidMember: string;
+  idMember: string;
 
   @ApiProperty({
     description: 'Nom d\'utilisateur sur le serveur',
@@ -39,10 +39,10 @@ export class ResourceCreatorResponseDto {
   status: string;
 
   @Exclude()
-  uuidDiscord: string;
+  idDiscord: string;
 
   @Exclude()
-  uuidGuild: string;
+  idGuild: string;
 
   @Exclude()
   xp: string;
@@ -54,7 +54,7 @@ export class ResourceReportResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose({ name: 'uuid_report' })
-  uuidReport: string;
+  idReport: string;
 
   @ApiProperty({
     description: 'Type de signalement',

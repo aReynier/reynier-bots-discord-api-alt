@@ -441,7 +441,7 @@ Example: `/roles/123456789012345678`
 - **POST** `/identification-requests`
 ```json
 {
-  "uuidMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
+  "idMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
   "firstname": "Hidetaka",
   "lastname": "Miyazaki",
   "email": "hidetaka.miyazaki@from-software.com"
@@ -459,7 +459,7 @@ Example: `/identification-requests/57bb2c9b-a472-408d-9b90-4a834da929d0`
 - **PUT** `/identification-requests/:uuid`
 ```json
 {
-  "uuidMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
+  "idMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
   "firstname": "Hidetaka",
   "lastname": "Miyazaki",
   "email": "hidetaka.miyazaki@from-software.jp"
@@ -516,7 +516,7 @@ Example: `/members-informations/57bb2c9b-a472-408d-9b90-4a834da929d0`
 ```json
 {
   "uuid": "123456789012345678",
-  "uuidGuild": "987654321098765432",
+  "idGuild": "987654321098765432",
   "name": "General",
   "position": 1
 }
@@ -534,7 +534,7 @@ Example: `/categories/57bb2c9b-a472-408d-9b90-4a834da929d0`
 ```json
 {
   "uuid": "123456789012345678",
-  "uuidGuild": "987654321098765432",
+  "idGuild": "987654321098765432",
   "name": "Updated Category",
   "position": 2
 }
@@ -623,8 +623,8 @@ Example: `/comments/123e4567-e89b-12d3-a456-426614174000`
 {
   "name": "cda-vals-p4",
   "isCertified": true,
-  "uuidGuild": "123456789012345678",
-  "uuidCategory": "123456789012345678"
+  "idGuild": "123456789012345678",
+  "idCategory": "123456789012345678"
 }
 ```
 

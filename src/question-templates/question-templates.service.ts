@@ -22,39 +22,39 @@ export class QuestionTemplatesService {
     return this.questionTemplateRepository.find();
   }
 
-  async findOne(uuid: string): Promise<QuestionTemplate> {
-    if (!isUUID(uuid)) {
-      throw new NotFoundException(`The question template with UUID ${uuid} does not exist`);
+  async findOne(idQuestionTemplate: string): Promise<QuestionTemplate> {
+    if (!isUUID(idQuestionTemplate)) {
+      throw new NotFoundException(`The question template with id ${idQuestionTemplate} does not exist`);
     }
-    const questionTemplate = await this.questionTemplateRepository.findOne({ where: { uuid } });
+    const questionTemplate = await this.questionTemplateRepository.findOne({ where: { idQuestionTemplate } });
     if (!questionTemplate) {
-      throw new NotFoundException(`The question template with UUID ${uuid} does not exist`);
+      throw new NotFoundException(`The question template with id ${idQuestionTemplate} does not exist`);
     }
     return questionTemplate;
   }
 
-  async update(uuid: string, updateQuestionTemplateDto: UpdateQuestionTemplateDto) : Promise<QuestionTemplate> {
-    if (!isUUID(uuid)) {
-      throw new NotFoundException(`The question template with UUID ${uuid} does not exist`);
+  async update(idQuestionTemplate: string, updateQuestionTemplateDto: UpdateQuestionTemplateDto) : Promise<QuestionTemplate> {
+    if (!isUUID(idQuestionTemplate)) {
+      throw new NotFoundException(`The question template with id ${idQuestionTemplate} does not exist`);
     }
     const questionTemplate = await this.questionTemplateRepository.preload({
-      uuid,
+      idQuestionTemplate,
       ...updateQuestionTemplateDto
     })
     if (!questionTemplate) {
-      throw new NotFoundException(`The question template with UUID ${uuid} does not exist`);
+      throw new NotFoundException(`The question template with UUID ${idQuestionTemplate} does not exist`);
     }
     return this.questionTemplateRepository.save(questionTemplate); 
   }
 
-  async remove(uuid: string) : Promise<DeleteResult> {
-    if (!isUUID(uuid)) {
-      throw new NotFoundException(`The question template with UUID ${uuid} does not exist`);
+  async remove(idQuestionTemplate: string) : Promise<DeleteResult> {
+    if (!isUUID(idQuestionTemplate)) {
+      throw new NotFoundException(`The question template with id ${idQuestionTemplate} does not exist`);
     }
-    const questionTemplate = await this.questionTemplateRepository.findOne({ where: { uuid } });
+    const questionTemplate = await this.questionTemplateRepository.findOne({ where: { idQuestionTemplate } });
     if (!questionTemplate) {
-      throw new NotFoundException(`The question template with UUID ${uuid} does not exist`);
+      throw new NotFoundException(`The question template with id ${idQuestionTemplate} does not exist`);
     }
-    return await this.questionTemplateRepository.delete(uuid);
+    return await this.questionTemplateRepository.delete(idQuestionTemplate);
   }
 }

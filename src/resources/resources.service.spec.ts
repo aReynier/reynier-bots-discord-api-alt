@@ -64,7 +64,7 @@ describe('ResourcesService', () => {
     it('should successfully create a resource', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -74,7 +74,7 @@ describe('ResourcesService', () => {
         description: 'Test Description',
         content: 'Test Content',
         status: 'active',
-        uuidMember: mockMember.uuidMember,
+        idMember: mockMember.idMember,
       };
 
       const mockCreatedResource = {
@@ -100,7 +100,7 @@ describe('ResourcesService', () => {
 
       // Assert
       expect(mockMemberRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidMember: createResourceDto.uuidMember },
+        where: { idMember: createResourceDto.idMember },
       });
       expect(mockResourceRepository.create).toHaveBeenCalledWith({
         title: createResourceDto.title,
@@ -108,7 +108,7 @@ describe('ResourcesService', () => {
         content: createResourceDto.content,
         status: createResourceDto.status,
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
       });
       expect(mockResourceRepository.save).toHaveBeenCalledWith(mockCreatedResource);
       expect(result).toBeDefined();
@@ -122,17 +122,17 @@ describe('ResourcesService', () => {
         description: 'Test Description',
         content: 'Test Content',
         status: 'active',
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
       };
 
       mockMemberRepository.findOne.mockResolvedValue(null);
 
       // Act & Assert
       await expect(service.create(createResourceDto)).rejects.toThrow(
-        `Member with UUID ${createResourceDto.uuidMember} not found`
+        `Member with UUID ${createResourceDto.idMember} not found`
       );
       expect(mockMemberRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidMember: createResourceDto.uuidMember },
+        where: { idMember: createResourceDto.idMember },
       });
       expect(mockResourceRepository.create).not.toHaveBeenCalled();
       expect(mockResourceRepository.save).not.toHaveBeenCalled();
@@ -143,7 +143,7 @@ describe('ResourcesService', () => {
     it('should return a resource with all its relations when it exists', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -155,7 +155,7 @@ describe('ResourcesService', () => {
         content: 'Test Content',
         status: 'active',
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
         comments: [
           {
             uuidComment: '123e4567-e89b-12d3-a456-426614174002',
@@ -172,7 +172,7 @@ describe('ResourcesService', () => {
         ],
         reports: [
           {
-            uuidReport: '123e4567-e89b-12d3-a456-426614174004',
+            idReport: '123e4567-e89b-12d3-a456-426614174004',
             type: 'resource',
             reason: 'Test Report',
             reporter: mockMember,
@@ -241,7 +241,7 @@ describe('ResourcesService', () => {
     it('should return all resources with their relations sorted by creation date', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -254,7 +254,7 @@ describe('ResourcesService', () => {
           content: 'First Content',
           status: 'active',
           creator: mockMember,
-          creatorUuid: mockMember.uuidMember,
+          creatorUuid: mockMember.idMember,
           comments: [
             {
               uuidComment: '123e4567-e89b-12d3-a456-426614174002',
@@ -280,7 +280,7 @@ describe('ResourcesService', () => {
           content: 'Second Content',
           status: 'active',
           creator: mockMember,
-          creatorUuid: mockMember.uuidMember,
+          creatorUuid: mockMember.idMember,
           comments: [],
           votes: [],
           reports: [],
@@ -354,7 +354,7 @@ describe('ResourcesService', () => {
     it('should update a resource and maintain its relations', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -366,7 +366,7 @@ describe('ResourcesService', () => {
         content: 'Original Content',
         status: 'active',
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
         comments: [
           {
             uuidComment: '123e4567-e89b-12d3-a456-426614174002',
@@ -457,7 +457,7 @@ describe('ResourcesService', () => {
     it('should only update provided fields', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -469,7 +469,7 @@ describe('ResourcesService', () => {
         content: 'Original Content',
         status: 'active',
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
         comments: [],
         votes: [],
         reports: [],
@@ -513,7 +513,7 @@ describe('ResourcesService', () => {
     it('should remove an existing resource', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -525,7 +525,7 @@ describe('ResourcesService', () => {
         content: 'Test Content',
         status: 'active',
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
         comments: [
           {
             uuidComment: '123e4567-e89b-12d3-a456-426614174002',
@@ -570,7 +570,7 @@ describe('ResourcesService', () => {
     it('should cascade delete related entities', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -582,7 +582,7 @@ describe('ResourcesService', () => {
         content: 'Test Content',
         status: 'active',
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
         comments: [
           {
             uuidComment: '123e4567-e89b-12d3-a456-426614174002',
@@ -599,7 +599,7 @@ describe('ResourcesService', () => {
         ],
         reports: [
           {
-            uuidReport: '123e4567-e89b-12d3-a456-426614174004',
+            idReport: '123e4567-e89b-12d3-a456-426614174004',
             type: 'resource',
             reason: 'Test Report',
             reporter: mockMember,
@@ -628,7 +628,7 @@ describe('ResourcesService', () => {
     it('should return all comments for a resource with their relations', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -640,7 +640,7 @@ describe('ResourcesService', () => {
         content: 'Test Content',
         status: 'active',
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
       };
 
       const mockComments = [
@@ -711,7 +711,7 @@ describe('ResourcesService', () => {
     it('should return empty array when resource has no comments', async () => {
       // Arrange
       const mockMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'testuser',
         status: 'active',
       };
@@ -723,7 +723,7 @@ describe('ResourcesService', () => {
         content: 'Test Content',
         status: 'active',
         creator: mockMember,
-        creatorUuid: mockMember.uuidMember,
+        creatorUuid: mockMember.idMember,
       };
 
       mockResourceRepository.findOne.mockResolvedValue(mockResource);

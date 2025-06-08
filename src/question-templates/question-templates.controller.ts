@@ -17,18 +17,18 @@ export class QuestionTemplatesController {
     return this.questionTemplatesService.findAll();
   }
 
-  @Get(':uuid')
-  findOne(@Param('uuid') uuid: string) {
-    return this.questionTemplatesService.findOne(uuid);
+  @Get(':id')
+  findOne(@Param('id') idQuestionTemplate: string) {
+    return this.questionTemplatesService.findOne(idQuestionTemplate);
   }
 
-  @Put(':uuid')
-  update(@Param('uuid') uuid: string, @Body() updateQuestionTemplateDto: UpdateQuestionTemplateDto) {
-    return this.questionTemplatesService.update(uuid, updateQuestionTemplateDto);
+  @Put(':id')
+  update(@Param('id') idQuestionTemplate: string, @Body() updateQuestionTemplateDto: UpdateQuestionTemplateDto) {
+    return this.questionTemplatesService.update(idQuestionTemplate, updateQuestionTemplateDto);
   }
 
-  @Delete(':uuid')
-  remove(@Param('uuid') uuid: string) {
-    return this.questionTemplatesService.remove(uuid);
+  @Delete(':id')
+  remove(@Param('id') idQuestionTemplate: string) {
+    return this.questionTemplatesService.remove(idQuestionTemplate);
   }
 }

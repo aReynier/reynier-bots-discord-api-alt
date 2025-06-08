@@ -1,14 +1,14 @@
 import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 import { PickableDtoFields } from 'src/utils/pickable-dto-fields';
-import { PickableDiscordUUIDFields } from 'src/utils/pickable-discord-uuid-fields';
+import { PickableDiscordIdFields} from 'src/utils/pickable-discord-id-fields';
 import { IsNotEmpty, Length, Matches } from 'class-validator';
 import { IsString } from 'class-validator';
 
-export class CreateCampusDto extends PickType(IntersectionType(PickableDtoFields, PickableDiscordUUIDFields), [
-  'uuidCampus',
+export class CreateCampusDto extends PickType(IntersectionType(PickableDtoFields, PickableDiscordIdFields), [
+  'idCampus',
   'name',
-  'uuidRole',
-  'uuidGuild'
+  'idRole',
+  'idGuild'
 ]) { 
   @ApiProperty({
     description: 'Emplacement du campus',

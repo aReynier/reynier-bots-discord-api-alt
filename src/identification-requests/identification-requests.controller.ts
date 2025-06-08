@@ -17,22 +17,22 @@ export class IdentificationRequestsController {
     return this.identificationRequestsService.findAll();
   }
 
-  @Get(':uuid')
-  findOne(@Param('uuid') uuid: string) {
-    return this.identificationRequestsService.findOne(uuid);
+  @Get(':id')
+  findOne(@Param('id') idIdentificationRequest: string) {
+    return this.identificationRequestsService.findOne(idIdentificationRequest);
   }
 
-  @Put(':uuid')
-  async update(@Param('uuid') uuid: string, @Body() updateIdentificationRequestDto: UpdateIdentificationRequestDto) {
-    const identificationRequest = await this.identificationRequestsService.update(uuid, updateIdentificationRequestDto);
+  @Put(':id')
+  async update(@Param('id') idIdentificationRequest: string, @Body() updateIdentificationRequestDto: UpdateIdentificationRequestDto) {
+    const identificationRequest = await this.identificationRequestsService.update(idIdentificationRequest, updateIdentificationRequestDto);
     if (!identificationRequest) {
-      throw new NotFoundException(`IdentificationRequest with UUID "${uuid}" not found`);
+      throw new NotFoundException(`IdentificationRequest with id "${idIdentificationRequest}" not found`);
     }
     return identificationRequest;
   }
 
-  @Delete(':uuid')
-  remove(@Param('uuid') uuid: string) {
-    return this.identificationRequestsService.remove(uuid);
+  @Delete(':id')
+  remove(@Param('id') idIdentificationRequest: string) {
+    return this.identificationRequestsService.remove(idIdentificationRequest);
   }
 }

@@ -64,7 +64,7 @@ describe('ReportsService', () => {
       it('should successfully create a resource report', async () => {
         // Arrange
         const mockReporter = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           guildUsername: 'reporter',
           status: 'active',
         };
@@ -79,12 +79,12 @@ describe('ReportsService', () => {
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Test reason',
-          uuidReporter: mockReporter.uuidMember,
+          idReporter: mockReporter.idMember,
           uuidResource: mockResource.uuidResource,
         };
 
         const mockReport = {
-          uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+          idReport: '123e4567-e89b-12d3-a456-426614174002',
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Test reason',
@@ -121,14 +121,14 @@ describe('ReportsService', () => {
 
         // Assert
         expect(mockMembersRepository.findOne).toHaveBeenCalledWith({
-          where: { uuidMember: mockReporter.uuidMember }
+          where: { idMember: mockReporter.idMember }
         });
         expect(mockResourcesRepository.findOne).toHaveBeenCalledWith({
           where: { uuidResource: mockResource.uuidResource }
         });
         expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
           where: {
-            reporter: { uuidMember: mockReporter.uuidMember },
+            reporter: { idMember: mockReporter.idMember },
             resource: { uuidResource: mockResource.uuidResource }
           },
           relations: ['reporter', 'resource', 'reportedMember']
@@ -139,7 +139,7 @@ describe('ReportsService', () => {
         expect(result.category).toBe(ReportCategory.INAPPROPRIATE);
         expect(result.status).toBe('pending');
         expect(result.reporter).toBeDefined();
-        expect(result.reporter.uuidMember).toBe(mockReporter.uuidMember);
+        expect(result.reporter.idMember).toBe(mockReporter.idMember);
         expect(result.resource).toBeDefined();
         if (result.resource) {
           expect(result.resource.uuidResource).toBe(mockResource.uuidResource);
@@ -152,7 +152,7 @@ describe('ReportsService', () => {
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Test reason',
-          uuidReporter: '123e4567-e89b-12d3-a456-426614174000',
+          idReporter: '123e4567-e89b-12d3-a456-426614174000',
         };
 
         // Act & Assert
@@ -164,15 +164,15 @@ describe('ReportsService', () => {
         expect(mockReportsRepository.save).not.toHaveBeenCalled();
       });
 
-      it('should throw BadRequestException when creating resource report with uuidReportedMember', async () => {
+      it('should throw BadRequestException when creating resource report with idReportedMember', async () => {
         // Arrange
         const createReportDto: CreateReportDto = {
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Test reason',
-          uuidReporter: '123e4567-e89b-12d3-a456-426614174000',
+          idReporter: '123e4567-e89b-12d3-a456-426614174000',
           uuidResource: '123e4567-e89b-12d3-a456-426614174001',
-          uuidReportedMember: '123e4567-e89b-12d3-a456-426614174002',
+          idReportedMember: '123e4567-e89b-12d3-a456-426614174002',
         };
 
         // Act & Assert
@@ -190,7 +190,7 @@ describe('ReportsService', () => {
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Test reason',
-          uuidReporter: '123e4567-e89b-12d3-a456-426614174000',
+          idReporter: '123e4567-e89b-12d3-a456-426614174000',
           uuidResource: '123e4567-e89b-12d3-a456-426614174001',
         };
 
@@ -198,10 +198,10 @@ describe('ReportsService', () => {
 
         // Act & Assert
         await expect(service.create(createReportDto)).rejects.toThrow(
-          new NotFoundException(`Reporter with UUID ${createReportDto.uuidReporter} not found`)
+          new NotFoundException(`Reporter with UUID ${createReportDto.idReporter} not found`)
         );
         expect(mockMembersRepository.findOne).toHaveBeenCalledWith({
-          where: { uuidMember: createReportDto.uuidReporter }
+          where: { idMember: createReportDto.idReporter }
         });
         expect(mockResourcesRepository.findOne).not.toHaveBeenCalled();
         expect(mockReportsRepository.save).not.toHaveBeenCalled();
@@ -210,7 +210,7 @@ describe('ReportsService', () => {
       it('should throw NotFoundException when resource does not exist', async () => {
         // Arrange
         const mockReporter = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           guildUsername: 'reporter',
           status: 'active',
         };
@@ -219,7 +219,7 @@ describe('ReportsService', () => {
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Test reason',
-          uuidReporter: mockReporter.uuidMember,
+          idReporter: mockReporter.idMember,
           uuidResource: '123e4567-e89b-12d3-a456-426614174001',
         };
 
@@ -231,7 +231,7 @@ describe('ReportsService', () => {
           new NotFoundException(`Resource with UUID ${createReportDto.uuidResource} not found`)
         );
         expect(mockMembersRepository.findOne).toHaveBeenCalledWith({
-          where: { uuidMember: createReportDto.uuidReporter }
+          where: { idMember: createReportDto.idReporter }
         });
         expect(mockResourcesRepository.findOne).toHaveBeenCalledWith({
           where: { uuidResource: createReportDto.uuidResource }
@@ -242,7 +242,7 @@ describe('ReportsService', () => {
       it('should throw ConflictException when report already exists', async () => {
         // Arrange
         const mockReporter = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           guildUsername: 'reporter',
           status: 'active',
         };
@@ -254,7 +254,7 @@ describe('ReportsService', () => {
         };
 
         const existingReport = {
-          uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+          idReport: '123e4567-e89b-12d3-a456-426614174002',
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Existing report',
@@ -267,7 +267,7 @@ describe('ReportsService', () => {
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Test reason',
-          uuidReporter: mockReporter.uuidMember,
+          idReporter: mockReporter.idMember,
           uuidResource: mockResource.uuidResource,
         };
 
@@ -278,7 +278,7 @@ describe('ReportsService', () => {
         // Act & Assert
         await expect(service.create(createReportDto)).rejects.toThrow(
           new ConflictException(
-            `Un signalement existe déjà pour cet élément par ce membre (UUID: ${existingReport.uuidReport})`
+            `Un signalement existe déjà pour cet élément par ce membre (UUID: ${existingReport.idReport})`
           )
         );
         expect(mockMembersRepository.findOne).toHaveBeenCalled();
@@ -291,13 +291,13 @@ describe('ReportsService', () => {
       it('should successfully create a member report', async () => {
         // Arrange
         const mockReporter = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           guildUsername: 'reporter',
           status: 'active',
         };
 
         const mockReportedMember = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
           guildUsername: 'reported',
           status: 'active',
         };
@@ -306,12 +306,12 @@ describe('ReportsService', () => {
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Test reason',
-          uuidReporter: mockReporter.uuidMember,
-          uuidReportedMember: mockReportedMember.uuidMember,
+          idReporter: mockReporter.idMember,
+          idReportedMember: mockReportedMember.idMember,
         };
 
         const mockReport = {
-          uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+          idReport: '123e4567-e89b-12d3-a456-426614174002',
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Test reason',
@@ -349,15 +349,15 @@ describe('ReportsService', () => {
 
         // Assert
         expect(mockMembersRepository.findOne).toHaveBeenNthCalledWith(1, {
-          where: { uuidMember: mockReporter.uuidMember }
+          where: { idMember: mockReporter.idMember }
         });
         expect(mockMembersRepository.findOne).toHaveBeenNthCalledWith(2, {
-          where: { uuidMember: mockReportedMember.uuidMember }
+          where: { idMember: mockReportedMember.idMember }
         });
         expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
           where: {
-            reporter: { uuidMember: mockReporter.uuidMember },
-            reportedMember: { uuidMember: mockReportedMember.uuidMember }
+            reporter: { idMember: mockReporter.idMember },
+            reportedMember: { idMember: mockReportedMember.idMember }
           },
           relations: ['reporter', 'resource', 'reportedMember']
         });
@@ -367,20 +367,20 @@ describe('ReportsService', () => {
         expect(result.category).toBe(ReportCategory.HARASSMENT);
         expect(result.status).toBe('pending');
         expect(result.reporter).toBeDefined();
-        expect(result.reporter.uuidMember).toBe(mockReporter.uuidMember);
+        expect(result.reporter.idMember).toBe(mockReporter.idMember);
         expect(result.reportedMember).toBeDefined();
         if (result.reportedMember) {
-          expect(result.reportedMember.uuidMember).toBe(mockReportedMember.uuidMember);
+          expect(result.reportedMember.idMember).toBe(mockReportedMember.idMember);
         }
       });
 
-      it('should throw BadRequestException when creating member report without uuidReportedMember', async () => {
+      it('should throw BadRequestException when creating member report without idReportedMember', async () => {
         // Arrange
         const createReportDto: CreateReportDto = {
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Test reason',
-          uuidReporter: '123e4567-e89b-12d3-a456-426614174000',
+          idReporter: '123e4567-e89b-12d3-a456-426614174000',
         };
 
         // Act & Assert
@@ -397,8 +397,8 @@ describe('ReportsService', () => {
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Test reason',
-          uuidReporter: '123e4567-e89b-12d3-a456-426614174000',
-          uuidReportedMember: '123e4567-e89b-12d3-a456-426614174001',
+          idReporter: '123e4567-e89b-12d3-a456-426614174000',
+          idReportedMember: '123e4567-e89b-12d3-a456-426614174001',
           uuidResource: '123e4567-e89b-12d3-a456-426614174002',
         };
 
@@ -416,18 +416,18 @@ describe('ReportsService', () => {
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Test reason',
-          uuidReporter: '123e4567-e89b-12d3-a456-426614174000',
-          uuidReportedMember: '123e4567-e89b-12d3-a456-426614174001',
+          idReporter: '123e4567-e89b-12d3-a456-426614174000',
+          idReportedMember: '123e4567-e89b-12d3-a456-426614174001',
         };
 
         mockMembersRepository.findOne.mockResolvedValue(null);
 
         // Act & Assert
         await expect(service.create(createReportDto)).rejects.toThrow(
-          new NotFoundException(`Reporter with UUID ${createReportDto.uuidReporter} not found`)
+          new NotFoundException(`Reporter with UUID ${createReportDto.idReporter} not found`)
         );
         expect(mockMembersRepository.findOne).toHaveBeenCalledWith({
-          where: { uuidMember: createReportDto.uuidReporter }
+          where: { idMember: createReportDto.idReporter }
         });
         expect(mockReportsRepository.save).not.toHaveBeenCalled();
       });
@@ -435,7 +435,7 @@ describe('ReportsService', () => {
       it('should throw NotFoundException when reported member does not exist', async () => {
         // Arrange
         const mockReporter = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           guildUsername: 'reporter',
           status: 'active',
         };
@@ -444,8 +444,8 @@ describe('ReportsService', () => {
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Test reason',
-          uuidReporter: mockReporter.uuidMember,
-          uuidReportedMember: '123e4567-e89b-12d3-a456-426614174001',
+          idReporter: mockReporter.idMember,
+          idReportedMember: '123e4567-e89b-12d3-a456-426614174001',
         };
 
         mockMembersRepository.findOne
@@ -454,13 +454,13 @@ describe('ReportsService', () => {
 
         // Act & Assert
         await expect(service.create(createReportDto)).rejects.toThrow(
-          new NotFoundException(`Member with UUID ${createReportDto.uuidReportedMember} not found`)
+          new NotFoundException(`Member with UUID ${createReportDto.idReportedMember} not found`)
         );
         expect(mockMembersRepository.findOne).toHaveBeenNthCalledWith(1, {
-          where: { uuidMember: createReportDto.uuidReporter }
+          where: { idMember: createReportDto.idReporter }
         });
         expect(mockMembersRepository.findOne).toHaveBeenNthCalledWith(2, {
-          where: { uuidMember: createReportDto.uuidReportedMember }
+          where: { idMember: createReportDto.idReportedMember }
         });
         expect(mockReportsRepository.save).not.toHaveBeenCalled();
       });
@@ -468,19 +468,19 @@ describe('ReportsService', () => {
       it('should throw ConflictException when report already exists', async () => {
         // Arrange
         const mockReporter = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+          idMember: '123e4567-e89b-12d3-a456-426614174000',
           guildUsername: 'reporter',
           status: 'active',
         };
 
         const mockReportedMember = {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
           guildUsername: 'reported',
           status: 'active',
         };
 
         const existingReport = {
-          uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+          idReport: '123e4567-e89b-12d3-a456-426614174002',
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Existing report',
@@ -493,8 +493,8 @@ describe('ReportsService', () => {
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Test reason',
-          uuidReporter: mockReporter.uuidMember,
-          uuidReportedMember: mockReportedMember.uuidMember,
+          idReporter: mockReporter.idMember,
+          idReportedMember: mockReportedMember.idMember,
         };
 
         mockMembersRepository.findOne
@@ -505,7 +505,7 @@ describe('ReportsService', () => {
         // Act & Assert
         await expect(service.create(createReportDto)).rejects.toThrow(
           new ConflictException(
-            `Un signalement existe déjà pour cet élément par ce membre (UUID: ${existingReport.uuidReport})`
+            `Un signalement existe déjà pour cet élément par ce membre (UUID: ${existingReport.idReport})`
           )
         );
         expect(mockMembersRepository.findOne).toHaveBeenCalled();
@@ -518,7 +518,7 @@ describe('ReportsService', () => {
     it('should return all reports with their relations', async () => {
       // Arrange
       const mockReporter = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         guildUsername: 'reporter',
         status: 'active',
       };
@@ -530,14 +530,14 @@ describe('ReportsService', () => {
       };
 
       const mockReportedMember = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174002',
+        idMember: '123e4567-e89b-12d3-a456-426614174002',
         guildUsername: 'reported',
         status: 'active',
       };
 
       const mockReports = [
         {
-          uuidReport: '123e4567-e89b-12d3-a456-426614174003',
+          idReport: '123e4567-e89b-12d3-a456-426614174003',
           type: ReportType.RESOURCE,
           category: ReportCategory.INAPPROPRIATE,
           reason: 'Resource report',
@@ -548,7 +548,7 @@ describe('ReportsService', () => {
           updatedAt: new Date('2024-03-15'),
         },
         {
-          uuidReport: '123e4567-e89b-12d3-a456-426614174004',
+          idReport: '123e4567-e89b-12d3-a456-426614174004',
           type: ReportType.MEMBER,
           category: ReportCategory.HARASSMENT,
           reason: 'Member report',
@@ -575,7 +575,7 @@ describe('ReportsService', () => {
       // Vérifier le signalement de ressource
       expect(result[0].type).toBe(ReportType.RESOURCE);
       expect(result[0].reporter).toBeDefined();
-      expect(result[0].reporter.uuidMember).toBe(mockReporter.uuidMember);
+      expect(result[0].reporter.idMember).toBe(mockReporter.idMember);
       expect(result[0].resource).toBeDefined();
       if (result[0].resource) {
         expect(result[0].resource.uuidResource).toBe(mockResource.uuidResource);
@@ -585,10 +585,10 @@ describe('ReportsService', () => {
       // Vérifier le signalement de membre
       expect(result[1].type).toBe(ReportType.MEMBER);
       expect(result[1].reporter).toBeDefined();
-      expect(result[1].reporter.uuidMember).toBe(mockReporter.uuidMember);
+      expect(result[1].reporter.idMember).toBe(mockReporter.idMember);
       expect(result[1].reportedMember).toBeDefined();
       if (result[1].reportedMember) {
-        expect(result[1].reportedMember.uuidMember).toBe(mockReportedMember.uuidMember);
+        expect(result[1].reportedMember.idMember).toBe(mockReportedMember.idMember);
       }
       expect(result[1].resource).toBeUndefined();
     });
@@ -614,7 +614,7 @@ describe('ReportsService', () => {
     it('should return a report with all its relations', async () => {
       // Arrange
       const mockReporter = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         guildUsername: 'reporter',
         status: 'active',
       };
@@ -626,7 +626,7 @@ describe('ReportsService', () => {
       };
 
       const mockReport = {
-        uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+        idReport: '123e4567-e89b-12d3-a456-426614174002',
         type: ReportType.RESOURCE,
         category: ReportCategory.INAPPROPRIATE,
         reason: 'Test reason',
@@ -640,18 +640,18 @@ describe('ReportsService', () => {
       mockReportsRepository.findOne.mockResolvedValue(mockReport);
 
       // Act
-      const result = await service.findOne(mockReport.uuidReport);
+      const result = await service.findOne(mockReport.idReport);
 
       // Assert
       expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidReport: mockReport.uuidReport },
+        where: { idReport: mockReport.idReport },
         relations: ['reporter', 'resource', 'reportedMember']
       });
       expect(result).toBeDefined();
-      expect(result.uuidReport).toBe(mockReport.uuidReport);
+      expect(result.idReport).toBe(mockReport.idReport);
       expect(result.type).toBe(ReportType.RESOURCE);
       expect(result.reporter).toBeDefined();
-      expect(result.reporter.uuidMember).toBe(mockReporter.uuidMember);
+      expect(result.reporter.idMember).toBe(mockReporter.idMember);
       expect(result.resource).toBeDefined();
       if (result.resource) {
         expect(result.resource.uuidResource).toBe(mockResource.uuidResource);
@@ -668,7 +668,7 @@ describe('ReportsService', () => {
         new NotFoundException(`Report with UUID ${uuid} not found`)
       );
       expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidReport: uuid },
+        where: { idReport: uuid },
         relations: ['reporter', 'resource', 'reportedMember']
       });
     });
@@ -678,7 +678,7 @@ describe('ReportsService', () => {
     it('should update a report with modifiable fields only', async () => {
       // Arrange
       const mockReporter = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         username: 'reporter',
         status: 'active',
       };
@@ -690,7 +690,7 @@ describe('ReportsService', () => {
       };
 
       const existingReport = {
-        uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+        idReport: '123e4567-e89b-12d3-a456-426614174002',
         type: ReportType.RESOURCE,
         category: ReportCategory.INAPPROPRIATE,
         reason: 'Test reason',
@@ -719,11 +719,11 @@ describe('ReportsService', () => {
       mockReportsRepository.save.mockResolvedValue(updatedReport);
 
       // Act
-      const result = await service.update(existingReport.uuidReport, updateReportDto);
+      const result = await service.update(existingReport.idReport, updateReportDto);
 
       // Assert
       expect(mockReportsRepository.findOne).toHaveBeenNthCalledWith(1, {
-        where: { uuidReport: existingReport.uuidReport },
+        where: { idReport: existingReport.idReport },
         relations: ['reporter', 'resource', 'reportedMember']
       });
 
@@ -733,7 +733,7 @@ describe('ReportsService', () => {
       });
 
       expect(mockReportsRepository.findOne).toHaveBeenNthCalledWith(2, {
-        where: { uuidReport: updatedReport.uuidReport },
+        where: { idReport: updatedReport.idReport },
         relations: ['reporter', 'resource', 'reportedMember']
       });
 
@@ -744,7 +744,7 @@ describe('ReportsService', () => {
 
       // Verify immutable fields remain unchanged
       expect(result.type).toBe(existingReport.type);
-      expect(result.reporter.uuidMember).toBe(existingReport.reporter.uuidMember);
+      expect(result.reporter.idMember).toBe(existingReport.reporter.idMember);
       expect(result.resource?.uuidResource).toBe(existingReport.resource.uuidResource);
     });
 
@@ -765,7 +765,7 @@ describe('ReportsService', () => {
       );
 
       expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidReport: uuid },
+        where: { idReport: uuid },
         relations: ['reporter', 'resource', 'reportedMember']
       });
       expect(mockReportsRepository.save).not.toHaveBeenCalled();
@@ -776,7 +776,7 @@ describe('ReportsService', () => {
     it('should successfully remove a report when user is the creator', async () => {
       // Arrange
       const mockReporter = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         guildUsername: 'testuser',
         communityRole: 'Member',
       };
@@ -788,7 +788,7 @@ describe('ReportsService', () => {
       };
 
       const existingReport = {
-        uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+        idReport: '123e4567-e89b-12d3-a456-426614174002',
         type: ReportType.RESOURCE,
         category: ReportCategory.INAPPROPRIATE,
         reason: 'Test reason',
@@ -812,11 +812,11 @@ describe('ReportsService', () => {
       mockReportsRepository.remove.mockResolvedValue(undefined);
 
       // Act
-      await service.remove(existingReport.uuidReport, mockReporter.uuidMember);
+      await service.remove(existingReport.idReport, mockReporter.idMember);
 
       // Assert
       expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidReport: existingReport.uuidReport },
+        where: { idReport: existingReport.idReport },
         relations: ['reporter', 'resource', 'reportedMember']
       });
       expect(mockReportsRepository.remove).toHaveBeenCalledWith({
@@ -838,7 +838,7 @@ describe('ReportsService', () => {
         new NotFoundException(`Report with UUID ${uuid} not found`)
       );
       expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidReport: uuid },
+        where: { idReport: uuid },
         relations: ['reporter', 'resource', 'reportedMember']
       });
       expect(mockReportsRepository.remove).not.toHaveBeenCalled();
@@ -847,7 +847,7 @@ describe('ReportsService', () => {
     it('should throw ForbiddenException when user is not the creator', async () => {
       // Arrange
       const mockReporter = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         guildUsername: 'testuser',
         communityRole: 'Member',
       };
@@ -859,7 +859,7 @@ describe('ReportsService', () => {
       };
 
       const existingReport = {
-        uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+        idReport: '123e4567-e89b-12d3-a456-426614174002',
         type: ReportType.RESOURCE,
         category: ReportCategory.INAPPROPRIATE,
         reason: 'Test reason',
@@ -877,11 +877,11 @@ describe('ReportsService', () => {
       });
 
       // Act & Assert
-      await expect(service.remove(existingReport.uuidReport, currentUserId)).rejects.toThrow(
+      await expect(service.remove(existingReport.idReport, currentUserId)).rejects.toThrow(
         new ForbiddenException('Vous ne pouvez supprimer que vos propres signalements')
       );
       expect(mockReportsRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidReport: existingReport.uuidReport },
+        where: { idReport: existingReport.idReport },
         relations: ['reporter', 'resource', 'reportedMember']
       });
       expect(mockReportsRepository.remove).not.toHaveBeenCalled();

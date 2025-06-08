@@ -11,7 +11,7 @@ describe('MembersController', () => {
   let membersService: MembersService;
 
   const mockGuild: Guild = {
-    uuid: '123e4567-e89b-12d3-a456-426614174001',
+    idGuild: '123e4567-e89b-12d3-a456-426614174001',
     name: 'Test Guild',
     memberCount: 10,
     configuration: {},
@@ -20,15 +20,15 @@ describe('MembersController', () => {
   };
 
   const mockMember: Member = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174000',
-    guild_username: 'TestUser',
+    idMember: '123e4567-e89b-12d3-a456-426614174000',
+    guildUsername: 'TestUser',
     xp: '100.00',
     level: 1,
-    community_role: 'Member',
+    communityRole: 'Member',
     status: 'Active',
     createdAt: new Date(),
     updatedAt: new Date(),
-    uuidDiscord: '123e4567-e89b-12d3-a456-426614174002',
+    idDiscord: '123e4567-e89b-12d3-a456-426614174002',
     guild: mockGuild
   };
 
@@ -47,13 +47,13 @@ describe('MembersController', () => {
   describe('create', () => {
     it('devrait créer un nouveau membre', async () => {
       const createMemberDto: CreateMemberDto = {
-        guild_username: 'TestUser',
+        guildUsername: 'TestUser',
         xp: '100.00',
         level: 1,
-        community_role: 'Member',
+        communityRole: 'Member',
         status: 'Active',
-        uuidGuild: '123e4567-e89b-12d3-a456-426614174001',
-        uuidDiscord: '123e4567-e89b-12d3-a456-426614174002'
+        idGuild: '123e4567-e89b-12d3-a456-426614174001',
+        idDiscord: '123e4567-e89b-12d3-a456-426614174002'
       };
 
       vi.mocked(membersService.create).mockResolvedValue(mockMember);
@@ -78,30 +78,30 @@ describe('MembersController', () => {
   });
 
   describe('findOne', () => {
-    it('devrait retourner un membre par son uuid', async () => {
+    it('devrait retourner un membre par son id', async () => {
       vi.mocked(membersService.findOne).mockResolvedValue(mockMember);
 
-      const result = await controller.findOne(mockMember.uuidMember);
+      const result = await controller.findOne(mockMember.idMember);
 
       expect(result).toEqual(mockMember);
-      expect(membersService.findOne).toHaveBeenCalledWith(mockMember.uuidMember);
+      expect(membersService.findOne).toHaveBeenCalledWith(mockMember.idMember);
     });
   });
 
   describe('update', () => {
     it('devrait mettre à jour un membre', async () => {
       const updateMemberDto: UpdateMemberDto = {
-        guild_username: 'UpdatedUser',
+        guildUsername: 'UpdatedUser',
         status: 'Inactive'
       };
       const updatedMember = { ...mockMember, ...updateMemberDto };
 
       vi.mocked(membersService.update).mockResolvedValue(updatedMember);
 
-      const result = await controller.update(mockMember.uuidMember, updateMemberDto);
+      const result = await controller.update(mockMember.idMember, updateMemberDto);
 
       expect(result).toEqual(updatedMember);
-      expect(membersService.update).toHaveBeenCalledWith(mockMember.uuidMember, updateMemberDto);
+      expect(membersService.update).toHaveBeenCalledWith(mockMember.idMember, updateMemberDto);
     });
   });
 
@@ -109,10 +109,10 @@ describe('MembersController', () => {
     it('devrait supprimer un membre', async () => {
       vi.mocked(membersService.remove).mockResolvedValue(undefined);
 
-      const result = await controller.remove(mockMember.uuidMember);
+      const result = await controller.remove(mockMember.idMember);
 
       expect(result).toBeUndefined();
-      expect(membersService.remove).toHaveBeenCalledWith(mockMember.uuidMember);
+      expect(membersService.remove).toHaveBeenCalledWith(mockMember.idMember);
     });
   });
 });

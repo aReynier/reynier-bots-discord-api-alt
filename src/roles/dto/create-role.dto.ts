@@ -1,10 +1,10 @@
 import { IsString, IsUUID, MaxLength, IsBoolean, Matches } from 'class-validator';
 import { ApiProperty, IntersectionType, PickType } from '@nestjs/swagger';
 import { PickableDtoFields } from 'src/utils/pickable-dto-fields';
-import { PickableDiscordUUIDFields } from 'src/utils/pickable-discord-uuid-fields';
+import { PickableDiscordIdFields} from 'src/utils/pickable-discord-id-fields';
 
-export class CreateRoleDto extends PickType(IntersectionType(PickableDtoFields, PickableDiscordUUIDFields), [
-    'uuidRole', 'name', 'uuidGuild'
+export class CreateRoleDto extends PickType(IntersectionType(PickableDtoFields, PickableDiscordIdFields), [
+    'idRole', 'name', 'idGuild'
 ]) {
     
     @ApiProperty({

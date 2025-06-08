@@ -18,7 +18,7 @@ describe('VotesService', () => {
   let commentRepository: Repository<Comment>;
 
   const mockMember = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+    idMember: '123e4567-e89b-12d3-a456-426614174000',
     guildUsername: 'TestUser',
     communityRole: 'Member',
   } as Member;
@@ -43,13 +43,13 @@ describe('VotesService', () => {
   } as Vote;
 
   const mockCreateResourceVoteDto: CreateVoteDto = {
-    uuidMember: mockMember.uuidMember,
+    idMember: mockMember.idMember,
     voteType: VoteType.UPVOTE,
     uuidResource: mockResource.uuidResource,
   };
 
   const mockCreateCommentVoteDto: CreateVoteDto = {
-    uuidMember: mockMember.uuidMember,
+    idMember: mockMember.idMember,
     voteType: VoteType.UPVOTE,
     uuidComment: mockComment.uuidComment,
   };

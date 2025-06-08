@@ -40,7 +40,7 @@ export class Comment {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Column({ type: 'uuid', name: 'uuid_member' })
-  uuidMember: string;
+  idMember: string;
 
   @ApiProperty({
     description: 'UUID de la ressource commentée',

@@ -7,22 +7,22 @@ describe('Resource Response DTOs', () => {
   describe('ResourceCreatorResponseDto', () => {
     it('should expose only allowed fields', () => {
       const plainObject = {
-        uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
         guildUsername: 'TestUser',
         communityRole: 'Member',
         createdAt: new Date(),
         updatedAt: new Date(),
         level: 1,
         status: 'active',
-        uuidDiscord: 'discord123',
-        uuidGuild: 'guild123',
+        idDiscord: 'discord123',
+        idGuild: 'guild123',
         xp: '100'
       };
 
       const transformed = plainToInstance(ResourceCreatorResponseDto, plainObject);
 
       // Should expose these fields
-      expect(transformed.uuidMember).toBe(plainObject.uuidMember);
+      expect(transformed.idMember).toBe(plainObject.idMember);
       expect(transformed.guildUsername).toBe(plainObject.guildUsername);
       expect(transformed.communityRole).toBe(plainObject.communityRole);
 
@@ -31,8 +31,8 @@ describe('Resource Response DTOs', () => {
       expect(transformed['updatedAt']).toBeUndefined();
       expect(transformed['level']).toBeUndefined();
       expect(transformed['status']).toBeUndefined();
-      expect(transformed['uuidDiscord']).toBeUndefined();
-      expect(transformed['uuidGuild']).toBeUndefined();
+      expect(transformed['idDiscord']).toBeUndefined();
+      expect(transformed['idGuild']).toBeUndefined();
       expect(transformed['xp']).toBeUndefined();
     });
   });
@@ -47,7 +47,7 @@ describe('Resource Response DTOs', () => {
         status: 'pending',
         created_at: '2024-02-25T12:00:00Z',
         reporter: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
           guildUsername: 'Reporter',
           communityRole: 'Member'
         }
@@ -55,14 +55,14 @@ describe('Resource Response DTOs', () => {
 
       const transformed = plainToInstance(ResourceReportResponseDto, plainObject, { enableImplicitConversion: true });
 
-      expect(transformed.uuidReport).toBe(plainObject.uuid_report);
+      expect(transformed.idReport).toBe(plainObject.uuid_report);
       expect(transformed.type).toBe(plainObject.type);
       expect(transformed.category).toBe(plainObject.category);
       expect(transformed.reason).toBe(plainObject.reason);
       expect(transformed.status).toBe(plainObject.status);
       expect(transformed.createdAt).toBeInstanceOf(Date);
       expect(transformed.reporter).toBeInstanceOf(ResourceCreatorResponseDto);
-      expect(transformed.reporter.uuidMember).toBe(plainObject.reporter.uuidMember);
+      expect(transformed.reporter.idMember).toBe(plainObject.reporter.idMember);
     });
   });
 
@@ -74,7 +74,7 @@ describe('Resource Response DTOs', () => {
         createdAt: '2024-02-25T12:00:00Z',
         isActive: true,
         member: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
           guildUsername: 'Voter',
           communityRole: 'Member'
         }
@@ -87,7 +87,7 @@ describe('Resource Response DTOs', () => {
       expect(transformed.createdAt).toBeInstanceOf(Date);
       expect(transformed.isActive).toBe(plainObject.isActive);
       expect(transformed.member).toBeInstanceOf(ResourceCreatorResponseDto);
-      expect(transformed.member.uuidMember).toBe(plainObject.member.uuidMember);
+      expect(transformed.member.idMember).toBe(plainObject.member.idMember);
     });
   });
 
@@ -99,7 +99,7 @@ describe('Resource Response DTOs', () => {
         status: 'active',
         createdAt: '2024-02-25T12:00:00Z',
         member: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
           guildUsername: 'Commenter',
           communityRole: 'Member'
         },
@@ -109,7 +109,7 @@ describe('Resource Response DTOs', () => {
           createdAt: '2024-02-25T12:00:00Z',
           isActive: true,
           member: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174003',
+            idMember: '123e4567-e89b-12d3-a456-426614174003',
             guildUsername: 'Voter',
             communityRole: 'Member'
           }
@@ -123,7 +123,7 @@ describe('Resource Response DTOs', () => {
       expect(transformed.status).toBe(plainObject.status);
       expect(transformed.createdAt).toBeInstanceOf(Date);
       expect(transformed.member).toBeInstanceOf(ResourceCreatorResponseDto);
-      expect(transformed.member.uuidMember).toBe(plainObject.member.uuidMember);
+      expect(transformed.member.idMember).toBe(plainObject.member.idMember);
       expect(transformed.votes[0]).toBeInstanceOf(ResourceVoteResponseDto);
       expect(transformed.votes[0].uuidVote).toBe(plainObject.votes[0].uuidVote);
     });
@@ -141,7 +141,7 @@ describe('Resource Response DTOs', () => {
         createdAt: '2024-02-25T12:00:00Z',
         updatedAt: '2024-02-25T12:00:00Z',
         creator: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
           guildUsername: 'Creator',
           communityRole: 'Member'
         },
@@ -153,7 +153,7 @@ describe('Resource Response DTOs', () => {
           status: 'pending',
           created_at: '2024-02-25T12:00:00Z',
           reporter: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174003',
+            idMember: '123e4567-e89b-12d3-a456-426614174003',
             guildUsername: 'Reporter',
             communityRole: 'Member'
           }
@@ -164,7 +164,7 @@ describe('Resource Response DTOs', () => {
           createdAt: '2024-02-25T12:00:00Z',
           isActive: true,
           member: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174005',
+            idMember: '123e4567-e89b-12d3-a456-426614174005',
             guildUsername: 'Voter',
             communityRole: 'Member'
           }
@@ -175,7 +175,7 @@ describe('Resource Response DTOs', () => {
           status: 'active',
           createdAt: '2024-02-25T12:00:00Z',
           member: {
-            uuidMember: '123e4567-e89b-12d3-a456-426614174007',
+            idMember: '123e4567-e89b-12d3-a456-426614174007',
             guildUsername: 'Commenter',
             communityRole: 'Member'
           },
@@ -197,10 +197,10 @@ describe('Resource Response DTOs', () => {
 
       // Test nested relationships
       expect(transformed.creator).toBeInstanceOf(ResourceCreatorResponseDto);
-      expect(transformed.creator.uuidMember).toBe(plainObject.creator.uuidMember);
+      expect(transformed.creator.idMember).toBe(plainObject.creator.idMember);
 
       expect(transformed.reports[0]).toBeInstanceOf(ResourceReportResponseDto);
-      expect(transformed.reports[0].uuidReport).toBe(plainObject.reports[0].uuid_report);
+      expect(transformed.reports[0].idReport).toBe(plainObject.reports[0].uuid_report);
       expect(transformed.reports[0].reporter).toBeInstanceOf(ResourceCreatorResponseDto);
 
       expect(transformed.votes[0]).toBeInstanceOf(ResourceVoteResponseDto);

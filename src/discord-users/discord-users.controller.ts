@@ -25,31 +25,31 @@ export class DiscordUsersController {
     return this.discordUsersService.findAll();
   }
 
-  @Get(':uuidDiscord')
+  @Get(':idDiscord')
   @ApiOperation({ summary: 'Récupérer un utilisateur Discord par son UUID' })
   @ApiResponse({ status: 200, description: 'L\'utilisateur a été trouvé.', type: DiscordUser })
   @ApiResponse({ status: 404, description: 'Utilisateur non trouvé' })
-  findOne(@Param('uuidDiscord') uuidDiscord: string) {
-    return this.discordUsersService.findOne(uuidDiscord);
+  findOne(@Param('idDiscord') idDiscord: string) {
+    return this.discordUsersService.findOne(idDiscord);
   }
 
-  @Put(':uuidDiscord')
+  @Put(':idDiscord')
   @ApiOperation({ summary: 'Mettre à jour un utilisateur Discord' })
   @ApiResponse({ status: 200, description: 'L\'utilisateur a été mis à jour avec succès.', type: DiscordUser })
   @ApiResponse({ status: 404, description: 'Utilisateur non trouvé' })
-  async update(@Param('uuidDiscord') uuidDiscord: string, @Body() updateDiscordUserDto: UpdateDiscordUserDto) {
-    const discordUser = await this.discordUsersService.update(uuidDiscord, updateDiscordUserDto);
+  async update(@Param('idDiscord') idDiscord: string, @Body() updateDiscordUserDto: UpdateDiscordUserDto) {
+    const discordUser = await this.discordUsersService.update(idDiscord, updateDiscordUserDto);
     if (!discordUser) {
-      throw new NotFoundException(`Discord user with UUID "${uuidDiscord}" not found`);
+      throw new NotFoundException(`Discord user with UUID "${idDiscord}" not found`);
     }
     return discordUser;
   }
 
-  @Delete(':uuidDiscord')
+  @Delete(':idDiscord')
   @ApiOperation({ summary: 'Supprimer un utilisateur Discord' })
   @ApiResponse({ status: 200, description: 'L\'utilisateur a été supprimé avec succès.' })
   @ApiResponse({ status: 404, description: 'Utilisateur non trouvé' })
-  remove(@Param('uuidDiscord') uuidDiscord: string) {
-    return this.discordUsersService.remove(uuidDiscord);
+  remove(@Param('idDiscord') idDiscord: string) {
+    return this.discordUsersService.remove(idDiscord);
   }
 } 

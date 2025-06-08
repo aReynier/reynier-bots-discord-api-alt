@@ -12,7 +12,7 @@ describe('DashboardAccountService', () => {
 
   const mockDashboardAccount = {
     uuid: '123e4567-e89b-12d3-a456-426614174000',
-    uuidDiscord: '123456789012345678',
+    idDiscord: '123456789012345678',
     email: 'test@example.com',
     password: 'hashedPassword123'
   };
@@ -52,7 +52,7 @@ describe('DashboardAccountService', () => {
       const createDtoWithUUID = {
         ...createDto,
         uuid: mockDashboardAccount.uuid,
-        uuidDiscord: mockDashboardAccount.uuidDiscord
+        idDiscord: mockDashboardAccount.idDiscord
       };
 
       const result = await service.create(createDtoWithUUID);

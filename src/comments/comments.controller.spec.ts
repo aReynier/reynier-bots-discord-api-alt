@@ -16,14 +16,14 @@ describe('CommentsController', () => {
     content: 'Test comment',
     status: 'active',
     createdAt: new Date(),
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
     uuidResource: '123e4567-e89b-12d3-a456-426614174002'
   } as Comment;
 
   const mockCreateDto: CreateCommentDto = {
     content: 'Test comment',
     status: 'active',
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
     uuidResource: '123e4567-e89b-12d3-a456-426614174002'
   };
 
@@ -83,7 +83,7 @@ describe('CommentsController', () => {
     });
 
     it('devrait rejeter un commentaire avec un UUID membre invalide', async () => {
-      const invalidDto = { ...mockCreateDto, uuidMember: 'invalid-uuid' };
+      const invalidDto = { ...mockCreateDto, idMember: 'invalid-uuid' };
       vi.spyOn(service, 'create').mockRejectedValueOnce(new BadRequestException());
 
       await expect(controller.create(invalidDto)).rejects.toThrow(BadRequestException);

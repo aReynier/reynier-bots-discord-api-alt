@@ -41,7 +41,7 @@ describe('AnswersController', () => {
     it('should create a new answer', async () => {
       const createAnswerQuestionDto: CreateAnswerQuestionDto = {
         content: 'Test answer',
-        uuidQuestion: 'test-question-uuid'
+        idQuestion: 'test-question-uuid'
       };
       const expectedResult = { uuid: 'test-uuid', ...createAnswerQuestionDto };
 
@@ -57,8 +57,8 @@ describe('AnswersController', () => {
   describe('findAll', () => {
     it('should return an array of answers', async () => {
       const expectedResult = [
-        { uuid: 'uuid1', content: 'Answer 1', uuidQuestion: 'q-uuid1' },
-        { uuid: 'uuid2', content: 'Answer 2', uuidQuestion: 'q-uuid2' }
+        { uuid: 'uuid1', content: 'Answer 1', idQuestion: 'q-uuid1' },
+        { uuid: 'uuid2', content: 'Answer 2', idQuestion: 'q-uuid2' }
       ];
 
       mockAnswersService.findAll.mockResolvedValue(expectedResult);
@@ -76,7 +76,7 @@ describe('AnswersController', () => {
       const expectedResult = {
         uuid,
         content: 'Test answer',
-        uuidQuestion: 'q-uuid'
+        idQuestion: 'q-uuid'
       };
 
       mockAnswersService.findOne.mockResolvedValue(expectedResult);
@@ -97,7 +97,7 @@ describe('AnswersController', () => {
       const expectedResult = {
         uuid,
         ...updateAnswerDto,
-        uuidQuestion: 'q-uuid'
+        idQuestion: 'q-uuid'
       };
 
       mockAnswersService.update.mockResolvedValue(expectedResult);

@@ -8,11 +8,11 @@ import { DashboardAccount } from 'src/dashboard-accounts/entities/dashboard-acco
 export class DiscordUser {
 
   @ApiProperty({
-    description: 'ID Discord de l\'utilisateur',
+    description: 'SF Discord de l\'utilisateur',
     example: '123456789012345678'
   })
   @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_discord' })
-  uuidDiscord: string;
+  idDiscord: string;
 
   @ApiProperty({
     description: 'Nom d\'utilisateur Discord',
