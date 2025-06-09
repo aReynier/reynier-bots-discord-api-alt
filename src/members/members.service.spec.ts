@@ -12,7 +12,7 @@ describe('MembersService', () => {
   let rolesRepository: Repository<Role>;
 
   const mockGuild: Guild = {
-    uuid: '123e4567-e89b-12d3-a456-426614174001',
+    idGuild: '123e4567-e89b-12d3-a456-426614174001',
     name: 'Test Guild',
     memberCount: 10,
     configuration: {},
@@ -21,15 +21,15 @@ describe('MembersService', () => {
   };
 
   const mockMember: Member = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174000',
-    guild_username: 'TestUser',
+    idMember: '123e4567-e89b-12d3-a456-426614174000',
+    guildUsername: 'TestUser',
     xp: '100.00',
     level: 1,
-    community_role: 'Member',
+    communityRole: 'Member',
     status: 'Active',
     createdAt: new Date(),
     updatedAt: new Date(),
-    uuidDiscord: '123e4567-e89b-12d3-a456-426614174002',
+    idDiscord: '123e4567-e89b-12d3-a456-426614174002',
     guild: mockGuild,
     roles: []
   };
@@ -60,14 +60,14 @@ describe('MembersService', () => {
   describe('create', () => {
     it('devrait créer un nouveau membre', async () => {
       const createMemberDto = {
-        uuid: '123e4567-e89b-12d3-a456-426614174000',
-        guild_username: 'TestUser',
+        idMember: '123e4567-e89b-12d3-a456-426614174000',
+        guildUsername: 'TestUser',
         xp: '100.00',
         level: 1,
-        community_role: 'Member',
+        communityRole: 'Member',
         status: 'Active',
-        uuidGuild: '123e4567-e89b-12d3-a456-426614174001',
-        uuidDiscord: '123e4567-e89b-12d3-a456-426614174002'
+        idGuild: '123e4567-e89b-12d3-a456-426614174001',
+        idDiscord: '123e4567-e89b-12d3-a456-426614174002'
       };
 
       mockMembersRepository.create.mockReturnValue(mockMember);
@@ -96,14 +96,14 @@ describe('MembersService', () => {
   });
 
   describe('findOne', () => {
-    it('devrait retourner un membre par son uuid', async () => {
+    it('devrait retourner un membre par son id', async () => {
       mockMembersRepository.findOne.mockResolvedValue(mockMember);
 
-      const result = await service.findOne(mockMember.uuidMember);
+      const result = await service.findOne(mockMember.idMember);
 
       expect(result).toEqual(mockMember);
       expect(mockMembersRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidMember: mockMember.uuidMember },
+        where: { idMember: mockMember.idMember },
         relations: ['resources']
       });
     });
@@ -111,7 +111,7 @@ describe('MembersService', () => {
     it('devrait lancer une erreur si le membre n\'est pas trouvé', async () => {
       mockMembersRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findOne('non-existent-uuid'))
+      await expect(service.findOne('non-existent-id'))
         .rejects
         .toThrow(NotFoundException);
     });
@@ -120,7 +120,7 @@ describe('MembersService', () => {
   describe('update', () => {
     it('devrait mettre à jour un membre', async () => {
       const updateMemberDto = {
-        guild_username: 'UpdatedUser',
+        guildUsername: 'UpdatedUser',
         status: 'Inactive'
       };
       const updatedMember = { ...mockMember, ...updateMemberDto };
@@ -128,7 +128,7 @@ describe('MembersService', () => {
       mockMembersRepository.findOne.mockResolvedValue(mockMember);
       mockMembersRepository.save.mockResolvedValue(updatedMember);
 
-      const result = await service.update(mockMember.uuidMember, updateMemberDto);
+      const result = await service.update(mockMember.idMember, updateMemberDto);
 
       expect(result).toEqual(updatedMember);
       expect(mockMembersRepository.save).toHaveBeenCalled();
@@ -137,7 +137,7 @@ describe('MembersService', () => {
     it('devrait lancer une erreur si le membre à mettre à jour n\'existe pas', async () => {
       mockMembersRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.update('non-existent-uuid', {}))
+      await expect(service.update('non-existent-id', {}))
         .rejects
         .toThrow(NotFoundException);
     });
@@ -147,15 +147,15 @@ describe('MembersService', () => {
     it('devrait supprimer un membre', async () => {
       mockMembersRepository.delete.mockResolvedValue({ affected: 1 });
 
-      await service.remove(mockMember.uuidMember);
+      await service.remove(mockMember.idMember);
 
-      expect(mockMembersRepository.delete).toHaveBeenCalledWith({ uuidMember: mockMember.uuidMember });
+      expect(mockMembersRepository.delete).toHaveBeenCalledWith({ idMember: mockMember.idMember });
     });
 
     it('devrait lancer une erreur si le membre à supprimer n\'existe pas', async () => {
       mockMembersRepository.delete.mockResolvedValue({ affected: 0 });
 
-      await expect(service.remove('non-existent-uuid'))
+      await expect(service.remove('non-existent-id'))
         .rejects
         .toThrow(NotFoundException);
     });

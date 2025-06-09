@@ -65,15 +65,15 @@ export class MembersController {
     return this.membersService.findAll();
   }
 
-  @Get(':uuid')
+  @Get(':id')
   @ApiOperation({
-    summary: 'Récupérer un membre par son UUID',
+    summary: 'Récupérer un membre par son id',
     description:
-      'Recherche et retourne un membre spécifique en utilisant son UUID.',
+      'Recherche et retourne un membre spécifique en utilisant son id.',
   })
   @ApiParam({
-    name: 'uuid',
-    description: 'UUID unique du membre à rechercher',
+    name: 'id',
+    description: 'id unique du membre à rechercher',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @ApiResponse({
@@ -83,21 +83,21 @@ export class MembersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: "Aucun membre trouvé avec l'UUID fourni.",
+    description: "Aucun membre trouvé avec l'id fourni.",
   })
-  findOne(@Param('uuid') uuid: string) {
-    return this.membersService.findOne(uuid);
+  findOne(@Param('id') idMember: string) {
+    return this.membersService.findOne(idMember);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({
     summary: 'Mettre à jour un membre',
     description:
-      "Met à jour les informations d'un membre existant en utilisant son UUID.",
+      "Met à jour les informations d'un membre existant en utilisant son id.",
   })
   @ApiParam({
-    name: 'uuid',
-    description: 'UUID unique du membre à mettre à jour',
+    name: 'id',
+    description: 'id unique du membre à mettre à jour',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @ApiBody({ type: UpdateMemberDto })
@@ -112,24 +112,24 @@ export class MembersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: "Aucun membre trouvé avec l'UUID fourni.",
+    description: "Aucun membre trouvé avec l'id fourni.",
   })
   update(
-    @Param('uuid') uuid: string,
+    @Param('id') idMember: string,
     @Body() updateMemberDto: UpdateMemberDto,
   ) {
-    return this.membersService.update(uuid, updateMemberDto);
+    return this.membersService.update(idMember, updateMemberDto);
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({
     summary: 'Supprimer un membre',
     description:
-      'Supprime un membre existant de la base de données en utilisant son UUID.',
+      'Supprime un membre existant de la base de données en utilisant son id.',
   })
   @ApiParam({
-    name: 'uuid',
-    description: 'UUID unique du membre à supprimer',
+    name: 'id',
+    description: 'id unique du membre à supprimer',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @ApiResponse({
@@ -138,15 +138,15 @@ export class MembersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: "Aucun membre trouvé avec l'UUID fourni.",
+    description: "Aucun membre trouvé avec l'id fourni.",
   })
-  remove(@Param('uuid') uuid: string) {
-    return this.membersService.remove(uuid);
+  remove(@Param('id') idMember: string) {
+    return this.membersService.remove(idMember);
   }
 
-  @Get(':uuid_member/roles')
+  @Get(':id/roles')
   @ApiOperation({ summary: 'Récupérer tous les rôles liés à un membre' })
-  @ApiParam({ name: 'uuid_member', description: 'UUID du membre' })
+  @ApiParam({ name: 'idMember', description: 'id du membre' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Liste des rôles du membre',
@@ -156,14 +156,14 @@ export class MembersController {
     status: HttpStatus.NOT_FOUND,
     description: 'Membre non trouvé',
   })
-  getMemberRoles(@Param('uuid_member') uuid_member: string) {
-    return this.membersService.getMemberRoles(uuid_member);
+  getMemberRoles(@Param('id') idMember: string) {
+    return this.membersService.getMemberRoles(idMember);
   }
 
-  @Put(':uuid_member/assign-role/:uuid_role')
+  @Put(':id/assign-role/:idRole')
   @ApiOperation({ summary: 'Assigner un rôle unique à un membre' })
-  @ApiParam({ name: 'uuid_member', description: 'UUID du membre' })
-  @ApiParam({ name: 'uuid_role', description: 'UUID du rôle à assigner' })
+  @ApiParam({ name: 'idMember', description: 'id du membre' })
+  @ApiParam({ name: 'idRole', description: 'id du rôle à assigner' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Rôle assigné avec succès',
@@ -178,26 +178,26 @@ export class MembersController {
     description: 'Membre ou rôle non trouvé',
   })
   assignRole(
-    @Param('uuid_member') uuid_member: string,
-    @Param('uuid_role') uuid_role: string,
+    @Param('id') idMember: string,
+    @Param('idRole') idRole: string,
   ) {
-    return this.membersService.assignRoleToMember(uuid_member, uuid_role);
+    return this.membersService.assignRoleToMember(idRole, idRole);
   }
 
-  @Delete(':uuid_member/roles/:uuid_role')
+  @Delete(':id/roles/:idRole')
   @ApiOperation({
     summary: "Supprimer un rôle d'un membre",
     description:
       "Supprime un rôle spécifique d'un membre, sans affecter les autres rôles.",
   })
   @ApiParam({
-    name: 'uuid_member',
-    description: 'UUID du membre',
+    name: 'id',
+    description: 'id du membre',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @ApiParam({
-    name: 'uuid_role',
-    description: 'UUID du rôle à supprimer',
+    name: 'idRole',
+    description: 'id du rôle à supprimer',
     example: '172653890987364567',
   })
   @ApiResponse({
@@ -210,21 +210,21 @@ export class MembersController {
     description: 'Membre ou rôle non trouvé.',
   })
   removeRoleFromMember(
-    @Param('uuid_member') uuid_member: string,
-    @Param('uuid_role') uuid_role: string,
+    @Param('id') idMember: string,
+    @Param('idRole') idRole: string,
   ) {
-    return this.membersService.removeRoleFromMember(uuid_member, uuid_role);
+    return this.membersService.removeRoleFromMember(idMember, idRole);
   }
 
-  @Get(':uuid/promotions')
+  @Get(':id/promotions')
   @ApiOperation({
     summary: 'Récupérer les promotions suivies et gérées par un membre',
     description:
-      'Retourne les promotions suivies et gérées par un membre spécifique en utilisant son UUID.',
+      'Retourne les promotions suivies et gérées par un membre spécifique en utilisant son id.',
   })
   @ApiParam({
-    name: 'uuid',
-    description: 'UUID unique du membre à rechercher',
+    name: 'id',
+    description: 'id unique du membre à rechercher',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @ApiResponse({
@@ -233,13 +233,13 @@ export class MembersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: "Aucun membre trouvé avec l'UUID fourni.",
+    description: "Aucun membre trouvé avec l'id fourni.",
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: "Erreur lors de la récupération des promotions du membre.",
   })
-  findMemberPromotions(@Param('uuid') uuid: string) {
-    return this.membersService.findMemberPromotions(uuid);
+  findMemberPromotions(@Param('id') id: string) {
+    return this.membersService.findMemberPromotions(id);
   }
 }

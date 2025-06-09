@@ -20,8 +20,8 @@ export class Member {
     description: 'UUID unique du membre',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_member' })
-  uuidMember: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_member' })
+  idMember: string;
 
   @ApiProperty({
     description: 'Nom d\'utilisateur du membre dans la guilde',
@@ -76,21 +76,21 @@ export class Member {
     description: 'UUID de la guilde',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ type: 'uuid', name: 'uuid_guild' })
-  uuidGuild: string;
+  @Column({ type: 'uuid', name: 'id_guild' })
+  idGuild: string;
 
   @ApiProperty({
     description: 'Relation avec la guilde'
   })
   @ManyToOne(() => Guild, (guild) => guild.members, { lazy: true })
-  @JoinColumn({ name: 'uuid_guild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Promise<Guild>;
 
-  @Column({ type: 'uuid', name: 'uuid_discord' }) 
-  uuidDiscord: string;
+  @Column({ type: 'uuid', name: 'id_discord' }) 
+  idDiscord: string;
 
   @OneToOne(() => DiscordUser, (discordUser) => discordUser.member)
-  @JoinColumn({ name: 'uuid_discord' })
+  @JoinColumn({ name: 'id_discord' })
   discordUser: DiscordUser;
 
   @OneToOne(() => MemberInformation, (memberInformation) => memberInformation.member)
