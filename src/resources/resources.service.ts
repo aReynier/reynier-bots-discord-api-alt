@@ -21,26 +21,26 @@ export class ResourcesService {
   ) {}
 
   async create(createResourceDto: CreateResourceDto): Promise<ResourceResponseDto> {
-    const { uuidMember, ...resourceData } = createResourceDto;
+    const { idMember, ...resourceData } = createResourceDto;
     
     // On cherche le membre
     const member = await this.membersRepository.findOne({
-      where: { uuidMember }
+      where: { idMember }
     });
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${uuidMember} not found`);
+      throw new NotFoundException(`Member with id ${idMember} not found`);
     }
 
-    // On crée la ressource avec le membre et son UUID
+    // On crée la ressource avec le membre et son id
     const resource = this.resourcesRepository.create({
       ...resourceData,
       creator: member,
-      creatorUuid: member.uuidMember
+      idCreator: member.idMember
     });
     
     const savedResource = await this.resourcesRepository.save(resource);
     const resourceWithRelations = await this.resourcesRepository.findOne({
-      where: { uuidResource: savedResource.uuidResource },
+      where: { idResource: savedResource.idResource },
       relations: [
         'creator',
         'reports',
@@ -78,9 +78,9 @@ export class ResourcesService {
     );
   }
 
-  async findOne(uuid: string): Promise<ResourceResponseDto> {
+  async findOne(idResource: string): Promise<ResourceResponseDto> {
     const resource = await this.resourcesRepository.findOne({
-      where: { uuidResource: uuid },
+      where: { idResource: idResource },
       relations: [
         'creator',
         'reports',
@@ -95,25 +95,25 @@ export class ResourcesService {
     });
 
     if (!resource) {
-      throw new NotFoundException(`Resource with UUID ${uuid} not found`);
+      throw new NotFoundException(`Resource with id ${idResource} not found`);
     }
 
     return plainToInstance(ResourceResponseDto, resource, { excludeExtraneousValues: true });
   }
 
-  async findComments(uuid: string): Promise<Comment[]> {
+  async findComments(idResource: string): Promise<Comment[]> {
     // Vérifie d'abord si la ressource existe
     const resource = await this.resourcesRepository.findOne({
-      where: { uuidResource: uuid }
+      where: { idResource: idResource }
     });
 
     if (!resource) {
-      throw new NotFoundException(`Resource with UUID ${uuid} not found`);
+      throw new NotFoundException(`Resource with id ${idResource} not found`);
     }
 
     // Récupère les commentaires de la ressource
     const comments = await this.commentsRepository.find({
-      where: { uuidResource: uuid },
+      where: { idResource: idResource },
       relations: ['member', 'resource', 'votes', 'votes.member'],
       order: {
         createdAt: 'DESC'
@@ -123,13 +123,13 @@ export class ResourcesService {
     return comments;
   }
 
-  async update(uuid: string, updateResourceDto: UpdateResourceDto): Promise<ResourceResponseDto> {
+  async update(idResource: string, updateResourceDto: UpdateResourceDto): Promise<ResourceResponseDto> {
     const existingResource = await this.resourcesRepository.findOne({
-      where: { uuidResource: uuid }
+      where: { idResource: idResource }
     });
     
     if (!existingResource) {
-      throw new NotFoundException(`Resource with UUID ${uuid} not found`);
+      throw new NotFoundException(`Resource with id ${idResource} not found`);
     }
 
     const updatedResource = await this.resourcesRepository.save({
@@ -138,7 +138,7 @@ export class ResourcesService {
     });
 
     const resourceWithRelations = await this.resourcesRepository.findOne({
-      where: { uuidResource: updatedResource.uuidResource },
+      where: { idResource: updatedResource.idResource },
       relations: [
         'creator',
         'reports',
@@ -155,13 +155,13 @@ export class ResourcesService {
     return plainToInstance(ResourceResponseDto, resourceWithRelations, { excludeExtraneousValues: true });
   }
 
-  async remove(uuid: string): Promise<void> {
+  async remove(idResource: string): Promise<void> {
     const resource = await this.resourcesRepository.findOne({
-      where: { uuidResource: uuid }
+      where: { idResource: idResource }
     });
     
     if (!resource) {
-      throw new NotFoundException(`Resource with UUID ${uuid} not found`);
+      throw new NotFoundException(`Resource with id ${idResource} not found`);
     }
 
     await this.resourcesRepository.remove(resource);
