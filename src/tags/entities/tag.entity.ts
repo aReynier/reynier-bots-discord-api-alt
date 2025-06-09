@@ -4,8 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 @Entity('tags')
 export class Tag {
   @ApiProperty({ description: 'Identifiant unique du tag' })
-  @PrimaryGeneratedColumn('uuid')
-  uuid: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_tag' })
+  idTag: string;
 
   @ApiProperty({ description: 'Nom du tag' })
   @Column({ unique: true })

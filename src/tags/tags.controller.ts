@@ -19,7 +19,7 @@ export class TagsController {
     content: {
       'application/json': {
         example: {
-          uuid: '550e8400-e29b-41d4-a716-446655440000',
+          idTag: '550e8400-e29b-41d4-a716-446655440000',
           name: 'JavaScript',
           description: 'Langage de programmation pour le web',
           createdAt: '2024-03-14T12:00:00Z',
@@ -67,13 +67,13 @@ export class TagsController {
     content: {
       'application/json': {
         example: [{
-          uuid: '550e8400-e29b-41d4-a716-446655440000',
+          idTag: '550e8400-e29b-41d4-a716-446655440000',
           name: 'JavaScript',
           description: 'Langage de programmation pour le web',
           createdAt: '2024-03-14T12:00:00Z',
           updatedAt: '2024-03-14T12:00:00Z'
         }, {
-          uuid: '550e8400-e29b-41d4-a716-446655440001',
+          idTag: '550e8400-e29b-41d4-a716-446655440001',
           name: 'Python',
           description: 'Langage de programmation polyvalent',
           createdAt: '2024-03-14T12:00:00Z',
@@ -88,7 +88,7 @@ export class TagsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Récupérer un tag par son ID' })
-  @ApiParam({ name: 'id', description: 'UUID du tag', type: 'string' })
+  @ApiParam({ name: 'id', description: 'id du tag', type: 'string' })
   @ApiResponse({ 
     status: HttpStatus.OK, 
     description: 'Tag récupéré avec succès', 
@@ -96,7 +96,7 @@ export class TagsController {
     content: {
       'application/json': {
         example: {
-          uuid: '550e8400-e29b-41d4-a716-446655440000',
+          idTag: '550e8400-e29b-41d4-a716-446655440000',
           name: 'JavaScript',
           description: 'Langage de programmation pour le web',
           createdAt: '2024-03-14T12:00:00Z',
@@ -124,7 +124,7 @@ export class TagsController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Mettre à jour un tag' })
-  @ApiParam({ name: 'id', description: 'UUID du tag', type: 'string' })
+  @ApiParam({ name: 'id', description: 'id du tag', type: 'string' })
   @ApiResponse({ 
     status: HttpStatus.OK, 
     description: 'Tag mis à jour avec succès', 
@@ -132,7 +132,7 @@ export class TagsController {
     content: {
       'application/json': {
         example: {
-          uuid: '550e8400-e29b-41d4-a716-446655440000',
+          idTag: '550e8400-e29b-41d4-a716-446655440000',
           name: 'JavaScript ES2022',
           description: 'Dernière version du langage JavaScript',
           createdAt: '2024-03-14T12:00:00Z',
@@ -189,7 +189,7 @@ export class TagsController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Supprimer un tag' })
-  @ApiParam({ name: 'id', description: 'UUID du tag', type: 'string' })
+  @ApiParam({ name: 'id', description: 'id du tag', type: 'string' })
   @ApiResponse({ 
     status: HttpStatus.OK, 
     description: 'Tag supprimé avec succès',

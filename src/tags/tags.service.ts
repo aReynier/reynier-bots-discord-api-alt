@@ -28,10 +28,10 @@ export class TagsService {
     return await this.tagRepository.find();
   }
 
-  async findOne(uuid: string): Promise<Tag> {
-    const tag = await this.tagRepository.findOne({ where: { uuid } });
+  async findOne(id: string): Promise<Tag> {
+    const tag = await this.tagRepository.findOne({ where: { idTag: id } });
     if (!tag) {
-      throw new NotFoundException(`Tag avec l'ID ${uuid} non trouvé`);
+      throw new NotFoundException(`Tag avec l'ID ${id} non trouvé`);
     }
     return tag;
   }
