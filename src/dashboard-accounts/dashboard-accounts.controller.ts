@@ -28,8 +28,8 @@ export class DashboardAccountController {
         return this.dashboardAccountService.create(createDashboardAccountDto);
     }
   
-    @Get(':uuidDashboardAccount')
-    @ApiOperation({ summary: 'Récupérer un compte dashboard par son UUID' })
+    @Get(':id')
+    @ApiOperation({ summary: 'Récupérer un compte dashboard par son id' })
     @ApiResponse({ 
         status: HttpStatus.OK, 
         description: 'Le compte a été trouvé',
@@ -39,11 +39,11 @@ export class DashboardAccountController {
         status: HttpStatus.NOT_FOUND, 
         description: 'Compte non trouvé'
     })
-    async getByUUID(@Param('uuidDashboardAccount') uuidDashboardAccount: string): Promise<DashboardAccount> {
-        return this.dashboardAccountService.getByUUID(uuidDashboardAccount);
+    async getById(@Param('id') idDashboardAccount: string): Promise<DashboardAccount> {
+        return this.dashboardAccountService.getById(idDashboardAccount);
     }
 
-    @Put(':uuidDashboardAccount')
+    @Put(':id')
     @ApiOperation({ summary: 'Mettre à jour un compte dashboard' })
     @ApiResponse({ 
         status: HttpStatus.OK, 
@@ -58,14 +58,14 @@ export class DashboardAccountController {
         status: HttpStatus.BAD_REQUEST, 
         description: 'Données invalides fournies'
     })
-    async updateByUUID(
-        @Param('uuidDashboardAccount') uuidDashboardAccount: string,
+    async updateById(
+        @Param('id') idDashboardAccount: string,
         @Body() updateDashboardAccountDto: UpdateDashboardAccountDto,
     ): Promise<DashboardAccount> {
-        return this.dashboardAccountService.updateByUUID(uuidDashboardAccount, updateDashboardAccountDto);
+        return this.dashboardAccountService.updateById(idDashboardAccount, updateDashboardAccountDto);
     }
 
-    @Delete(':uuidDashboardAccount')
+    @Delete(':id')
     @ApiOperation({ summary: 'Supprimer un compte dashboard' })
     @ApiResponse({ 
         status: HttpStatus.NO_CONTENT, 
@@ -75,7 +75,7 @@ export class DashboardAccountController {
         status: HttpStatus.NOT_FOUND, 
         description: 'Compte non trouvé'
     })
-    async deleteByUUID(@Param('uuidDashboardAccount') uuidDashboardAccount: string): Promise<void> {
-        return this.dashboardAccountService.deleteByUUID(uuidDashboardAccount);
+        async deleteById(@Param('id') idDashboardAccount: string): Promise<void> {
+        return this.dashboardAccountService.deleteById(idDashboardAccount);
     }
 }
