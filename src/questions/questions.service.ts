@@ -21,12 +21,12 @@ export class QuestionsService {
     return this.questionRepository.find();
   }
 
-  findOne(uuid: string) {
-    return this.questionRepository.findOneBy({ uuid });
+  findOne(idQuestion: string) {
+    return this.questionRepository.findOneBy({ idQuestion });
   }
 
-  async update(uuid: string, UpdateQuestionDto: UpdateQuestionDto) {
-    const question = await this.questionRepository.findOneBy({ uuid });
+  async update(idQuestion: string, UpdateQuestionDto: UpdateQuestionDto) {
+    const question = await this.questionRepository.findOneBy({ idQuestion });
     if (!question) {
       return null;
     }
@@ -34,7 +34,7 @@ export class QuestionsService {
     return this.questionRepository.save(question);
   }
 
-  remove(uuid: string) {
-    return this.questionRepository.delete({uuid})
+  remove(idQuestion: string) {
+    return this.questionRepository.delete({idQuestion})
   }
 }

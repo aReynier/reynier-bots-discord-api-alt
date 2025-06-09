@@ -9,8 +9,8 @@ export class Question {
         description: 'Unique identifier of the question',
         example: '123e4567-e89b-12d3-a456-426614174000'
     })
-    @PrimaryGeneratedColumn('uuid', { name: 'uuid_question' })
-    uuid: string;
+    @PrimaryGeneratedColumn('uuid', { name: 'id_question' })
+    idQuestion: string;
     
     @ApiProperty({
         description: 'Content of the question',
@@ -31,7 +31,7 @@ export class Question {
         type: () => Poll
     })
     @ManyToOne(() => Poll, (poll) => poll.questions, {onDelete: 'CASCADE'})
-    @JoinColumn({ name: 'uuid_poll' })
+    @JoinColumn({ name: 'id_poll' })
     poll: Poll;
 
     @ApiProperty({
