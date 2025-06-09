@@ -43,14 +43,14 @@ export class RolesController {
     return this.rolesService.findAll();
   }
 
-  @Get(':uuid')
+  @Get(':id')
   @ApiOperation({ 
-    summary: 'Récupérer un rôle par son UUID',
-    description: 'Recherche et retourne un rôle spécifique en utilisant son UUID.'
+    summary: 'Récupérer un rôle par son id',
+    description: 'Recherche et retourne un rôle spécifique en utilisant son id.'
   })
   @ApiParam({ 
-    name: 'uuid', 
-    description: 'UUID unique du rôle à rechercher',
+    name: 'id', 
+    description: 'id unique du rôle à rechercher',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -60,20 +60,20 @@ export class RolesController {
   })
   @ApiResponse({ 
     status: HttpStatus.NOT_FOUND, 
-    description: 'Aucun rôle trouvé avec l\'UUID fourni.' 
+    description: 'Aucun rôle trouvé avec l\'id fourni.' 
   })
-  findOne(@Param('uuid') uuid: string) {
-    return this.rolesService.findOne(uuid);
+  findOne(@Param('id') idRole: string) {
+    return this.rolesService.findOne(idRole);
   }
 
-  @Patch(':uuid')
+  @Patch(':id')
   @ApiOperation({ 
     summary: 'Mettre à jour un rôle',
-    description: 'Met à jour les informations d\'un rôle existant en utilisant son UUID.'
+    description: 'Met à jour les informations d\'un rôle existant en utilisant son id.'
   })
   @ApiParam({ 
-    name: 'uuid', 
-    description: 'UUID unique du rôle à mettre à jour',
+    name: 'id', 
+    description: 'id unique du rôle à mettre à jour',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiBody({ type: UpdateRoleDto })
@@ -88,20 +88,20 @@ export class RolesController {
   })
   @ApiResponse({ 
     status: HttpStatus.NOT_FOUND, 
-    description: 'Aucun rôle trouvé avec l\'UUID fourni.' 
+    description: 'Aucun rôle trouvé avec l\'id fourni.' 
   })
-  update(@Param('uuid') uuid: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.rolesService.update(uuid, updateRoleDto);
+  update(@Param('id') idRole: string, @Body() updateRoleDto: UpdateRoleDto) {
+    return this.rolesService.update(idRole, updateRoleDto);
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ 
     summary: 'Supprimer un rôle',
-    description: 'Supprime un rôle existant de la base de données en utilisant son UUID.'
+    description: 'Supprime un rôle existant de la base de données en utilisant son id.'
   })
   @ApiParam({ 
-    name: 'uuid', 
-    description: 'UUID unique du rôle à supprimer',
+    name: 'id', 
+    description: 'id unique du rôle à supprimer',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -110,9 +110,9 @@ export class RolesController {
   })
   @ApiResponse({ 
     status: HttpStatus.NOT_FOUND, 
-    description: 'Aucun rôle trouvé avec l\'UUID fourni.' 
+    description: 'Aucun rôle trouvé avec l\'id fourni.' 
   })
-  remove(@Param('uuid') uuid: string) {
-    return this.rolesService.remove(uuid);
+  remove(@Param('id') idRole: string) {
+    return this.rolesService.remove(idRole);
   }
 }
