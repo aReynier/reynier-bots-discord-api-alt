@@ -46,7 +46,7 @@ describe('PollsService', () => {
   describe('create', () => {
     const createPollDto: CreatePollDto = {
       title: 'Test Poll',
-      uuidMessage: '12345678901234567',
+      idMessage: '12345678901234567',
       isAnonymous: false,
       isClosed: false,
       duration: 24,
@@ -64,7 +64,7 @@ describe('PollsService', () => {
 
     it('should successfully create a poll', async () => {
       const expectedPoll = {
-        uuid: '550e8400-e29b-41d4-a716-446655440000',
+        idPoll: '550e8400-e29b-41d4-a716-446655440000',
         ...createPollDto,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -85,9 +85,9 @@ describe('PollsService', () => {
     it('should return an array of polls', async () => {
       const expectedPolls = [
         {
-          uuid: '550e8400-e29b-41d4-a716-446655440000',
+          idPoll: '550e8400-e29b-41d4-a716-446655440000',
           title: 'Test Poll 1',
-          uuidMessage: '12345678901234567',
+          idMessage: '12345678901234567',
           isTemplate: false,
           isAnonymous: false,
           isClosed: false,
@@ -117,13 +117,13 @@ describe('PollsService', () => {
   });
 
   describe('findOne', () => {
-    const uuid = '550e8400-e29b-41d4-a716-446655440000';
+    const idPoll = '550e8400-e29b-41d4-a716-446655440000';
 
     it('should return a single poll', async () => {
       const expectedPoll = {
-        uuid,
+        idPoll,
         title: 'Test Poll',
-        uuidMessage: '12345678901234567',
+        idMessage: '12345678901234567',
         isTemplate: false,
         isAnonymous: false,
         isClosed: false,
@@ -144,24 +144,24 @@ describe('PollsService', () => {
 
       mockPollRepository.findOneBy.mockResolvedValue(expectedPoll);
 
-      const result = await service.findOne(uuid);
+      const result = await service.findOne(idPoll);
 
       expect(result).toEqual(expectedPoll);
-      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ idPoll });
     });
 
     it('should throw NotFoundException when poll is not found', async () => {
       mockPollRepository.findOneBy.mockResolvedValue(null);
 
-      await expect(service.findOne(uuid)).rejects.toThrow(
-        new NotFoundException(`The poll with UUID "${uuid}" was not found`),
+      await expect(service.findOne(idPoll)).rejects.toThrow(
+        new NotFoundException(`The poll with id "${idPoll}" was not found`),
       );
-      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ idPoll });
     });
   });
 
   describe('update', () => {
-    const uuid = '550e8400-e29b-41d4-a716-446655440000';
+    const idPoll = '550e8400-e29b-41d4-a716-446655440000';
     const updatePollDto: UpdatePollDto = {
       title: 'Updated Poll',
       isAnonymous: true,
@@ -181,9 +181,9 @@ describe('PollsService', () => {
 
     it('should update a poll', async () => {
       const existingPoll = {
-        uuid,
+        idPoll,
         title: 'Original Poll',
-        uuidMessage: '12345678901234567',
+        idMessage: '12345678901234567',
         isTemplate: false,
         isAnonymous: false,
         isClosed: false,
@@ -202,10 +202,10 @@ describe('PollsService', () => {
       mockPollRepository.findOneBy.mockResolvedValue(existingPoll);
       mockPollRepository.save.mockResolvedValue(updatedPoll);
 
-      const result = await service.update(uuid, updatePollDto);
+      const result = await service.update(idPoll, updatePollDto);
 
       expect(result).toEqual(updatedPoll);
-      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ idPoll });
       expect(mockPollRepository.save).toHaveBeenCalledWith(expect.objectContaining({
         ...existingPoll,
         ...updatePollDto,
@@ -215,21 +215,21 @@ describe('PollsService', () => {
     it('should throw NotFoundException when poll to update is not found', async () => {
       mockPollRepository.findOneBy.mockResolvedValue(null);
 
-      await expect(service.update(uuid, updatePollDto)).rejects.toThrow(
-        new NotFoundException(`The poll with UUID "${uuid}" was not found`),
+      await expect(service.update(idPoll, updatePollDto)).rejects.toThrow(
+        new NotFoundException(`The poll with id "${idPoll}" was not found`),
       );
-      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ idPoll });
     });
   });
 
   describe('remove', () => {
-    const uuid = '550e8400-e29b-41d4-a716-446655440000';
+    const idPoll = '550e8400-e29b-41d4-a716-446655440000';
 
     it('should delete a poll', async () => {
       const existingPoll = {
-        uuid,
+        idPoll,
         title: 'Poll to Delete',
-        uuidMessage: '12345678901234567',
+        idMessage: '12345678901234567',
         isTemplate: false,
         isAnonymous: false,
         isClosed: false,
@@ -244,20 +244,20 @@ describe('PollsService', () => {
       mockPollRepository.findOneBy.mockResolvedValue(existingPoll);
       mockPollRepository.delete.mockResolvedValue(deleteResult);
 
-      const result = await service.remove(uuid);
+      const result = await service.remove(idPoll);
 
       expect(result).toEqual(deleteResult);
-      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ uuid });
-      expect(mockPollRepository.delete).toHaveBeenCalledWith({ uuid });
+      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ idPoll });
+      expect(mockPollRepository.delete).toHaveBeenCalledWith({ idPoll });
     });
 
     it('should throw NotFoundException when poll to delete is not found', async () => {
       mockPollRepository.findOneBy.mockResolvedValue(null);
 
-      await expect(service.remove(uuid)).rejects.toThrow(
-        new NotFoundException(`The poll with UUID "${uuid}" was not found`),
+      await expect(service.remove(idPoll)).rejects.toThrow(
+        new NotFoundException(`The poll with id "${idPoll}" was not found`),
       );
-      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      expect(mockPollRepository.findOneBy).toHaveBeenCalledWith({ idPoll });
     });
   });
 });

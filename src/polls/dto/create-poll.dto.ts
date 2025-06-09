@@ -2,9 +2,9 @@ import { IsString, IsNotEmpty, IsBoolean, IsInt, MaxLength, Length, ArrayMinSize
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { CreateQuestionDto } from 'src/questions/dto/create-question.dto';
 import { Type } from 'class-transformer';
-import { PickableInternUUIDFields } from 'src/utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from 'src/utils/pickable-intern-id-fields';
 
-export class CreatePollDto extends PickType(PickableInternUUIDFields, ['uuidMember']) {
+export class CreatePollDto extends PickType(PickableInternIdFields, ['idMember']) {
   @ApiProperty({ 
     description: "The title of the poll, which should be concise and descriptive.", 
     maxLength: 50, 
@@ -21,10 +21,10 @@ export class CreatePollDto extends PickType(PickableInternUUIDFields, ['uuidMemb
     maxLength: 19, 
     example: '1234567890123456789' 
   })
-  @IsString({message: "The message UUID must be a string"})
-  @IsNotEmpty({message: "The message UUID is required"})
-  @Length(17,19, {message: "The message UUID must be a string of 17 to 19 characters"})
-  uuidMessage: string;
+  @IsString({message: "The message id must be a string"})
+  @IsNotEmpty({message: "The message id is required"})
+  @Length(17,19, {message: "The message id must be a string of 17 to 19 characters"})
+  idMessage: string;
 
   @ApiProperty({ 
     description: "Indicate if the responses to this poll are anonymous.", 
