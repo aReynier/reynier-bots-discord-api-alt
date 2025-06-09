@@ -62,13 +62,13 @@ describe('SignatureController (e2e)', () => {
 
   describe('/signature/promotion/:uuid (GET)', () => {
     it('should return promotion data for valid UUID', () => {
-      const uuid = '123e4567-e89b-12d3-a456-426614174000';
+      const idPromotion = '123e4567-e89b-12d3-a456-426614174000';
       return request(app.getHttpServer())
-        .get(`/signature/promotion/${uuid}`)
+        .get(`/signature/promotion/${idPromotion}`)
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('promotion');
-          expect(res.body.promotion.uuid).toBe(uuid);
+          expect(res.body.promotion.idPromotion).toBe(idPromotion);
           expect(res.body.promotion.nom).toBe('Promotion 2023');
           
           // Vérifier la structure du forum
