@@ -4,14 +4,6 @@ import { Repository } from 'typeorm';
 import { Guild } from './entities/guild.entity';
 import { CreateGuildDto } from './dto/create-guild.dto';
 import { UpdateGuildDto } from './dto/update-guild.dto';
-import { Course } from '../courses/entities/course.entity';
-import { Member } from '../members/entities/member.entity';
-import { Role } from '../roles/entities/role.entity';
-import { Channel } from '../channels/entities/channel.entity';
-import { Category } from '../categories/entities/category.entity';
-import { Campus } from '../campuses/entities/campus.entity';
-import { Promotion } from '../promotions/entities/promotion.entity';
-import { GuildTemplate } from '../guilds-templates/entities/guild-template.entity';
 
 const mockRepository = {
   create: vi.fn(),
@@ -26,7 +18,7 @@ describe('GuildsService', () => {
   let service: GuildsService;
 
   const mockGuild = {
-    uuid: '123456789012345678',
+    idGuild: '123456789012345678',
     name: 'Test Guild',
     memberCount: '10',
     configuration: {},
@@ -35,20 +27,20 @@ describe('GuildsService', () => {
   };
 
   const mockCourse = {
-    uuid: '123e4567-e89b-12d3-a456-426614174000',
+    idCourse: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Test Course',
     isCertified: true,
   };
 
   const mockMember = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
     guildUsername: 'TestUser',
     xp: '100.00',
     level: 1,
   };
 
   const mockRole = {
-    uuidRole: '234567890123456789',
+    idRole: '234567890123456789',
     name: 'Test Role',
     memberCount: 1,
   };
@@ -65,7 +57,7 @@ describe('GuildsService', () => {
   describe('create', () => {
     it('should create a new guild', async () => {
       const dto: CreateGuildDto = {
-        uuid: '123456789012345678',
+        idGuild: '123456789012345678',
         name: 'Test Guild',
         memberCount: '10',
         configuration: {},
@@ -113,7 +105,7 @@ describe('GuildsService', () => {
 
       expect(result).toEqual(guildWithRelations);
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid: '123456789012345678' },
+        where: { idGuild: '123456789012345678' },
         relations: ['courses', 'members', 'roles', 'channels', 'categories', 'campuses', 'promotions', 'template']
       });
     });
@@ -141,7 +133,7 @@ describe('GuildsService', () => {
 
       expect(result).toEqual(updatedGuild);
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid: '123456789012345678' },
+        where: { idGuild: '123456789012345678' },
         relations: ['courses', 'members', 'roles', 'channels', 'categories', 'campuses', 'promotions', 'template']
       });
       expect(mockRepository.save).toHaveBeenCalledWith(updatedGuild);
@@ -152,7 +144,7 @@ describe('GuildsService', () => {
     it('should delete a guild and cascade delete related entities', async () => {
       mockRepository.delete.mockResolvedValue({ affected: 1 });
       await service.remove('123456789012345678');
-      expect(mockRepository.delete).toHaveBeenCalledWith({ uuid: '123456789012345678' });
+      expect(mockRepository.delete).toHaveBeenCalledWith({ idGuild: '123456789012345678' });
     });
   });
 });
