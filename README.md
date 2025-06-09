@@ -229,7 +229,7 @@ http://localhost:3000/test-auth
 - **POST** `/guild`
 ```json
 {
-  "uuid": "123456789012345678",
+  "idGuild": "123456789012345678",
   "name": "My Discord Server",
   "memberCount": 100,
   "configuration": {
@@ -244,14 +244,14 @@ http://localhost:3000/test-auth
 - **GET** `/guild`
 
 #### Get One Guild
-- **GET** `/guild/:uuid`
+- **GET** `/guild/:id`
 Example: `/guild/123456789012345678`
 
 #### Update a Guild
-- **PUT** `/guild/:uuid`
+- **PUT** `/guild/:id`
 ```json
 {
-  "uuid": "123456789012345678",
+  "idGuild": "123456789012345678",
   "name": "Updated Server Name",
   "memberCount": 150,
   "configuration": {
@@ -263,7 +263,7 @@ Example: `/guild/123456789012345678`
 ```
 
 #### Delete a Guild
-- **DELETE** `/guild/:uuid`
+- **DELETE** `/guild/:id`
 Example: `/guild/123456789012345678`
 
 ### Campus Endpoints
@@ -280,11 +280,11 @@ Example: `/guild/123456789012345678`
 - **GET** `/campus`
 
 #### Get One Campus
-- **GET** `/campus/:uuid`
+- **GET** `/campus/:id`
 Example: `/campus/550e8400-e29b-41d4-a716-446655440000`
 
 #### Update a Campus
-- **PUT** `/campus/:uuid`
+- **PUT** `/campus/:id`
 ```json
 {
   "name": "Lille"
@@ -292,7 +292,7 @@ Example: `/campus/550e8400-e29b-41d4-a716-446655440000`
 ```
 
 #### Delete a Campus
-- **DELETE** `/campus/:uuid`
+- **DELETE** `/campus/:id`
 Example: `/campus/550e8400-e29b-41d4-a716-446655440000`
 
 ### Guilds-Templates Endpoints
@@ -301,7 +301,7 @@ Example: `/campus/550e8400-e29b-41d4-a716-446655440000`
 - **POST** `/guilds-templates`
 ```json
 {
-  "uuid": "123456789012345678",
+  "idGuildTemplate": "123456789012345678",
   "name": "Server Template",
 }
 ```
@@ -310,11 +310,11 @@ Example: `/campus/550e8400-e29b-41d4-a716-446655440000`
 - **GET** `/guilds-templates`
 
 #### Get One Guild Template
-- **GET** `/guilds-templates/:uuid`
+- **GET** `/guilds-templates/:id`
 Example: `/guilds-templates/123456789012345678`
 
 #### Update a Guild Template
-- **PUT** `/guilds-templates/:uuid`
+- **PUT** `/guilds-templates/:id`
 ```json
 {
   "name": "Updated Template Name",
@@ -322,7 +322,7 @@ Example: `/guilds-templates/123456789012345678`
 ```
 
 #### Delete a Guild Template
-- **DELETE** `/guilds-templates/:uuid`
+- **DELETE** `/guilds-templates/:id`
 Example: `/guilds-templates/123456789012345678`
 
 ### Channel Endpoints
@@ -341,11 +341,11 @@ Example: `/guilds-templates/123456789012345678`
 - **GET** `/channels`
 
 #### Get One Channel
-- **GET** `/channels/:uuid`
+- **GET** `/channels/:id`
 Example: `/channels/123456789012345678`
 
 #### Update a Channel
-- **PUT** `/channels/:uuid`
+- **PUT** `/channels/:id`
 ```json
 {
   "name": "announcements",
@@ -355,7 +355,7 @@ Example: `/channels/123456789012345678`
 ```
 
 #### Delete a Channel
-- **DELETE** `/channels/:uuid`
+- **DELETE** `/channels/:id`
 Example: `/channels/123456789012345678`
 
 ### Promotion Endpoints
@@ -374,11 +374,11 @@ Example: `/channels/123456789012345678`
 - **GET** `/promotions`
 
 #### Get One Promotion
-- **GET** `/promotions/:uuid`
+- **GET** `/promotions/:id`
 Example: `/promotions/550e8400-e29b-41d4-a716-446655440000`
 
 #### Update a Promotion
-- **PUT** `/promotions/:uuid`
+- **PUT** `/promotions/:id`
 ```json
 {
   "name": "Dev Web 2024 - Updated",
@@ -388,13 +388,13 @@ Example: `/promotions/550e8400-e29b-41d4-a716-446655440000`
 ```
 
 #### Delete a Promotion
-- **DELETE** `/promotions/:uuid`
+- **DELETE** `/promotions/:id`
 Example: `/promotions/550e8400-e29b-41d4-a716-446655440000`
 
 Note: 
 - All timestamps (`createdAt`, `updatedAt`) are managed automatically
-- For Guild endpoints, the `uuid` must be a valid Discord server ID (17-20 digits)
-- For Campus endpoints, the `uuid` is automatically generated
+- For Guild endpoints, the `id` must be a valid Discord server ID (17-20 digits)
+- For Campus endpoints, the `id` is automatically generated
 
 ### Roles Endpoints
 
@@ -402,12 +402,12 @@ Note:
 - **POST** `/roles`
 ```json
 {
-  "uuid": "123456789012345678",
+  "idRole": "123456789012345678",
   "name": "Administrateur",
   "color": "#FF0000",
   "permissions": ["MANAGE_CHANNELS", "MANAGE_ROLES"],
-  "position": 1,
-  "uuid_guild": "987654321098765432"
+  "rolePosition": 1,
+  "idGuild": "987654321098765432"
 }
 ```
 
@@ -415,22 +415,22 @@ Note:
 - **GET** `/roles`
 
 #### Get One Role
-- **GET** `/roles/:uuid`
+- **GET** `/roles/:id`
 Example: `/roles/123456789012345678`
 
 #### Update a Role
-- **PUT** `/roles/:uuid`
+- **PUT** `/roles/:id`
 ```json
 {
   "name": "Super Admin",
   "color": "#0000FF",
   "permissions": ["ADMINISTRATOR"],
-  "position": 2
+  "rolePosition": 2
 }
 ```
 
 #### Delete a Role
-- **DELETE** `/roles/:uuid`
+- **DELETE** `/roles/:id`
 Example: `/roles/123456789012345678`
 
 
@@ -441,7 +441,7 @@ Example: `/roles/123456789012345678`
 - **POST** `/identification-requests`
 ```json
 {
-  "uuidMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
+  "idMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
   "firstname": "Hidetaka",
   "lastname": "Miyazaki",
   "email": "hidetaka.miyazaki@from-software.com"
@@ -452,14 +452,14 @@ Example: `/roles/123456789012345678`
 - **GET** `/identification-requests`
 
 #### Get One identification request
-- **GET** `/identification-requests/:uuid`  
+- **GET** `/identification-requests/:id`  
 Example: `/identification-requests/57bb2c9b-a472-408d-9b90-4a834da929d0`
 
 #### Update identification request
-- **PUT** `/identification-requests/:uuid`
+- **PUT** `/identification-requests/:id`
 ```json
 {
-  "uuidMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
+  "idMember": "57bb2c9b-a472-408d-9b90-4a834da929d0",
   "firstname": "Hidetaka",
   "lastname": "Miyazaki",
   "email": "hidetaka.miyazaki@from-software.jp"
@@ -467,7 +467,7 @@ Example: `/identification-requests/57bb2c9b-a472-408d-9b90-4a834da929d0`
 ```
 
 #### Delete identification request
-- **DELETE** `/identification-requests/:uuid`  
+- **DELETE** `/identification-requests/:id`  
 Example: `/identification-requests/57bb2c9b-a472-408d-9b90-4a834da929d0`
 
 ### Members Informations Endpoints
@@ -477,7 +477,7 @@ Example: `/identification-requests/57bb2c9b-a472-408d-9b90-4a834da929d0`
 - **POST** `/members-informations`
 ```json
 {
-  "uuid-member": "123456789012345678",
+  "idMember": "123456789012345678",
   "firstname": "Hidetaka",
   "lastname": "Miyazaki",
   "email": "hidetaka.miyazaki@from-software.com"
@@ -488,15 +488,15 @@ Example: `/identification-requests/57bb2c9b-a472-408d-9b90-4a834da929d0`
 - **GET** `/members-informations`
 
 #### Get One member informations
-- **GET** `/members-informations/:uuid`
+- **GET** `/members-informations/:id`
 Example: `/members-informations/57bb2c9b-a472-408d-9b90-4a834da929d0`
 
 
 #### Update member informations
-- **PUT** `/members-informations/:uuid`
+- **PUT** `/members-informations/:id`
 ```json
 {
-  "uuid-member": "123456789012345678",
+  "idMember": "123456789012345678",
   "firstname": "Hidetaka",
   "lastname": "Miyazaki",
   "email": "hidetaka.miyazaki@from-software.jp"
@@ -505,7 +505,7 @@ Example: `/members-informations/57bb2c9b-a472-408d-9b90-4a834da929d0`
 
 #### Delete member informations
 
-- **DELETE** `/members-informations/:uuid`
+- **DELETE** `/members-informations/:id`
 Example: `/members-informations/57bb2c9b-a472-408d-9b90-4a834da929d0`
 
 ### Categories Endpoints
@@ -515,10 +515,10 @@ Example: `/members-informations/57bb2c9b-a472-408d-9b90-4a834da929d0`
 - **POST** `/categories`
 ```json
 {
-  "uuid": "123456789012345678",
-  "uuidGuild": "987654321098765432",
+  "idCategory": "123456789012345678",
+  "idGuild": "987654321098765432",
   "name": "General",
-  "position": 1
+  "categoryPosition": 1
 }
 ```
 
@@ -526,28 +526,28 @@ Example: `/members-informations/57bb2c9b-a472-408d-9b90-4a834da929d0`
 - **GET** `/categories`
 
 #### Get One category
-- **GET** `/categories/:uuid`  
+- **GET** `/categories/:id`  
 Example: `/categories/57bb2c9b-a472-408d-9b90-4a834da929d0`
 
 #### Update category
-- **PUT** `/categories/:uuid`
+- **PUT** `/categories/:id`
 ```json
 {
-  "uuid": "123456789012345678",
-  "uuidGuild": "987654321098765432",
+  "idCategory": "123456789012345678",
+  "idGuild": "987654321098765432",
   "name": "Updated Category",
-  "position": 2
+  "categoryPosition": 2
 }
 ```
 
 #### Delete category
-- **DELETE** `/categories/:uuid`  
+- **DELETE** `/categories/:id`  
 Example: `/categories/57bb2c9b-a472-408d-9b90-4a834da929d0`
 
 Note: 
 - All timestamps (`createdAt`, `updatedAt`) are managed automatically
-- For Guild endpoints, the `uuid` must be a valid Discord server ID (17-20 digits)
-- For Campus endpoints, the `uuid` is automatically generated
+- For Guild endpoints, the `id` must be a valid Discord server ID (17-20 digits)
+- For Campus endpoints, the `id` is automatically generated
 
 ### Answers Endpoints
 
@@ -557,7 +557,7 @@ Note:
 {
   "content": "Paris",
   "isMultipleAnswer": false,
-  "questionUuid": "123e4567-e89b-12d3-a456-426614174000"
+  "idQuestion": "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
@@ -565,11 +565,11 @@ Note:
 - **GET** `/answers`
 
 #### Get One Answer
-- **GET** `/answers/:uuid`
+- **GET** `/answers/:id`
 Example: `/answers/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update an Answer
-- **PUT** `/answers/:uuid`
+- **PUT** `/answers/:id`
 ```json
 {
   "content": "Updated answer",
@@ -578,7 +578,7 @@ Example: `/answers/123e4567-e89b-12d3-a456-426614174000`
 ```
 
 #### Delete an Answer
-- **DELETE** `/answers/:uuid`
+- **DELETE** `/answers/:id`
 Example: `/answers/123e4567-e89b-12d3-a456-426614174000`
 
 ### Comments Endpoints
@@ -589,9 +589,9 @@ Example: `/answers/123e4567-e89b-12d3-a456-426614174000`
 {
   "content": "Très bon travail sur ce projet !",
   "comment_status": "active",
-  "uuid_member": "123e4567-e89b-12d3-a456-426614174000",
-  "resource_uuid": "123e4567-e89b-12d3-a456-426614174000",
-  "user_uuid": "123e4567-e89b-12d3-a456-426614174000"
+  "idMember": "123e4567-e89b-12d3-a456-426614174000",
+  "idResource": "123e4567-e89b-12d3-a456-426614174000",
+  "idUser": "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
@@ -599,11 +599,11 @@ Example: `/answers/123e4567-e89b-12d3-a456-426614174000`
 - **GET** `/comments`
 
 #### Get One Comment
-- **GET** `/comments/:uuid`
+- **GET** `/comments/:id`
 Example: `/comments/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update a Comment
-- **PATCH** `/comments/:uuid`
+- **PATCH** `/comments/:id`
 ```json
 {
   "content": "Contenu mis à jour",
@@ -612,7 +612,7 @@ Example: `/comments/123e4567-e89b-12d3-a456-426614174000`
 ```
 
 #### Delete a Comment
-- **DELETE** `/comments/:uuid`
+- **DELETE** `/comments/:id`
 Example: `/comments/123e4567-e89b-12d3-a456-426614174000`
 
 ### Courses Endpoints
@@ -623,8 +623,8 @@ Example: `/comments/123e4567-e89b-12d3-a456-426614174000`
 {
   "name": "cda-vals-p4",
   "isCertified": true,
-  "uuidGuild": "123456789012345678",
-  "uuidCategory": "123456789012345678"
+  "idGuild": "123456789012345678",
+  "idCategory": "123456789012345678"
 }
 ```
 
@@ -632,11 +632,11 @@ Example: `/comments/123e4567-e89b-12d3-a456-426614174000`
 - **GET** `/courses`
 
 #### Get One Course
-- **GET** `/courses/:uuid`
+- **GET** `/courses/:id`
 Example: `/courses/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update a Course
-- **PUT** `/courses/:uuid`
+- **PUT** `/courses/:id`
 ```json
 {
   "name": "updated-course",
@@ -645,7 +645,7 @@ Example: `/courses/123e4567-e89b-12d3-a456-426614174000`
 ```
 
 #### Delete a Course
-- **DELETE** `/courses/:uuid`
+- **DELETE** `/courses/:id`
 Example: `/courses/123e4567-e89b-12d3-a456-426614174000`
 
 ### Dashboard Accounts Endpoints
@@ -656,16 +656,16 @@ Example: `/courses/123e4567-e89b-12d3-a456-426614174000`
 {
   "email": "test@example.com",
   "password": "password123",
-  "uuid_discord": "123456789012345678"
+  "idDiscord": "123456789012345678"
 }
 ```
 
 #### Get One Dashboard Account
-- **GET** `/dashboardAccounts/:uuid_dashboard_account`
+- **GET** `/dashboardAccounts/:idSashboardAccount`
 Example: `/dashboardAccounts/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update a Dashboard Account
-- **PUT** `/dashboardAccounts/:uuid_dashboard_account`
+- **PUT** `/dashboardAccounts/:idDashboardAccount`
 ```json
 {
   "email": "updated@example.com",
@@ -674,7 +674,7 @@ Example: `/dashboardAccounts/123e4567-e89b-12d3-a456-426614174000`
 ```
 
 #### Delete a Dashboard Account
-- **DELETE** `/dashboardAccounts/:uuid_dashboard_account`
+- **DELETE** `/dashboardAccounts/:idDashboardAccount`
 Example: `/dashboardAccounts/123e4567-e89b-12d3-a456-426614174000`
 
 ### Discord Users Endpoints
@@ -683,7 +683,7 @@ Example: `/dashboardAccounts/123e4567-e89b-12d3-a456-426614174000`
 - **POST** `/discord-users`
 ```json
 {
-  "uuid_discord": "123456789012345678",
+  "idDiscord": "123456789012345678",
   "discordUsername": "JohnDoe#1234",
   "discriminator": "1234"
 }
@@ -693,11 +693,11 @@ Example: `/dashboardAccounts/123e4567-e89b-12d3-a456-426614174000`
 - **GET** `/discord-users`
 
 #### Get One Discord User
-- **GET** `/discord-users/:uuid_discord`
+- **GET** `/discord-users/:idDiscord`
 Example: `/discord-users/123456789012345678`
 
 #### Update a Discord User
-- **PUT** `/discord-users/:uuid_discord`
+- **PUT** `/discord-users/:idDiscord`
 ```json
 {
   "discordUsername": "UpdatedJohnDoe#1234",
@@ -706,7 +706,7 @@ Example: `/discord-users/123456789012345678`
 ```
 
 #### Delete a Discord User
-- **DELETE** `/discord-users/:uuid_discord`
+- **DELETE** `/discord-users/:idDiscord`
 Example: `/discord-users/123456789012345678`
 
 ### Members Endpoints
@@ -715,13 +715,13 @@ Example: `/discord-users/123456789012345678`
 - **POST** `/members`
 ```json
 {
-  "guild_username": "JohnDoe",
+  "guildUsername": "JohnDoe",
   "xp": "100.00",
   "level": 1,
-  "community_role": "Member",
+  "communityRole": "Member",
   "status": "Active",
-  "uuid_guild": "123456789012345678",
-  "uuid_discord": "123456789012345678"
+  "idGuild": "123456789012345678",
+  "idDiscord": "123456789012345678"
 }
 ```
 
@@ -729,23 +729,23 @@ Example: `/discord-users/123456789012345678`
 - **GET** `/members`
 
 #### Get One Member
-- **GET** `/members/:uuid`
+- **GET** `/members/:id`
 Example: `/members/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update a Member
-- **PATCH** `/members/:uuid`
+- **PATCH** `/members/:id`
 ```json
 {
-  "guild_username": "UpdatedUser",
+  "guildUsername": "UpdatedUser",
   "status": "Inactive",
   "level": 2,
   "xp": "200.00",
-  "community_role": "Moderator"
+  "communityRole": "Moderator"
 }
 ```
 
 #### Delete a Member
-- **DELETE** `/members/:uuid`
+- **DELETE** `/members/:id`
 Example: `/members/123e4567-e89b-12d3-a456-426614174000`
 
 ### Resources Endpoints
@@ -758,7 +758,7 @@ Example: `/members/123e4567-e89b-12d3-a456-426614174000`
   "description": "Un guide complet pour démarrer avec le bot",
   "content": "Voici les étapes pour configurer le bot...",
   "status": "active",
-  "uuid_member": "123e4567-e89b-12d3-a456-426614174000"
+  "idMember": "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
@@ -766,11 +766,11 @@ Example: `/members/123e4567-e89b-12d3-a456-426614174000`
 - **GET** `/resources`
 
 #### Get One Resource
-- **GET** `/resources/:uuid`
+- **GET** `/resources/:id`
 Example: `/resources/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update a Resource
-- **PATCH** `/resources/:uuid`
+- **PATCH** `/resources/:id`
 ```json
 {
   "title": "Guide de démarrage mis à jour",
@@ -781,7 +781,7 @@ Example: `/resources/123e4567-e89b-12d3-a456-426614174000`
 ```
 
 #### Delete a Resource
-- **DELETE** `/resources/:uuid`
+- **DELETE** `/resources/:id`
 Example: `/resources/123e4567-e89b-12d3-a456-426614174000`
 
 ### Reports Endpoints
@@ -793,8 +793,8 @@ Example: `/resources/123e4567-e89b-12d3-a456-426614174000`
   "type": "resource",
   "category": "inappropriate",
   "reason": "Contenu offensant envers la communauté",
-  "uuid_resource": "123e4567-e89b-12d3-a456-426614174000",
-  "uuid_reporter": "323b07a1-7cea-4916-82a5-76ff201fa0e2"
+  "idResource": "123e4567-e89b-12d3-a456-426614174000",
+  "idReporter": "323b07a1-7cea-4916-82a5-76ff201fa0e2"
 }
 ```
 
@@ -802,11 +802,11 @@ Example: `/resources/123e4567-e89b-12d3-a456-426614174000`
 - **GET** `/reports`
 
 #### Get One Report
-- **GET** `/reports/:uuid_report`
+- **GET** `/reports/:id_report`
 Example: `/reports/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update a Report
-- **PATCH** `/reports/:uuid_report`
+- **PATCH** `/reports/:id_report`
 ```json
 {
   "status": "resolved",
@@ -816,7 +816,7 @@ Example: `/reports/123e4567-e89b-12d3-a456-426614174000`
 Note: Seuls les modérateurs peuvent mettre à jour les signalements.
 
 #### Delete a Report
-- **DELETE** `/reports/:uuid_report`
+- **DELETE** `/reports/:id_report`
 Example: `/reports/123e4567-e89b-12d3-a456-426614174000`
 Note: Un utilisateur ne peut supprimer que ses propres signalements.
 
@@ -828,7 +828,7 @@ Note: Un utilisateur ne peut supprimer que ses propres signalements.
 {
   "content": "Quelle est la capitale de la France ?",
   "isMultipleAnswer": false,
-  "uuidPoll": "123e4567-e89b-12d3-a456-426614174000"
+  "idPoll": "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
@@ -836,11 +836,11 @@ Note: Un utilisateur ne peut supprimer que ses propres signalements.
 - **GET** `/questions`
 
 #### Get One Question
-- **GET** `/questions/:uuid`
+- **GET** `/questions/:id`
 Example: `/questions/123e4567-e89b-12d3-a456-426614174000`
 
 #### Update a Question
-- **PUT** `/questions/:uuid`
+- **PUT** `/questions/:id`
 ```json
 {
   "content": "Quelle est la capitale de l'Italie ?",
@@ -849,7 +849,7 @@ Example: `/questions/123e4567-e89b-12d3-a456-426614174000`
 ```
 
 #### Delete a Question
-- **DELETE** `/questions/:uuid`
+- **DELETE** `/questions/:id`
 Example: `/questions/123e4567-e89b-12d3-a456-426614174000`
 
 ### Votes Endpoints
@@ -858,8 +858,8 @@ Example: `/questions/123e4567-e89b-12d3-a456-426614174000`
 - **POST** `/votes`
 ```json
 {
-  "userId": "123e4567-e89b-12d3-a456-426614174000",
-  "itemId": "123e4567-e89b-12d3-a456-426614174000",
+  "idUser": "123e4567-e89b-12d3-a456-426614174000",
+  "idItem": "123e4567-e89b-12d3-a456-426614174000",
   "voteType": "upvote"
 }
 ```
@@ -890,14 +890,14 @@ Example: `/votes/123e4567-e89b-12d3-a456-426614174000`
 - **POST** `/xp-transactions`
 ```json
 {
-  "transaction_type": "GAIN",
+  "transactionType": "GAIN",
   "source": "VOTE",
-  "transaction_value": "100.00",
+  "transactionValue": "100.00",
   "reason": "Vote positif sur une ressource",
   "notes": "Ressource particulièrement utile",
-  "reference_type": "RESOURCE",
-  "reference_uuid": "123e4567-e89b-12d3-a456-426614174000",
-  "uuid_member": "123e4567-e89b-12d3-a456-426614174000"
+  "referenceType": "RESOURCE",
+  "idReference": "123e4567-e89b-12d3-a456-426614174000",
+  "idMember": "123e4567-e89b-12d3-a456-426614174000"
 }
 ```
 
@@ -905,11 +905,11 @@ Example: `/votes/123e4567-e89b-12d3-a456-426614174000`
 - **GET** `/xp-transactions`
 
 #### Get Member's XP Transactions
-- **GET** `/xp-transactions/member/:uuid_member`
+- **GET** `/xp-transactions/member/:idMember`
 Example: `/xp-transactions/member/123e4567-e89b-12d3-a456-426614174000`
 
 #### Get One XP Transaction
-- **GET** `/xp-transactions/:uuid`
+- **GET** `/xp-transactions/:id`
 Example: `/xp-transactions/123e4567-e89b-12d3-a456-426614174000`
 
 Note: Les transactions XP ne peuvent pas être modifiées ou supprimées une fois créées pour maintenir l'intégrité des données.
@@ -921,7 +921,7 @@ Note: Les transactions XP ne peuvent pas être modifiées ou supprimées une foi
 - **Corps de la requête** :
 ```json
 {
-  "userId": "123e4567-e89b-12d3-a456-426614174001",
+  "idUser": "123e4567-e89b-12d3-a456-426614174001",
   "actionType": "ban",
   "reason": "Violation des règles de la communauté",
   "duration": "24h",
