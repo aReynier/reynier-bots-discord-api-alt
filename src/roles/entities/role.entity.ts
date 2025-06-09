@@ -5,6 +5,7 @@ import { Member } from '../../members/entities/member.entity';
 import { Course } from '../../courses/entities/course.entity';
 import { Campus } from '../../campuses/entities/campus.entity';
 import { Promotion } from 'src/promotions/entities/promotion.entity';
+import { IsOptional, IsString, Length, Matches, IsInt, IsBoolean, IsDate, IsUUID, IsArray } from 'class-validator';
 
 @Entity('roles')
 export class Role {
@@ -13,6 +14,9 @@ export class Role {
     example: '172653890987364567'
   })
   @PrimaryColumn({ type: 'varchar', length: 19,  name: 'id_role' })
+  @IsString()
+  @Length(17, 19, { message: 'Le snowflake doit contenir entre 17 et 19 caractères' })
+  @Matches(/^\d+$/, { message: 'Le snowflake doit contenir uniquement des chiffres' })
   idRole: string;
 
   @ApiProperty({
@@ -21,6 +25,12 @@ export class Role {
     maxLength: 50
   })
   @Column({ type: 'varchar', length: 50, nullable: false })
+  @IsString()
+  @Length(1, 50, { message: 'Le  doit contenir entre 2 et 50 caractères'})
+  @Matches(
+    /^[a-zA-ZÀ-ÿ0-9\s\-_]+$/, 
+    { message: 'Le nom ne peut contenir que des lettres (avec accents), chiffres, espaces, tirets et underscores' }
+  )
   name: string;
 
   @ApiProperty({
@@ -28,6 +38,7 @@ export class Role {
     example: 10
   })
   @Column({ type: 'int', nullable: false })
+  @IsInt()
   memberCount: number;
 
   @ApiProperty({
@@ -35,6 +46,7 @@ export class Role {
     example: 1
   })
   @Column({ type: 'int', nullable: false })
+  @IsInt()
   rolePosition: number;
 
   @ApiProperty({
@@ -42,6 +54,7 @@ export class Role {
     example: true
   })
   @Column({ type: 'boolean', nullable: false, default: false })
+  @IsBoolean()
   hoist: boolean;
 
   @ApiProperty({
@@ -49,6 +62,9 @@ export class Role {
     example: '#FF0000'
   })
   @Column({ type: 'varchar', length: 7, nullable: false })
+  @IsString()
+  @Length(7, 7, { message: 'La couleur doit contenir 7 caractères' })
+  @Matches(/^#([0-9a-fA-F]{6})$/, { message: 'La couleur doit être au format hexadécimal' })
   color: string;
 
   @ApiProperty({
@@ -56,6 +72,7 @@ export class Role {
     example: '2024-02-18T10:00:00Z'
   })
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  @IsDate()
   createdAt: Date;
 
   @ApiProperty({
@@ -63,6 +80,8 @@ export class Role {
     example: '2024-02-18T10:00:00Z'
   })
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  @IsDate()
+  @IsOptional()
   updatedAt: Date;
 
   @ApiProperty({
@@ -70,6 +89,7 @@ export class Role {
     example: '123456789012345678'
   })
   @Column('uuid', { name: 'id_guild', nullable: false })
+  @IsUUID()
   idGuild: string;
 
   @ApiProperty({
@@ -85,6 +105,7 @@ export class Role {
     type: () => [Member]
   })
   @ManyToMany(() => Member, member => member.roles)
+  @IsArray()
   members: Member[];
   
   @ApiProperty({
@@ -94,6 +115,7 @@ export class Role {
     nullable: true
   })
   @ManyToMany(() => Course, course => course.roles, { nullable: true })
+  @IsArray()
   courses: Course[];
 
   @OneToOne(() => Campus, campus => campus.role)
