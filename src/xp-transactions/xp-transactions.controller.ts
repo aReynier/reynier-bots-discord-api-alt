@@ -39,14 +39,14 @@ export class XpTransactionsController {
     return await this.xpTransactionsService.findAll();
   }
 
-  @Get('member/:uuid')
+  @Get('member/:idMember')
   @ApiOperation({ 
     summary: 'Récupérer les transactions XP d\'un membre',
     description: 'Retourne la liste des transactions XP d\'un membre spécifique.'
   })
   @ApiParam({ 
-    name: 'uuid',
-    description: 'UUID du membre dont on veut récupérer les transactions',
+    name: 'idMember',
+    description: 'id du membre dont on veut récupérer les transactions',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -55,13 +55,13 @@ export class XpTransactionsController {
     type: [XpTransactionResponseDto] 
   })
   @ApiResponse({ status: 404, description: 'Membre non trouvé' })
-  async findByMember(@Param('uuid') uuid: string): Promise<XpTransactionResponseDto[]> {
-    return await this.xpTransactionsService.findByMember(uuid);
+  async findByMember(@Param('idMember') idMember: string): Promise<XpTransactionResponseDto[]> {
+    return await this.xpTransactionsService.findByMember(idMember);
   }
 
-  @Get(':uuid')
+  @Get(':idXpTransaction')
   @ApiOperation({ 
-    summary: 'Récupérer une transaction XP par son UUID',
+    summary: 'Récupérer une transaction XP par son id',
     description: 'Retourne les détails d\'une transaction XP spécifique.'
   })
   @ApiResponse({ 
@@ -70,11 +70,11 @@ export class XpTransactionsController {
     type: XpTransactionResponseDto 
   })
   @ApiResponse({ status: 404, description: 'Transaction XP non trouvée' })
-  async findOne(@Param('uuid') uuid: string): Promise<XpTransactionResponseDto> {
-    return await this.xpTransactionsService.findOne(uuid);
+  async findOne(@Param('idXpTransaction') idXpTransaction: string): Promise<XpTransactionResponseDto> {
+    return await this.xpTransactionsService.findOne(idXpTransaction);
   }
 
-  @Delete(':uuid')
+  @Delete(':idXpTransaction')
   @ApiOperation({ 
     summary: 'Supprimer une transaction XP',
     description: 'Supprime une transaction XP existante.'
@@ -84,7 +84,7 @@ export class XpTransactionsController {
     description: 'La transaction XP a été supprimée avec succès.' 
   })
   @ApiResponse({ status: 404, description: 'Transaction XP non trouvée' })
-  async remove(@Param('uuid') uuid: string): Promise<void> {
-    return await this.xpTransactionsService.remove(uuid);
+  async remove(@Param('idXpTransaction') idXpTransaction: string): Promise<void> {
+    return await this.xpTransactionsService.remove(idXpTransaction);
   }
 }

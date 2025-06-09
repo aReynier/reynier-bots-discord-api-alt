@@ -30,11 +30,11 @@ export enum ReferenceType {
 @Entity('xp_transactions')
 export class XpTransaction {
   @ApiProperty({
-    description: 'UUID unique de la transaction XP',
+    description: 'id unique de la transaction XP',
     example: '550e8400-e29b-41d4-a716-446655440000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_xp_transaction' })
-  uuidXpTransaction: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_xp_transaction' })
+  idXpTransaction: string;
 
   @ApiProperty({
     description: 'Type de la transaction (GAIN ou LOSS)',
@@ -111,16 +111,16 @@ export class XpTransaction {
   referenceType?: ReferenceType;
 
   @ApiProperty({
-    description: 'UUID de l\'objet référencé',
+    description: 'id de l\'objet référencé',
     example: '123e4567-e89b-12d3-a456-426614174000',
     required: false
   })
   @Column({ 
     type: 'uuid', 
     nullable: true,
-    name: 'reference_uuid'
+    name: 'id_reference'
   })
-  referenceUuid?: string;
+  idReference?: string;
 
   @ApiProperty({
     description: 'Date de création',
@@ -134,6 +134,6 @@ export class XpTransaction {
     type: () => Member
   })
   @ManyToOne(() => Member, member => member.xpTransactions)
-  @JoinColumn({ name: 'uuid_member' })
+  @JoinColumn({ name: 'id_member' })
   member: Member;
 }
