@@ -19,11 +19,11 @@ export enum ReportCategory {
 @Unique(['reporter', 'resource', 'reportedMember'])
 export class Report {
   @ApiProperty({
-    description: 'UUID unique du signalement',
+    description: 'id unique du signalement',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_report' })
-  uuidReport: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_report' })
+  idReport: string;
 
   @ApiProperty({
     description: 'Type de l\'élément signalé (ressource ou membre)',
@@ -78,7 +78,7 @@ export class Report {
   updatedAt: Date;
 
   @ManyToOne(() => Member)
-  @JoinColumn({ name: 'reporter_uuid' })
+  @JoinColumn({ name: 'id_reporter' })
   @ApiProperty({ 
     description: 'Membre qui a effectué le signalement',
     type: () => Member
@@ -86,7 +86,7 @@ export class Report {
   reporter: Member;
 
   @ManyToOne(() => Resource, resource => resource.reports)
-  @JoinColumn({ name: 'resource_uuid' })
+  @JoinColumn({ name: 'id_resource' })
   @ApiProperty({ 
     description: 'Ressource signalée (uniquement si type = resource)',
     type: () => Resource,
@@ -95,7 +95,7 @@ export class Report {
   resource?: Resource;
 
   @ManyToOne(() => Member)
-  @JoinColumn({ name: 'reported_member_uuid' })
+  @JoinColumn({ name: 'id_reported_member' })
   @ApiProperty({ 
     description: 'Membre signalé (uniquement si type = member)',
     type: () => Member,

@@ -4,14 +4,13 @@ import { ReportCategory } from '../entities/report.entity';
 import { describe, it, expect } from 'vitest';
 
 describe('CreateReportDto', () => {
-  it('should validate a correct DTO', async () => {
-    const dto = new CreateReportDto();
-    dto.category = ReportCategory.SPAM;
-    dto.reason = 'Test reason';
-    dto.status = 'pending';
+  const dto = new CreateReportDto();
+  dto.category = ReportCategory.SPAM;
+  dto.reason = 'Valid reason';
 
+  it('should validate a correct DTO', async () => {
     const errors = await validate(dto);
-    expect(errors.length).toBe(0);
+    expect(errors).toHaveLength(0);
   });
 
   describe('category validation', () => {
@@ -19,7 +18,6 @@ describe('CreateReportDto', () => {
       const dto = new CreateReportDto();
       dto.category = 'invalid' as ReportCategory;
       dto.reason = 'Test reason';
-      dto.status = 'pending';
 
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
@@ -29,7 +27,6 @@ describe('CreateReportDto', () => {
     it('should reject missing category', async () => {
       const dto = new CreateReportDto();
       dto.reason = 'Test reason';
-      dto.status = 'pending';
 
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
@@ -40,20 +37,17 @@ describe('CreateReportDto', () => {
   describe('reason validation', () => {
     it('should reject reason > 50 chars', async () => {
       const dto = new CreateReportDto();
-      dto.category = ReportCategory.SPAM;
       dto.reason = 'a'.repeat(51);
-      dto.status = 'pending';
 
       const errors = await validate(dto);
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].constraints).toHaveProperty('maxLength');
+      const reasonErrors = errors.find(err => err.property === 'reason');
+      expect(reasonErrors?.constraints?.maxLength).toBeDefined();
     });
 
     it('should reject empty reason', async () => {
       const dto = new CreateReportDto();
       dto.category = ReportCategory.SPAM;
       dto.reason = '';
-      dto.status = 'pending';
 
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
@@ -63,7 +57,6 @@ describe('CreateReportDto', () => {
     it('should reject missing reason', async () => {
       const dto = new CreateReportDto();
       dto.category = ReportCategory.SPAM;
-      dto.status = 'pending';
 
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
@@ -76,7 +69,6 @@ describe('CreateReportDto', () => {
       const dto = new CreateReportDto();
       dto.category = ReportCategory.SPAM;
       dto.reason = 'Test reason';
-      dto.status = '';
 
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
@@ -93,4 +85,4 @@ describe('CreateReportDto', () => {
       expect(errors[0].constraints).toHaveProperty('isNotEmpty');
     });
   });
-}); 
+});

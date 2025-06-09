@@ -40,14 +40,14 @@ export class ReportsController {
     return this.reportsService.findAll();
   }
 
-  @Get(':uuid_report')
+  @Get(':id')
   @ApiOperation({ 
-    summary: 'Récupérer un signalement par son UUID',
+    summary: 'Récupérer un signalement par son id',
     description: 'Retourne les détails d\'un signalement spécifique avec toutes ses relations.'
   })
   @ApiParam({ 
-    name: 'uuid_report',
-    description: 'UUID du signalement à récupérer',
+    name: 'id',
+    description: 'id du signalement à récupérer',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -56,18 +56,18 @@ export class ReportsController {
     type: ReportResponseDto 
   })
   @ApiResponse({ status: 404, description: 'Signalement non trouvé' })
-  findOne(@Param('uuid_report') uuid_report: string): Promise<ReportResponseDto> {
-    return this.reportsService.findOne(uuid_report);
+  findOne(@Param('id') id_report: string): Promise<ReportResponseDto> {
+    return this.reportsService.findOne(id_report);
   }
 
-  @Put(':uuid_report')
+  @Put(':id')
   @ApiOperation({ 
     summary: 'Mettre à jour un signalement',
     description: 'Cette fonctionnalité est réservée aux modérateurs.'
   })
   @ApiParam({ 
-    name: 'uuid_report',
-    description: 'UUID du signalement à mettre à jour',
+    name: 'id',
+    description: 'id du signalement à mettre à jour',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -78,18 +78,18 @@ export class ReportsController {
   @ApiResponse({ status: 400, description: 'Données invalides' })
   @ApiResponse({ status: 403, description: 'Action non autorisée' })
   @ApiResponse({ status: 404, description: 'Signalement non trouvé' })
-  update(@Param('uuid_report') uuid_report: string, @Body() updateReportDto: UpdateReportDto): Promise<ReportResponseDto> {
-    return this.reportsService.update(uuid_report, updateReportDto);
+  update(@Param('id') id_report: string, @Body() updateReportDto: UpdateReportDto): Promise<ReportResponseDto> {
+    return this.reportsService.update(id_report, updateReportDto);
   }
 
-  @Delete(':uuid_report')
+  @Delete(':id')
   @ApiOperation({ 
     summary: 'Supprimer un signalement',
     description: 'Un utilisateur ne peut supprimer que ses propres signalements.'
   })
   @ApiParam({ 
-    name: 'uuid_report',
-    description: 'UUID du signalement à supprimer',
+    name: 'id',
+    description: 'id du signalement à supprimer',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -98,7 +98,7 @@ export class ReportsController {
   })
   @ApiResponse({ status: 403, description: 'Action non autorisée' })
   @ApiResponse({ status: 404, description: 'Signalement non trouvé' })
-  remove(@Param('uuid_report') uuid_report: string, @Headers('X-Member-UUID') currentUserId: string): Promise<void> {
-    return this.reportsService.remove(uuid_report, currentUserId);
+    remove(@Param('id') id_report: string, @Headers('X-Member-UUID') currentUserId: string): Promise<void> {
+    return this.reportsService.remove(id_report, currentUserId);
   }
 } 
