@@ -9,8 +9,8 @@ export class MemberInformation {
     description: 'UUID unique des informations du membre',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_members_infos' })
-  uuid: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_members_infos' })
+  idMemberInfos: string;
 
   @ApiProperty({
     description: 'Prénom du membre',
@@ -46,7 +46,7 @@ export class MemberInformation {
   updatedAt: Date;
 
   @OneToOne(() => Member, (member) => member.memberInformation)
-  @JoinColumn({ name: 'uuidMember' })
+  @JoinColumn({ name: 'id_member' })
   member: Member;
 
 } 
