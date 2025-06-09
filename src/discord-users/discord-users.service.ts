@@ -21,12 +21,12 @@ export class DiscordUsersService {
     return this.discordUserRepository.find();
   }
 
-  findOne(uuidDiscord: string) {
-    return this.discordUserRepository.findOneBy({ uuidDiscord });
+  findOne(idDiscord: string) {
+    return this.discordUserRepository.findOneBy({ idDiscord });
   }
 
-  async update(uuidDiscord: string, updateDiscordUserDto: UpdateDiscordUserDto) {
-    const discordUser = await this.discordUserRepository.findOneBy({ uuidDiscord });
+  async update(idDiscord: string, updateDiscordUserDto: UpdateDiscordUserDto) {
+    const discordUser = await this.discordUserRepository.findOneBy({ idDiscord });
     if (!discordUser) {
       return null;
     }
@@ -39,7 +39,7 @@ export class DiscordUsersService {
     return this.discordUserRepository.save(discordUser);
   }
 
-  remove(uuidDiscord: string) {
-    return this.discordUserRepository.delete({ uuidDiscord });
+  remove(idDiscord: string) {
+    return this.discordUserRepository.delete({ idDiscord });
   }
 } 
