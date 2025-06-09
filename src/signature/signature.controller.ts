@@ -22,14 +22,14 @@ export class SignatureController {
     return this.signatureService.getAllPromotions();
   }
 
-  @Get('promotions/:uuid')
+  @Get('promotions/:id')
   @ApiOperation({ 
-    summary: 'Get a promotion signature by UUID',
+    summary: 'Get a promotion signature by id',
     description: 'Returns complete signature information for a promotion, including members and associated forum'
   })
   @ApiParam({ 
-    name: 'uuid', 
-    description: 'Unique identifier (UUID) of the promotion',
+    name: 'id', 
+    description: 'Unique identifier (id) of the promotion',
     type: 'string',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
@@ -42,8 +42,8 @@ export class SignatureController {
     status: HttpStatus.NOT_FOUND, 
     description: 'Promotion not found'
   })
-  async getPromotionSignature(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<PromotionSignatureDto> {
-    return this.signatureService.getPromotionSignature(uuid);
+  async getPromotionSignature(@Param('idPromotion', ParseUUIDPipe) idPromotion: string): Promise<PromotionSignatureDto> {
+    return this.signatureService.getPromotionSignature(idPromotion);
   }
 
   @Post('promotions/test-data')

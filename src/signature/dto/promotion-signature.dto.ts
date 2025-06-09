@@ -51,9 +51,9 @@ export class MembreDto {
 export class PromotionSignatureDto {
   @ApiProperty({ 
     example: '123e4567-e89b-12d3-a456-426614174000', 
-    description: 'Identifiant unique (UUID) de la promotion'
+    description: 'Identifiant unique (id) de la promotion'
   })
-  uuid: string;
+  idPromotion: string;
 
   @ApiProperty({ 
     example: 'Développeur Web 2024', 

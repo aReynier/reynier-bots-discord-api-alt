@@ -44,7 +44,7 @@ describe('SignatureController', () => {
       const mockData = {
         promotions: [
           {
-            uuid: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+            idPromotion: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
             nom: 'Cda P4 Vals',
             channel: {
               snowflake: '1344640530763485265',
@@ -68,7 +68,7 @@ describe('SignatureController', () => {
             apprenants: []
           },
           {
-            uuid: 'c9bf9e57-1685-4c89-bafb-ff5af830be8a',
+            idPromotion: 'c9bf9e57-1685-4c89-bafb-ff5af830be8a',
             nom: 'Promo PHP P2',
             channel: {
               snowflake: '1344611862003712050',
@@ -97,18 +97,18 @@ describe('SignatureController', () => {
       // Vérifier que le résultat correspond aux données de test
       expect(result).toEqual(mockData);
       expect(result.promotions.length).toBe(2);
-      expect(result.promotions[0].uuid).toBe('f47ac10b-58cc-4372-a567-0e02b2c3d479');
-      expect(result.promotions[1].uuid).toBe('c9bf9e57-1685-4c89-bafb-ff5af830be8a');
+      expect(result.promotions[0].idPromotion).toBe('f47ac10b-58cc-4372-a567-0e02b2c3d479');
+      expect(result.promotions[1].idPromotion).toBe('c9bf9e57-1685-4c89-bafb-ff5af830be8a');
     });
   });
 
   describe('getPromotionSignature', () => {
     it('should return promotion signature for valid UUID', async () => {
       // Données de test
-      const uuid = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
+      const idPromotion = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
       const mockData = {
         promotion: {
-          uuid,
+          idPromotion,
           nom: 'Cda P4 Vals',
           channel: {
             snowflake: '1344640530763485265',
@@ -167,18 +167,18 @@ describe('SignatureController', () => {
       mockSignatureService.getPromotionSignature.mockResolvedValue(mockData);
 
       // Appeler la méthode du contrôleur
-      const result = await controller.getPromotionSignature(uuid);
+      const result = await controller.getPromotionSignature(idPromotion);
 
-      // Vérifier que le service a été appelé avec le bon UUID
-      expect(mockSignatureService.getPromotionSignature).toHaveBeenCalledWith(uuid);
+      // Vérifier que le service a été appelé avec le bon id
+      expect(mockSignatureService.getPromotionSignature).toHaveBeenCalledWith(idPromotion);
       
       // Vérifier que le résultat correspond aux données de test
       expect(result).toEqual(mockData);
-      expect(result.promotion.uuid).toBe(uuid);
+      expect(result.idPromotion).toBe(idPromotion);
     });
 
     it('should throw NotFoundException for invalid UUID', async () => {
-      const uuid = 'invalid-uuid';
+      const idPromotion = 'invalid-uuid';
       
       // Configurer le mock pour rejeter avec une erreur
       mockSignatureService.getPromotionSignature.mockRejectedValue(
@@ -186,10 +186,10 @@ describe('SignatureController', () => {
       );
       
       // Vérifier que la méthode rejette une erreur
-      await expect(controller.getPromotionSignature(uuid)).rejects.toThrow();
+      await expect(controller.getPromotionSignature(idPromotion)).rejects.toThrow();
       
-      // Vérifier que le service a été appelé avec le bon UUID
-      expect(mockSignatureService.getPromotionSignature).toHaveBeenCalledWith(uuid);
+      // Vérifier que le service a été appelé avec le bon id
+      expect(mockSignatureService.getPromotionSignature).toHaveBeenCalledWith(idPromotion);
     });
   });
 
@@ -199,7 +199,7 @@ describe('SignatureController', () => {
       const mockData = {
         promotions: [
           {
-            uuid: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+            idPromotion: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
             nom: 'Cda P4 Vals',
             channel: {
               snowflake: '1344640530763485265',

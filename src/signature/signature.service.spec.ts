@@ -64,7 +64,7 @@ describe('SignatureService', () => {
       
       // Vérifier que toutes les promotions ont la structure correcte
       for (const promotion of result.promotions) {
-        expect(promotion).toHaveProperty('uuid');
+        expect(promotion).toHaveProperty('idPromotion');
         expect(promotion).toHaveProperty('nom');
         expect(promotion).toHaveProperty('channel');
         expect(promotion).toHaveProperty('chargeDeProjet');
@@ -97,7 +97,7 @@ describe('SignatureService', () => {
       
       // Vérifier la structure de la première promotion
       const promotion = result.promotions[0];
-      expect(promotion).toHaveProperty('uuid');
+      expect(promotion).toHaveProperty('idPromotion');
       expect(promotion).toHaveProperty('nom');
       expect(promotion).toHaveProperty('channel');
       expect(promotion).toHaveProperty('chargeDeProjet');
@@ -105,7 +105,7 @@ describe('SignatureService', () => {
       expect(promotion).toHaveProperty('apprenants');
       
       // Vérifier le contenu des données de test
-      expect(promotion.uuid).toBe('f47ac10b-58cc-4372-a567-0e02b2c3d479');
+      expect(promotion.idPromotion).toBe('f47ac10b-58cc-4372-a567-0e02b2c3d479');
       expect(promotion.nom).toBe('Cda P4 Vals');
       
       // Vérifier la structure du channel
@@ -137,21 +137,19 @@ describe('SignatureService', () => {
   });
 
   describe('getPromotionSignature', () => {
-    it('should return promotion signature for valid UUID', async () => {
-      const uuid = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
-      const result = await service.getPromotionSignature(uuid);
+    it('should return promotion signature for valid id', async () => {
+      const idPromotion = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
+      const result = await service.getPromotionSignature(idPromotion);
       
-      expect(result).toHaveProperty('promotion');
-      expect(result.promotion).toHaveProperty('uuid');
-      expect(result.promotion.uuid).toBe(uuid);
-      expect(result.promotion).toHaveProperty('channel');
-      expect(result.promotion.channel).toHaveProperty('snowflake');
+      expect(result).toHaveProperty('idPromotion');
+      expect(result).toHaveProperty('channel');
+      expect(result.channel).toHaveProperty('idChannel');
     });
 
-    it('should throw an error for invalid UUID', async () => {
-      const uuid = 'invalid-uuid';
+    it('should throw an error for invalid id', async () => {
+      const idPromotion = 'invalid-id';
       
-      await expect(service.getPromotionSignature(uuid)).rejects.toThrow();
+      await expect(service.getPromotionSignature(idPromotion)).rejects.toThrow();
     });
   });
 }); 
