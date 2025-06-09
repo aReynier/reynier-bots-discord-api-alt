@@ -6,6 +6,7 @@ import { Course } from '../../courses/entities/course.entity';
 import { Promotion } from 'src/promotions/entities/promotion.entity';
 import { GuildTemplate } from 'src/guilds-templates/entities/guild-template.entity';
 import { Campus } from '../../campuses/entities/campus.entity';
+import { IsArray, IsString, Length, Matches, IsInt, IsDate, IsOptional } from 'class-validator';
 
 @Entity('categories')
 export class Category {
@@ -14,6 +15,9 @@ export class Category {
     example: '123456789012345678'
   })
   @PrimaryColumn({ type: 'varchar', length: 19, name: 'id_category' })
+  @IsString()
+  @Length(17, 19, { message: 'Le snowflake doit contenir entre 17 et 19 caractères' })
+  @Matches(/^\d+$/, { message: 'Le snowflake doit contenir uniquement des chiffres' })
   idCategory: string;
 
   @ApiProperty({
@@ -22,6 +26,12 @@ export class Category {
     maxLength: 50
   })
   @Column({ type: 'varchar', length: 50 })
+  @IsString()
+  @Length(2,50, { message: 'Le nom doit contenir entre 2 et 50 caractères'})
+  @Matches(
+    /^[a-zA-ZÀ-ÿ0-9\s\-_]+$/, 
+    { message: 'Le nom ne peut contenir que des lettres (avec accents), chiffres, espaces, tirets et underscores' }
+  )
   name: string;
 
   @ApiProperty({
@@ -29,6 +39,7 @@ export class Category {
     example: 1
   })
   @Column({ type: 'int', name: 'category_position' })
+  @IsInt()
   categoryPosition: number;
 
   @ApiProperty({
@@ -36,6 +47,9 @@ export class Category {
     example: '123456789012345678'
   })
   @Column({ name: 'id_guild', type: 'varchar', length: 19 })
+  @IsString()
+  @Length(17, 19, { message: 'Le snowflake doit contenir entre 17 et 19 caractères' })
+  @Matches(/^\d+$/, { message: 'Le snowflake doit contenir uniquement des chiffres' })
   idGuild: string;
 
   @ApiProperty({
@@ -45,6 +59,7 @@ export class Category {
     name: 'created_at',
     type: 'timestamp',
   })
+  @IsDate()
   createdAt: Date;
 
   @ApiProperty({
@@ -55,6 +70,8 @@ export class Category {
     type: 'timestamp',
     nullable: true,
   })
+  @IsDate()
+  @IsOptional()
   updatedAt: Date;
 
   @ApiProperty({
@@ -63,6 +80,7 @@ export class Category {
     isArray: true
   })
   @OneToMany(() => Channel, channel => channel.category)
+  @IsArray()
   channels: Channel[];
 
   @ApiProperty({
@@ -70,6 +88,7 @@ export class Category {
     type: () => [Course]
   })
   @OneToMany(() => Course, course => course.category)
+  @IsArray()
   courses: Course[]; 
 
   @ApiProperty({
@@ -109,5 +128,6 @@ export class Category {
     isArray: true
   })
   @OneToMany(() => Campus, campus => campus.category)
+  @IsArray()
   campuses: Campus[];
 }
