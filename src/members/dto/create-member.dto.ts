@@ -1,4 +1,4 @@
-import { IsString, MaxLength, IsInt, Min, Matches, IsIn, IsUUID } from 'class-validator';
+import { IsString, MaxLength, IsInt, Min, Matches, IsIn, IsUUID, Length } from 'class-validator';
 import { ApiProperty, PickType, IntersectionType } from '@nestjs/swagger';
 import { PickableDiscordIdFields} from 'src/utils/pickable-discord-id-fields';
 import { PickableInternIdFields } from 'src/utils/pickable-intern-id-fields';
@@ -49,6 +49,14 @@ export class CreateMemberDto extends PickType(IntersectionType(PickableInternIdF
     enum: ['Active', 'Inactive', 'Banned']
   })
   @IsString()
+  @Length(1, 50, { message: 'Le statut doit contenir entre 1 et 50 caractères' })
+  @Matches(/^[a-zA-ZÀ-ÿ0-9\s\-_]+$/, { message: 'Le statut ne peut contenir que des lettres (avec accents), chiffres, espaces, tirets et underscores' })
   @IsIn(['Active', 'Inactive', 'Banned'])
   status: string;
+
+  @IsUUID()
+  idGuild: string;
+
+  @IsUUID()
+  idDiscord: string;
 }

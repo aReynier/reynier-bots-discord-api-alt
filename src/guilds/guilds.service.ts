@@ -14,7 +14,14 @@ export class GuildsService {
 
   // Créer une nouvelle guild
   async create(createGuildDto: CreateGuildDto): Promise<Guild> {
-    const guild = this.guildRepository.create(createGuildDto);
+    // Conversion des données du DTO
+    const guildData = {
+        ...createGuildDto,
+        memberCount: parseInt(createGuildDto.memberCount, 10)
+    };
+
+    // Création et sauvegarde de l'entité
+    const guild = this.guildRepository.create(guildData);
     return await this.guildRepository.save(guild);
   }
 

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { validate } from 'class-validator';
 import { CreateCourseDto } from "./create-course.dto";
+import { IsString, Length, Matches, IsBoolean } from 'class-validator';
 
 describe('CreateCourseDto', () => {
     it('should validate a valid DTO', async () => {
