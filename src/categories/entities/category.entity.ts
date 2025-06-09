@@ -5,15 +5,16 @@ import { Guild } from '../../guilds/entities/guild.entity';
 import { Course } from '../../courses/entities/course.entity';
 import { Promotion } from 'src/promotions/entities/promotion.entity';
 import { GuildTemplate } from 'src/guilds-templates/entities/guild-template.entity';
+import { Campus } from '../../campuses/entities/campus.entity';
 
 @Entity('categories')
 export class Category {
   @ApiProperty({
-    description: 'ID Discord de la catégorie',
+    description: 'SF Discord de la catégorie',
     example: '123456789012345678'
   })
-  @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_category' })
-  uuid: string;
+  @PrimaryColumn({ type: 'varchar', length: 19, name: 'id_category' })
+  idCategory: string;
 
   @ApiProperty({
     description: 'Le nom de la catégorie',
@@ -27,15 +28,15 @@ export class Category {
     description: 'La position de la catégorie',
     example: 1
   })
-  @Column({ type: 'int' })
-  position: number;
+  @Column({ type: 'int', name: 'category_position' })
+  categoryPosition: number;
 
   @ApiProperty({
     description: 'ID Discord du serveur associé',
     example: '123456789012345678'
   })
-  @Column({ name: 'uuidGuild', type: 'varchar', length: 19 })
-  uuidGuild: string;
+  @Column({ name: 'id_guild', type: 'varchar', length: 19 })
+  idGuild: string;
 
   @ApiProperty({
     description: 'Date de création'
@@ -65,18 +66,18 @@ export class Category {
   channels: Channel[];
 
   @ApiProperty({
-    description: 'Formation associée à la catégorie',
-    type: () => Course
+    description: 'Formations associées à la catégorie',
+    type: () => [Course]
   })
   @OneToMany(() => Course, course => course.category)
-  course: Course[];
+  courses: Course[]; 
 
   @ApiProperty({
     description: 'Le serveur Discord associé à cette catégorie',
     type: () => Guild
   })
   @ManyToOne(() => Guild, guild => guild.categories)
-  @JoinColumn({ name: 'uuidGuild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Guild;
 
   @ApiProperty({
@@ -91,14 +92,22 @@ export class Category {
     example: '123456789012345678',
     required: false
   })
-  @Column({ name: 'uuid_guild_template', type: 'varchar', length: 19, nullable: true })
-  uuidGuildTemplate: string;
+  @Column({ name: 'id_guild_template', type: 'varchar', length: 19, nullable: true })
+  idGuildTemplate: string;
 
   @ApiProperty({
     description: 'Template de serveur associé à cette catégorie',
     type: () => GuildTemplate
   })
   @OneToOne(() => GuildTemplate, guildTemplate => guildTemplate.category)
-  @JoinColumn({ name: 'uuid_guild_template' })
+  @JoinColumn({ name: 'id_guild_template' })
   guildTemplate: GuildTemplate;
+
+  @ApiProperty({
+    description: 'Liste des campus dans cette catégorie',
+    type: () => Campus,
+    isArray: true
+  })
+  @OneToMany(() => Campus, campus => campus.category)
+  campuses: Campus[];
 }

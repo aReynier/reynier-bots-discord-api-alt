@@ -26,43 +26,43 @@ export class CategoriesService {
       relations: {
         guild: true,
         channels: true,
-        course: true,
+        courses: true,
         promotion: true,
         guildTemplate: true
       }
     });
   }
 
-  findOne(uuid: string) {
+  findOne(idCategory: string) {
     return this.categoryRepository.findOne({
-      where: { uuid },
+      where: { idCategory },
       relations: {
         guild: true,
         channels: true,
-        course: true,
+        courses: true,
         promotion: true,
         guildTemplate: true
       }
     });
   }
 
-  async update(uuid: string, updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.categoryRepository.findOneBy({ uuid });
+  async update(idCategory: string, updateCategoryDto: UpdateCategoryDto) {
+    const category = await this.categoryRepository.findOneBy({ idCategory });
     if (!category) {
       return null;
     }
     
     // Mise à jour des champs autorisés uniquement
-    const { name, position, uuidGuildTemplate } = updateCategoryDto;
+    const { name, categoryPosition, idGuildTemplate } = updateCategoryDto;
     if (name !== undefined) category.name = name;
-    if (position !== undefined) category.position = position;
-    if (uuidGuildTemplate !== undefined) category.uuidGuildTemplate = uuidGuildTemplate;
+    if (categoryPosition !== undefined) category.categoryPosition = categoryPosition;
+    if (idGuildTemplate !== undefined) category.idGuildTemplate = idGuildTemplate;
     
     category.updatedAt = new Date();
     return this.categoryRepository.save(category);
   }
 
-  remove(uuid: string) {
-    return this.categoryRepository.delete({ uuid });
+  remove(idCategory: string) {
+    return this.categoryRepository.delete({ idCategory });
   }
 }
