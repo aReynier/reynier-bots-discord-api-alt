@@ -12,7 +12,7 @@ describe('Answer templates Integration Tests', () => {
 
   const testAnswer = {
     content: 'Test answer',
-    uuidQuestionTemplate: '123e4567-e89b-12d3-a456-426614174000'
+    idQuestionTemplate: '123e4567-e89b-12d3-a456-426614174000'
   };
 
   beforeAll(async () => {
@@ -53,7 +53,7 @@ describe('Answer templates Integration Tests', () => {
         .post('/answer-templates')
         .send({
           content: '',
-          uuidQuestionTemplate: 'invalid-uuid'
+          idQuestionTemplate: 'invalid-uuid'
         })
         .expect(400);
     });
@@ -70,20 +70,20 @@ describe('Answer templates Integration Tests', () => {
     });
   });
 
-  describe('/GET answer-templates/:uuid', () => {
+  describe('/GET answer-templates/:id', () => {
     it('should return a single answer', async () => {
       // Créer d'abord une réponse
       const createResponse = await request(app.getHttpServer())
         .post('/answer-templates')
         .send(testAnswer);
 
-      const uuid = createResponse.body.uuid;
+      const id = createResponse.body.id;
 
       return request(app.getHttpServer())
-        .get(`/answer-templates/${uuid}`)
+        .get(`/answer-templates/${id}`)
         .expect(200)
         .then((response) => {
-      expect(response.body.uuid).toBe(uuid);
+      expect(response.body.id).toBe(id);
         });
     });
   });
