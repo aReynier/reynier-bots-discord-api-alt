@@ -16,27 +16,27 @@ describe('ModeratorActionsService', () => {
   let memberRepository: Repository<Member>;
 
   const mockModeratorAction = {
-    uuidModeration: '123e4567-e89b-12d3-a456-426614174000',
+    idModeration: '123e4567-e89b-12d3-a456-426614174000',
     actionType: 'warning',
     actionReason: 'Test reason',
-    moderatorUuid: '123e4567-e89b-12d3-a456-426614174001',
-    reportUuid: '123e4567-e89b-12d3-a456-426614174002',
+    idModerator: '123e4567-e89b-12d3-a456-426614174001',
+    idReport: '123e4567-e89b-12d3-a456-426614174002',
   };
 
   const mockReport = {
-    uuidReport: '123e4567-e89b-12d3-a456-426614174002',
+    idReport: '123e4567-e89b-12d3-a456-426614174002',
     status: 'pending',
     save: vi.fn(),
   };
 
   const mockModerator: Partial<Member> = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
     communityRole: 'Moderator',
   };
 
   const mockCreateDto: CreateModeratorActionDto = {
-    uuidMember: mockModerator.uuidMember!,
-    uuidReport: mockReport.uuidReport,
+    idMember: mockModerator.idMember!,
+    idReport: mockReport.idReport,
     type: ActionType.WARN,
     reason: 'Test reason',
   };
@@ -121,7 +121,7 @@ describe('ModeratorActionsService', () => {
 
   describe('findOne', () => {
     it('devrait retourner une action de modération spécifique', async () => {
-      const result = await service.findOne(mockModeratorAction.uuidModeration);
+      const result = await service.findOne(mockModeratorAction.idModeration);
       expect(result).toEqual(mockModeratorAction);
     });
 
@@ -133,19 +133,19 @@ describe('ModeratorActionsService', () => {
 
   describe('findByReport', () => {
     it('devrait retourner les actions de modération pour un signalement', async () => {
-      const result = await service.findByReport(mockReport.uuidReport);
+      const result = await service.findByReport(mockReport.idReport);
       expect(result).toEqual([mockModeratorAction]);
     });
 
     it('devrait gérer les erreurs de base de données', async () => {
       vi.spyOn(moderatorActionRepository, 'find').mockRejectedValueOnce(new Error());
-      await expect(service.findByReport(mockReport.uuidReport)).rejects.toThrow(BadRequestException);
+      await expect(service.findByReport(mockReport.idReport)).rejects.toThrow(BadRequestException);
     });
   });
 
   describe('remove', () => {
     it('devrait lever une exception car la suppression n\'est pas autorisée', async () => {
-      await expect(service.remove(mockModeratorAction.uuidModeration)).rejects.toThrow(BadRequestException);
+      await expect(service.remove(mockModeratorAction.idModeration)).rejects.toThrow(BadRequestException);
     });
   });
 }); 

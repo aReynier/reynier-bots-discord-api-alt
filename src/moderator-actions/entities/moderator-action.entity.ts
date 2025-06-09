@@ -16,11 +16,11 @@ export enum ActionType {
 @Entity('moderator_actions')
 export class ModeratorAction {
   @ApiProperty({
-    description: 'UUID unique de l\'action de modération',
+    description: 'id unique de l\'action de modération',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_moderation' })
-  uuidModeration: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_moderation' })
+  idModeration: string;
 
   @ApiProperty({
     description: 'Type d\'action prise',
@@ -50,49 +50,49 @@ export class ModeratorAction {
 
   // Relation avec le modérateur
   @ManyToOne(() => Member)
-  @JoinColumn({ name: 'moderator_uuid' })
+  @JoinColumn({ name: 'id_moderator' })
   moderator: Member;
 
   @ApiProperty({
-    description: 'UUID du modérateur',
+    description: 'id du modérateur',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ type: 'uuid', name: 'moderator_uuid' })
-  moderatorUuid: string;
+  @Column({ type: 'uuid', name: 'id_moderator' })
+  idModerator: string;
 
   // Relation avec le signalement
   @ManyToOne(() => Report)
-  @JoinColumn({ name: 'report_uuid' })
+  @JoinColumn({ name: 'id_report' })
   report: Report;
 
   @ApiProperty({
-    description: 'UUID du signalement',
+    description: 'id du signalement',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ type: 'uuid', name: 'report_uuid' })
-  reportUuid: string;
+  @Column({ type: 'uuid', name: 'id_report' })
+  idReport: string;
 
   // Relations avec les cibles possibles
   @ManyToOne(() => Resource, { nullable: true })
-  @JoinColumn({ name: 'resource_uuid' })
+  @JoinColumn({ name: 'id_resource' })
   resource?: Resource;
 
-  @Column({ type: 'uuid', name: 'resource_uuid', nullable: true })
-  resourceUuid?: string;
+  @Column({ type: 'uuid', name: 'id_resource', nullable: true })
+  idResource?: string;
 
   @ManyToOne(() => Member, { nullable: true })
-  @JoinColumn({ name: 'target_member_uuid' })
+  @JoinColumn({ name: 'id_target_member' })
   targetMember?: Member;
 
-  @Column({ type: 'uuid', name: 'target_member_uuid', nullable: true })
-  targetMemberUuid?: string;
+  @Column({ type: 'uuid', name: 'id_target_member', nullable: true })
+  idTargetMember?: string;
 
   @ManyToOne(() => Comment, { nullable: true })
-  @JoinColumn({ name: 'comment_uuid' })
+  @JoinColumn({ name: 'id_comment' })
   comment?: Comment;
 
-  @Column({ type: 'uuid', name: 'comment_uuid', nullable: true })
-  commentUuid?: string;
+  @Column({ type: 'uuid', name: 'id_comment', nullable: true })
+  idComment?: string;
 
   @ApiProperty({
     description: 'Date de dernière modification de l\'action',

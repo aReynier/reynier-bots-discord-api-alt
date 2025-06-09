@@ -1,16 +1,16 @@
 import { IsString, IsNotEmpty, IsEnum, Length } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { PickableInternUUIDFields } from '../../utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from '../../utils/pickable-intern-id-fields';
 
 export enum ActionType {
   BAN = 'ban',
   WARN = 'warn'
 }
 
-export class CreateModeratorActionDto extends PickType(PickableInternUUIDFields, [
-  'uuidMember', // Pour le modérateur
-  'uuidReport' // Pour le signalement
+export class CreateModeratorActionDto extends PickType(PickableInternIdFields, [
+  'idMember', // Pour le modérateur
+  'idReport' // Pour le signalement
 ]) {
   @ApiProperty({
     description: 'Type d\'action',
