@@ -25,31 +25,31 @@ export class CampusesController {
     return this.campusService.findAll();
   }
 
-  @Get(':uuid')
-  @ApiOperation({ summary: 'Récupérer un campus par son UUID' })
+  @Get(':id')
+  @ApiOperation({ summary: 'Récupérer un campus par son id' })
   @ApiResponse({ status: 200, description: 'Le campus a été trouvé.', type: Campus })
   @ApiResponse({ status: 404, description: 'Campus non trouvé' })
-  findOne(@Param('uuid') uuid: string) {
-    return this.campusService.findOne(uuid);
+  findOne(@Param('id') idCampus: string) {
+    return this.campusService.findOne(idCampus);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ summary: 'Mettre à jour un campus' })
   @ApiResponse({ status: 200, description: 'Le campus a été mis à jour avec succès.', type: Campus })
   @ApiResponse({ status: 404, description: 'Campus non trouvé' })
-  async update(@Param('uuid') uuid: string, @Body() updateCampusDto: UpdateCampusDto) {
-    const campus = await this.campusService.update(uuid, updateCampusDto);
+  async update(@Param('id') idCampus: string, @Body() updateCampusDto: UpdateCampusDto) {
+    const campus = await this.campusService.update(idCampus, updateCampusDto);
     if (!campus) {
-      throw new NotFoundException(`Campus with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Campus with id "${idCampus}" not found`);
     }
     return campus;
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ summary: 'Supprimer un campus' })
   @ApiResponse({ status: 200, description: 'Le campus a été supprimé avec succès.' })
   @ApiResponse({ status: 404, description: 'Campus non trouvé' })
-  remove(@Param('uuid') uuid: string) {
-    return this.campusService.remove(uuid);
+  remove(@Param('id') idCampus: string) {
+    return this.campusService.remove(idCampus);
   }
 }

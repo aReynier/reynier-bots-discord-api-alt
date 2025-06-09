@@ -1,18 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToOne, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Guild } from '../../guilds/entities/guild.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { Promotion } from 'src/promotions/entities/promotion.entity';
-
+import { Category } from 'src/categories/entities/category.entity';
 
 @Entity('Campuses')
 export class Campus {
   @ApiProperty({
-    description: 'UUID unique du campus',
-    example: '123e4567-e89b-12d3-a456-426614174000'
+    description: 'SF unique du campus',
+    example: '123456789012345678'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_campus' })
-  uuidCampus: string;
+  @PrimaryColumn({ type: 'varchar', length: 19, name: 'id_campus' })
+  idCampus: string;
 
   @ApiProperty({
     description: 'Nom du campus',
@@ -23,11 +23,18 @@ export class Campus {
   name: string;
 
   @ApiProperty({
-    description: 'UUID Discord du serveur associé',
+    description: 'id Discord du serveur associé',
     example: '123456789012345678'
   })
-  @Column({ name: 'uuid_guild', type: 'varchar', length: 19 })
-  uuidGuild: string;
+  @Column({ name: 'id_guild', type: 'varchar', length: 19 })
+  idGuild: string;
+
+  @ApiProperty({
+    description: 'id Discord de la catégorie associée',
+    example: '123456789012345678'
+  })
+  @Column({ name: 'id_category', type: 'varchar', length: 19 })
+  idCategory: string;
 
   @ApiProperty({
     description: 'Date de création'
@@ -46,14 +53,14 @@ export class Campus {
     type: () => Guild
   })
   @ManyToOne(() => Guild, guild => guild.campuses)
-  @JoinColumn({ name: 'uuid_guild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Guild;
 
-  @Column({ type: 'varchar', name: 'uuid_role' })
-  uuidRole: string;
+  @Column({ type: 'varchar', name: 'id_role' })
+  idRole: string;
 
   @OneToOne(() => Role, role => role.campus)
-  @JoinColumn({ name: 'uuid_role' })
+  @JoinColumn({ name: 'id_role' })
   role: Role
 
   @ApiProperty({
@@ -62,4 +69,12 @@ export class Campus {
   })
   @OneToMany(() => Promotion, promotion => promotion.campus)
   promotions: Promotion[];
+
+  @ApiProperty({
+    description: 'La catégorie associée au campus',
+    type: () => Category
+  })
+  @ManyToOne(() => Category, category => category.campuses)
+  @JoinColumn({ name: 'id_category' })
+  category: Category;
 }
