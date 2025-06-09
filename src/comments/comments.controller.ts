@@ -27,36 +27,36 @@ export class CommentsController {
     return this.commentsService.findAll();
   }
 
-  @Get(':uuid')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Récupérer un commentaire par UUID' })
-  @ApiParam({ name: 'uuid', description: 'UUID du commentaire' })
+  @ApiOperation({ summary: 'Récupérer un commentaire par id' })
+  @ApiParam({ name: 'id', description: 'id du commentaire' })
   @ApiResponse({ status: 200, type: Comment })
   @ApiResponse({ status: 404, description: 'Non trouvé' })
-  findOne(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<Comment> {
-    return this.commentsService.findOne(uuid);
+  findOne(@Param('id', ParseUUIDPipe) idComment: string): Promise<Comment> {
+    return this.commentsService.findOne(idComment);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Mettre à jour un commentaire' })
-  @ApiParam({ name: 'uuid', description: 'UUID du commentaire' })
+  @ApiParam({ name: 'id', description: 'id du commentaire' })
   @ApiResponse({ status: 200, type: Comment })
   @ApiResponse({ status: 404, description: 'Non trouvé' })
   update(
-    @Param('uuid', ParseUUIDPipe) uuid: string,
+    @Param('id', ParseUUIDPipe) idComment: string,
     @Body() updateCommentDto: UpdateCommentDto
   ): Promise<Comment> {
-    return this.commentsService.update(uuid, updateCommentDto);
+    return this.commentsService.update(idComment, updateCommentDto);
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Supprimer un commentaire' })
-  @ApiParam({ name: 'uuid', description: 'UUID du commentaire' })
+  @ApiParam({ name: 'id', description: 'id du commentaire' })
   @ApiResponse({ status: 204, description: 'Supprimé' })
   @ApiResponse({ status: 404, description: 'Non trouvé' })
-  remove(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<void> {
-    return this.commentsService.remove(uuid);
+  remove(@Param('id', ParseUUIDPipe) idComment: string): Promise<void> {
+    return this.commentsService.remove(idComment);
   }
 }

@@ -43,7 +43,7 @@ export class UpdateCommentDto extends PartialType(CreateCommentDto) {
    */
   @IsOptional()
   @IsUUID('4', { message: 'L\'ID de la ressource doit être un UUID valide' })
-  resource_uuid?: string;
+  idResource?: string;
 
   /**
    * Nouvel ID de l'utilisateur propriétaire
@@ -51,5 +51,5 @@ export class UpdateCommentDto extends PartialType(CreateCommentDto) {
    */
   @IsOptional()
   @IsUUID('4', { message: 'L\'ID de l\'utilisateur propriétaire doit être un UUID valide' })
-  user_uuid?: string;
+  idUser?: string;
 }

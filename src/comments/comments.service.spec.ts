@@ -15,8 +15,8 @@ describe('CommentsService', () => {
   const mockCreateDto: CreateCommentDto = {
     content: 'Test comment',
     status: 'active',
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
-    uuidResource: '123e4567-e89b-12d3-a456-426614174002'
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
+    idResource: '123e4567-e89b-12d3-a456-426614174002'
   };
 
   const mockUpdateDto: UpdateCommentDto = {
@@ -25,12 +25,12 @@ describe('CommentsService', () => {
   };
 
   const mockComment = {
-    uuidComment: '123e4567-e89b-12d3-a456-426614174000',
+    idComment: '123e4567-e89b-12d3-a456-426614174000',
     content: 'Test comment',
     status: 'active',
     createdAt: new Date(),
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
-    uuidResource: '123e4567-e89b-12d3-a456-426614174002'
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
+    idResource: '123e4567-e89b-12d3-a456-426614174002'
   } as Comment;
 
   const mockDeleteResult: DeleteResult = {
@@ -85,11 +85,11 @@ describe('CommentsService', () => {
 
   describe('findOne', () => {
     it('devrait retourner un commentaire par uuid', async () => {
-      const result = await service.findOne(mockComment.uuidComment);
+      const result = await service.findOne(mockComment.idComment);
 
       expect(result).toEqual(mockComment);
       expect(repository.findOne).toHaveBeenCalledWith({
-        where: { uuidComment: mockComment.uuidComment },
+        where: { idComment: mockComment.idComment },
         relations: ['member', 'resource']
       });
     });
@@ -103,11 +103,11 @@ describe('CommentsService', () => {
 
   describe('findByResource', () => {
     it('devrait retourner les commentaires d\'une ressource', async () => {
-      const result = await service.findByResource(mockComment.uuidResource);
+      const result = await service.findByResource(mockComment.idResource);
 
       expect(result).toEqual([mockComment]);
       expect(repository.find).toHaveBeenCalledWith({
-        where: { uuidResource: mockComment.uuidResource },
+        where: { idResource: mockComment.idResource },
         relations: ['member', 'resource'],
         order: {
           createdAt: 'DESC'
@@ -124,7 +124,7 @@ describe('CommentsService', () => {
       } as Comment;
       vi.spyOn(repository, 'save').mockResolvedValueOnce(updatedComment);
 
-      const result = await service.update(mockComment.uuidComment, mockUpdateDto);
+      const result = await service.update(mockComment.idComment, mockUpdateDto);
 
       expect(result).toEqual(updatedComment);
       expect(repository.save).toHaveBeenCalledWith(updatedComment);
@@ -139,9 +139,9 @@ describe('CommentsService', () => {
 
   describe('remove', () => {
     it('devrait supprimer un commentaire', async () => {
-      await service.remove(mockComment.uuidComment);
+      await service.remove(mockComment.idComment);
 
-      expect(repository.delete).toHaveBeenCalledWith({ uuidComment: mockComment.uuidComment });
+      expect(repository.delete).toHaveBeenCalledWith({ idComment: mockComment.idComment });
     });
 
     it('devrait lever une exception si le commentaire à supprimer n\'existe pas', async () => {
