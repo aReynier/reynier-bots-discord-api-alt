@@ -23,56 +23,56 @@ export class VotesService {
   async create(createVoteDto: CreateVoteDto): Promise<Vote> {
     // Vérifier que le membre existe
     const member = await this.memberRepository.findOne({
-      where: { uuidMember: createVoteDto.uuidMember }
+      where: { idMember: createVoteDto.idMember }
     });
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${createVoteDto.uuidMember} not found`);
+      throw new NotFoundException(`Member with id ${createVoteDto.idMember} not found`);
     }
 
     // Vérifier si c'est un vote sur une ressource ou un commentaire
     let resource: Resource | undefined;
     let comment: Comment | undefined;
 
-    if (createVoteDto.uuidResource) {
+    if (createVoteDto.idResource) {
       const foundResource = await this.resourceRepository.findOne({
-        where: { uuidResource: createVoteDto.uuidResource }
+        where: { idResource: createVoteDto.idResource }
       });
       if (!foundResource) {
-        throw new NotFoundException(`Resource with UUID ${createVoteDto.uuidResource} not found`);
+        throw new NotFoundException(`Resource with id ${createVoteDto.idResource} not found`);
       }
       resource = foundResource;
 
       // Vérifier si le membre a déjà voté pour cette ressource
       const existingVote = await this.voteRepository.findOne({
         where: {
-          member: { uuidMember: member.uuidMember },
-          resource: { uuidResource: resource.uuidResource }
+          member: { idMember: member.idMember },
+          resource: { idResource: resource.idResource }
         }
       });
       if (existingVote) {
         throw new ConflictException(`Member has already voted for this resource`);
       }
-    } else if (createVoteDto.uuidComment) {
+    } else if (createVoteDto.idComment) {
       const foundComment = await this.commentRepository.findOne({
-        where: { uuidComment: createVoteDto.uuidComment }
+        where: { idComment: createVoteDto.idComment }
       });
       if (!foundComment) {
-        throw new NotFoundException(`Comment with UUID ${createVoteDto.uuidComment} not found`);
+        throw new NotFoundException(`Comment with id ${createVoteDto.idComment} not found`);
       }
       comment = foundComment;
 
       // Vérifier si le membre a déjà voté pour ce commentaire
       const existingVote = await this.voteRepository.findOne({
         where: {
-          member: { uuidMember: member.uuidMember },
-          comment: { uuidComment: comment.uuidComment }
+          member: { idMember: member.idMember },
+          comment: { idComment: comment.idComment }
         }
       });
       if (existingVote) {
         throw new ConflictException(`Member has already voted for this comment`);
       }
     } else {
-      throw new Error('Either uuidResource or uuidComment must be provided');
+      throw new Error('Either idResource or idComment must be provided');
     }
 
     // Créer le vote
@@ -92,17 +92,17 @@ export class VotesService {
     });
   }
 
-  async findOne(uuid: string): Promise<Vote | null> {
+  async findOne(idVote: string): Promise<Vote | null> {
     return await this.voteRepository.findOne({
-      where: { uuidVote: uuid },
+      where: { idVote: idVote },
       relations: ['member', 'resource', 'comment']
     });
   }
 
-  async remove(uuid: string): Promise<boolean> {
-    const vote = await this.findOne(uuid);
+  async remove(idVote: string): Promise<boolean> {
+    const vote = await this.findOne(idVote);
     if (!vote) {
-      throw new NotFoundException(`Vote with UUID ${uuid} not found`);
+      throw new NotFoundException(`Vote with id ${idVote} not found`);
     }
     
     await this.voteRepository.remove(vote);

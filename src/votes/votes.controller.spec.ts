@@ -11,18 +11,18 @@ describe('VotesController', () => {
   let service: VotesService;
 
   const mockMember = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+    idMember: '123e4567-e89b-12d3-a456-426614174000',
     guildUsername: 'TestUser',
     communityRole: 'Member',
   };
 
   const mockResource = {
-    uuidResource: '123e4567-e89b-12d3-a456-426614174001',
+    idResource: '123e4567-e89b-12d3-a456-426614174001',
     title: 'Test Resource',
   };
 
   const mockVote: Vote = {
-    uuidVote: '123e4567-e89b-12d3-a456-426614174003',
+    idVote: '123e4567-e89b-12d3-a456-426614174003',
     voteType: VoteType.UPVOTE,
     member: mockMember,
     resource: mockResource,
@@ -31,9 +31,9 @@ describe('VotesController', () => {
   } as Vote;
 
   const mockCreateVoteDto: CreateVoteDto = {
-    uuidMember: mockMember.uuidMember,
+    idMember: mockMember.idMember,
     voteType: VoteType.UPVOTE,
-    uuidResource: mockResource.uuidResource,
+    idResource: mockResource.idResource,
   };
 
   beforeEach(async () => {
@@ -88,9 +88,9 @@ describe('VotesController', () => {
 
   describe('findOne', () => {
     it('devrait retourner un vote spécifique', async () => {
-      const result = await controller.findOne(mockVote.uuidVote);
+      const result = await controller.findOne(mockVote.idVote);
       expect(result).toEqual(mockVote);
-      expect(service.findOne).toHaveBeenCalledWith(mockVote.uuidVote);
+      expect(service.findOne).toHaveBeenCalledWith(mockVote.idVote);
     });
 
     it('devrait gérer les votes non trouvés', async () => {
@@ -102,7 +102,7 @@ describe('VotesController', () => {
 
     it('devrait gérer les erreurs lors de la récupération', async () => {
       vi.spyOn(service, 'findOne').mockRejectedValueOnce(new Error());
-      await expect(controller.findOne(mockVote.uuidVote)).rejects.toThrow(
+      await expect(controller.findOne(mockVote.idVote)).rejects.toThrow(
         new HttpException('Erreur lors de la récupération du vote', HttpStatus.INTERNAL_SERVER_ERROR)
       );
     });
@@ -110,8 +110,8 @@ describe('VotesController', () => {
 
   describe('remove', () => {
     it('devrait supprimer un vote', async () => {
-      await controller.remove(mockVote.uuidVote);
-      expect(service.remove).toHaveBeenCalledWith(mockVote.uuidVote);
+      await controller.remove(mockVote.idVote);
+      expect(service.remove).toHaveBeenCalledWith(mockVote.idVote);
     });
 
     it('devrait gérer les votes non trouvés', async () => {
@@ -123,7 +123,7 @@ describe('VotesController', () => {
 
     it('devrait gérer les erreurs lors de la suppression', async () => {
       vi.spyOn(service, 'remove').mockRejectedValueOnce(new Error());
-      await expect(controller.remove(mockVote.uuidVote)).rejects.toThrow(
+      await expect(controller.remove(mockVote.idVote)).rejects.toThrow(
         new HttpException('Erreur lors de la suppression du vote', HttpStatus.INTERNAL_SERVER_ERROR)
       );
     });

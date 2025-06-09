@@ -17,11 +17,11 @@ export enum VoteType {
 @Unique(['member', 'comment']) // Un membre ne peut voter qu'une fois pour un commentaire
 export class Vote {
   @ApiProperty({
-    description: 'UUID unique du vote',
+    description: 'id unique du vote',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_vote' })
-  uuidVote: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_vote' })
+  idVote: string;
 
   @ApiProperty({
     description: 'Type de vote (upvote ou downvote)',
@@ -54,7 +54,7 @@ export class Vote {
     type: () => Member
   })
   @ManyToOne(() => Member)
-  @JoinColumn({ name: 'uuid_member' })
+  @JoinColumn({ name: 'id_member' })
   member: Member;
 
   @ApiProperty({
@@ -63,7 +63,7 @@ export class Vote {
     required: false
   })
   @ManyToOne(() => Resource, resource => resource.votes, { nullable: true })
-  @JoinColumn({ name: 'uuid_resource' })
+  @JoinColumn({ name: 'id_resource' })
   resource?: Resource;
 
   @ApiProperty({
@@ -72,6 +72,6 @@ export class Vote {
     required: false
   })
   @ManyToOne(() => Comment, comment => comment.votes, { nullable: true })
-  @JoinColumn({ name: 'uuid_comment' })
+  @JoinColumn({ name: 'id_comment' })
   comment?: Comment;
 }
