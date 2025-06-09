@@ -6,24 +6,24 @@ import { Member } from "src/members/entities/member.entity";
 export class IdentificationRequest {
     
     @PrimaryGeneratedColumn('uuid', {
-        name: 'uuid_identification_request',
+        name: 'id_identification_request',
     })
-    uuid: string;
+    idIdentificationRequest: string;
 
     @Column({type: 'varchar', length: 50})
-    firstname: string
+    firstName: string
 
     @Column({type: 'varchar', length: 50})
-    lastname: string
+    lastName: string
 
     @Column({type: 'varchar', length: 50})
     email: string
 
-    @Column({ type: 'uuid', name: 'uuidMember' })
-    uuidMember: string;
+    @Column({ type: 'uuid', name: 'id_member' })
+    idMember: string;
 
     @OneToOne(() => Member, (member) => member.identificationRequest)
-    @JoinColumn({ name: 'uuidMember' })
+    @JoinColumn({ name: 'id_member' })
     member: Member
 
 }

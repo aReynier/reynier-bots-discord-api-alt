@@ -22,12 +22,12 @@ export class IdentificationRequestsService {
     return this.identificationRequestsRepository.find();
   }
 
-  findOne(uuid: string) {
-    return this.identificationRequestsRepository.findOneBy({ uuid });
+  findOne(idIdentificationRequest: string) {
+    return this.identificationRequestsRepository.findOneBy({ idIdentificationRequest });
   }
 
-  async update(uuid: string, updateIdentificationRequestDto: UpdateIdentificationRequestDto) {
-    const identificationRequest = await this.identificationRequestsRepository.findOneBy({ uuid });
+  async update(idIdentificationRequest: string, updateIdentificationRequestDto: UpdateIdentificationRequestDto) {
+    const identificationRequest = await this.identificationRequestsRepository.findOneBy({ idIdentificationRequest });
   
     if (!identificationRequest) {
       return null;
@@ -35,15 +35,15 @@ export class IdentificationRequestsService {
   
     Object.assign(identificationRequest, updateIdentificationRequestDto);
   
-    if (updateIdentificationRequestDto.uuidMember !== undefined) {
-      identificationRequest.uuidMember = updateIdentificationRequestDto.uuidMember;
+    if (updateIdentificationRequestDto.idMember !== undefined) {
+      identificationRequest.idMember = updateIdentificationRequestDto.idMember;
     }
   
     return this.identificationRequestsRepository.save(identificationRequest);
   }
   
 
-  remove(uuid: string) {
-    return this.identificationRequestsRepository.delete(uuid);
+  remove(idIdentificationRequest: string) {
+    return this.identificationRequestsRepository.delete(idIdentificationRequest);
   }
 }
