@@ -23,31 +23,31 @@ export class ChannelsService {
     });
   }
 
-  findOne(uuid: string) {
+  findOne(idChannel: string) {
     return this.channelRepository.findOne({
-      where: { uuid },
+      where: { idChannel },
       relations: ['guild', 'category']
     });
   }
 
-  async update(uuid: string, updateChannelDto: UpdateChannelDto) {
-    const channel = await this.channelRepository.findOneBy({ uuid });
+  async update(idChannel: string, updateChannelDto: UpdateChannelDto) {
+    const channel = await this.channelRepository.findOneBy({ idChannel });
     if (!channel) {
       return null;
     }
     
     // Mise à jour des champs autorisés uniquement
-    const { name, type, channelPosition, uuidCategory } = updateChannelDto;
+    const { name, type, channelPosition, idCategory } = updateChannelDto;
     if (name !== undefined) channel.name = name;
     if (type !== undefined) channel.type = type;
     if (channelPosition !== undefined) channel.channelPosition = channelPosition;
-    if (uuidCategory !== undefined) channel.uuidCategory = uuidCategory;
+    if (idCategory !== undefined) channel.idCategory = idCategory;
     
     channel.updatedAt = new Date();
     return this.channelRepository.save(channel);
   }
 
-  remove(uuid: string) {
-    return this.channelRepository.delete({ uuid });
+  remove(idChannel: string) {
+    return this.channelRepository.delete({ idChannel });
   }
 } 
