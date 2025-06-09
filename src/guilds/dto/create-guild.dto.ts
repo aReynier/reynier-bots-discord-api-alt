@@ -1,4 +1,4 @@
-import { IsString, MaxLength, IsObject, Length } from 'class-validator';
+import { IsString, MaxLength, IsObject, Length, Matches } from 'class-validator';
 import { ApiProperty,PickType } from '@nestjs/swagger';
 import { PickableDiscordIdFields } from 'src/utils/pickable-discord-id-fields';
 
@@ -10,15 +10,16 @@ export class CreateGuildDto extends PickType(PickableDiscordIdFields, [
     example: 'Simplon Server'
   })
   @IsString()
-  @MaxLength(50)
+  @Length(2, 100, { message: 'Le nom doit contenir entre 2 et 100 caractères' })
+  @Matches(/^[a-zA-ZÀ-ÿ0-9\s\-_]+$/, { message: 'Le nom ne peut contenir que des lettres (avec accents), chiffres, espaces, tirets et underscores' })
   name: string;
 
   @ApiProperty({
-    description: 'Nombre de membres dans le serveur',
-    example: '100'
+    description: 'Nombre de membres',
+    example: "100"
   })
   @IsString()
-  @MaxLength(50)
+  @Matches(/^\d+$/, { message: 'memberCount doit être une chaîne numérique' })
   memberCount: string;
 
   @ApiProperty({

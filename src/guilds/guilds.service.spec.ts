@@ -20,7 +20,7 @@ describe('GuildsService', () => {
   const mockGuild = {
     idGuild: '123456789012345678',
     name: 'Test Guild',
-    memberCount: '10',
+    memberCount: 10,
     configuration: {},
     createdAt: new Date(),
     updatedAt: new Date(),
