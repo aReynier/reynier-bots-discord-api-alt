@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne, ManyToMany, JoinTable } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Course } from '../../courses/entities/course.entity';
 import { Guild } from '../../guilds/entities/guild.entity';
@@ -7,14 +7,14 @@ import { Campus } from 'src/campuses/entities/campus.entity';
 import { Category } from 'src/categories/entities/category.entity';
 import { Member } from 'src/members/entities/member.entity';
 
-@Entity('Promotions')
+@Entity('promotions')
 export class Promotion {
   @ApiProperty({
-    description: 'UUID unique de la promotion',
-    example: '123e4567-e89b-12d3-a456-426614174000'
+    description: 'SF unique de la promotion',
+    example: '123456789012345678'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_promotion' })
-  uuid: string;
+  @PrimaryColumn({ type: 'varchar', length: 19, name: 'id_promotion' })
+  idPromotion: string;
 
   @ApiProperty({
     description: 'Nom de la promotion',
@@ -23,6 +23,17 @@ export class Promotion {
   })
   @Column({ type: 'varchar', length: 100 })
   name: string;
+
+  @ApiProperty({
+    description: 'Statut de la promotion',
+    example: true,
+    default: true
+  })
+  @Column({ 
+    type: 'boolean', 
+    default: true
+  })
+  isActive: boolean;
 
   @ApiProperty({
     description: 'Date de début de la promotion',
@@ -39,19 +50,6 @@ export class Promotion {
   endDate: Date;
 
   @ApiProperty({
-    description: 'Statut de la promotion',
-    example: 'active',
-    enum: ['active', 'completed', 'cancelled'],
-    default: 'active'
-  })
-  @Column({ 
-    type: 'varchar', 
-    length: 20, 
-    default: 'active'
-  })
-  status: string;
-
-  @ApiProperty({
     description: 'Date de création',
     example: '2024-02-17T12:00:00Z'
   })
@@ -66,80 +64,80 @@ export class Promotion {
   updatedAt: Date;
   
   @ApiProperty({
-    description: 'UUID unique de la formation',
+    description: 'id unique de la formation',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ name: 'uuid_course', type: 'uuid' })
-  uuidCourse: string;
+  @Column({ name: 'id_course', type: 'uuid' })
+  idCourse: string;
 
   @ApiProperty({
     description: 'Formation associée à la promotion',
     type: () => Course
   })
   @ManyToOne(() => Course, course => course.promotions)
-  @JoinColumn({ name: 'uuid_course' })
+  @JoinColumn({ name: 'id_course' })
   course: Course;
 
   @ApiProperty({
-    description: 'UUID du serveur Discord associé',
+    description: 'id du serveur Discord associé',
     example: '123456789012345678'
   })
-  @Column({ name: 'uuid_guild', type: 'varchar', length: 19, nullable: true })
-  uuidGuild: string;
+  @Column({ name: 'id_guild', type: 'varchar', length: 19, nullable: true })
+  idGuild: string;
 
   @ApiProperty({
     description: 'Serveur Discord associé à la promotion',
     type: () => Guild
   })
   @ManyToOne(() => Guild, guild => guild.promotions)
-  @JoinColumn({ name: 'uuid_guild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Guild;
 
   @ApiProperty({
-    description: 'UUID du rôle Discord associé',
+    description: 'id du rôle Discord associé',
     example: '123456789012345678'
   })
-  @Column({ name: 'uuid_role', type: 'varchar', length: 19, nullable: true })
-  uuidRole: string;
+  @Column({ name: 'id_role', type: 'varchar', length: 19, nullable: true })
+  idRole: string;
 
   @ApiProperty({
     description: 'Rôle Discord associé à la promotion',
     type: () => Role
   })
   @OneToOne(() => Role, role => role.promotion)
-  @JoinColumn({ name: 'uuid_role' })
+  @JoinColumn({ name: 'id_role' })
   role: Role;
 
   // Nouvelle relation avec Campus
   @ApiProperty({
-    description: 'UUID du campus associé',
+    description: 'id du campus associé',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ name: 'uuid_campus', type: 'uuid', nullable: true })
-  uuidCampus: string;
+  @Column({ name: 'id_campus', type: 'uuid', nullable: true })
+  idCampus: string;
 
   @ApiProperty({
     description: 'Campus associé à la promotion',
     type: () => Campus
   })
   @ManyToOne(() => Campus)
-  @JoinColumn({ name: 'uuid_campus' })
+  @JoinColumn({ name: 'id_campus' })
   campus: Campus;
 
   // Nouvelle relation avec Category
   @ApiProperty({
-    description: 'UUID de la catégorie Discord associée',
+    description: 'id de la catégorie Discord associée',
     example: '123456789012345678'
   })
-  @Column({ name: 'uuid_category', type: 'varchar', length: 19, nullable: true })
-  uuidCategory: string;
+  @Column({ name: 'id_category', type: 'varchar', length: 19, nullable: true })
+  idCategory: string;
 
   @ApiProperty({
     description: 'Catégorie Discord associée à la promotion',
     type: () => Category
   })
   @OneToOne(() => Category)
-  @JoinColumn({ name: 'uuid_category' })
+  @JoinColumn({ name: 'id_category' })
   category: Category;
 
   // Nouvelles relations ManyToMany avec Member
@@ -150,8 +148,8 @@ export class Promotion {
   @ManyToMany(() => Member)
   @JoinTable({
     name: 'promotions_followers',
-    joinColumns: [{ name: 'uuid_promotion', referencedColumnName: 'uuid' }],
-    inverseJoinColumns: [{ name: 'uuid_member', referencedColumnName: 'uuidMember' }]
+    joinColumns: [{ name: 'id_promotion', referencedColumnName: 'idPromotion' }],
+    inverseJoinColumns: [{ name: 'id_member', referencedColumnName: 'idMember' }]
   })
   followers: Member[];
 
@@ -162,8 +160,8 @@ export class Promotion {
   @ManyToMany(() => Member)
   @JoinTable({
     name: 'promotions_managers',
-    joinColumns: [{ name: 'uuid_promotion', referencedColumnName: 'uuid' }],
-    inverseJoinColumns: [{ name: 'uuid_member', referencedColumnName: 'uuidMember' }]
+    joinColumns: [{ name: 'id_promotion', referencedColumnName: 'idPromotion' }],
+    inverseJoinColumns: [{ name: 'id_member', referencedColumnName: 'idMember' }]
   })
   managers: Member[];
 }
