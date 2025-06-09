@@ -11,8 +11,8 @@ describe('DashboardAccountService', () => {
   let repository: Repository<DashboardAccount>;
 
   const mockDashboardAccount = {
-    uuid: '123e4567-e89b-12d3-a456-426614174000',
-    uuidDiscord: '123456789012345678',
+    idDashboardAccount: '123e4567-e89b-12d3-a456-426614174000',
+    idDiscord: '123456789012345678',
     email: 'test@example.com',
     password: 'hashedPassword123'
   };
@@ -49,60 +49,60 @@ describe('DashboardAccountService', () => {
       mockRepository.create.mockReturnValue(mockDashboardAccount);
       mockRepository.save.mockResolvedValue(mockDashboardAccount);
 
-      const createDtoWithUUID = {
+      const createDtoWithId = {
         ...createDto,
-        uuid: mockDashboardAccount.uuid,
-        uuidDiscord: mockDashboardAccount.uuidDiscord
+        idDashboardAccount: mockDashboardAccount.idDashboardAccount,
+        idDiscord: mockDashboardAccount.idDiscord
       };
 
-      const result = await service.create(createDtoWithUUID);
+      const result = await service.create(createDtoWithId);
 
       expect(result).toEqual(mockDashboardAccount);
-      expect(mockRepository.create).toHaveBeenCalledWith(createDtoWithUUID);
+      expect(mockRepository.create).toHaveBeenCalledWith(createDtoWithId);
       expect(mockRepository.save).toHaveBeenCalledWith(mockDashboardAccount);
     });
   });
 
-  describe('getByUUID', () => {
+  describe('getById', () => {
     it('should return a dashboard account', async () => {
-      const uuid = '123e4567-e89b-12d3-a456-426614174000';
+      const idDashboardAccount = '123e4567-e89b-12d3-a456-426614174000';
       mockRepository.findOne.mockResolvedValue(mockDashboardAccount);
 
-      const result = await service.getByUUID(uuid);
+      const result = await service.getById(idDashboardAccount);
 
       expect(result).toEqual(mockDashboardAccount);
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid }
+        where: { idDashboardAccount }
       });
     });
 
     it('should throw NotFoundException when account not found', async () => {
-      const uuid = 'non-existent-uuid';
+      const idDashboardAccount = 'non-existent-uuid';
       mockRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.getByUUID(uuid)).rejects.toThrow(NotFoundException);
+      await expect(service.getById(idDashboardAccount)).rejects.toThrow(NotFoundException);
     });
   });
 
-  describe('deleteByUUID', () => {
+  describe('deleteById', () => {
     it('should delete a dashboard account', async () => {
-      const uuid = '123e4567-e89b-12d3-a456-426614174000';
+      const idDashboardAccount = '123e4567-e89b-12d3-a456-426614174000';
       mockRepository.findOne.mockResolvedValue(mockDashboardAccount);
       mockRepository.delete.mockResolvedValue({ affected: 1 });
 
-      await service.deleteByUUID(uuid);
+      await service.deleteById(idDashboardAccount);
 
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid }
+        where: { idDashboardAccount }
       });
-      expect(mockRepository.delete).toHaveBeenCalledWith({ uuid });
+      expect(mockRepository.delete).toHaveBeenCalledWith({ idDashboardAccount });
     });
 
     it('should throw NotFoundException when account not found', async () => {
-      const uuid = 'non-existent-uuid';
+      const idDashboardAccount = 'non-existent-uuid';
       mockRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.deleteByUUID(uuid)).rejects.toThrow(NotFoundException);
+      await expect(service.deleteById(idDashboardAccount)).rejects.toThrow(NotFoundException);
     });
   });
 });

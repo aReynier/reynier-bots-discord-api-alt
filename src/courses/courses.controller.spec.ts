@@ -13,8 +13,8 @@ describe('CoursesController', () => {
     uuid: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Développeur web',
     isCertified: true,
-    uuidCategory: '123456789012345678',
-    uuidGuild: '123456789012345678',
+    idCategory: '123456789012345678',
+    idGuild: '123456789012345678',
     createdAt: new Date(),
     updatedAt: null,
   };
@@ -22,9 +22,9 @@ describe('CoursesController', () => {
   const mockService = {
     create: vi.fn(),
     findAll: vi.fn(),
-    getByUUID: vi.fn(),
-    updateByUUID: vi.fn(),
-    deleteByUUID: vi.fn(),
+    getById: vi.fn(),
+    updateById: vi.fn(),
+    deleteById: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -45,11 +45,12 @@ describe('CoursesController', () => {
   describe('create', () => {
     it('should create a course', async () => {
       const dto: CreateCourseDto = {
+        idCourse: '123456789012345678',
         name: 'Développeur web',
         isCertified: true,
-        uuidCategory: '123456789012345678',
-        uuidGuild: '123456789012345678',
-        uuidRole: ''
+        idCategory: '123456789012345678',
+        idGuild: '123456789012345678',
+        idRole: '123456789012345678'
       };
 
       mockService.create.mockResolvedValue({
@@ -80,42 +81,42 @@ describe('CoursesController', () => {
     });
   });
 
-  describe('getByUUID', () => {
+  describe('getById', () => {
     it('should return a course', async () => {
       const uuid = '123e4567-e89b-12d3-a456-426614174000';
-      mockService.getByUUID.mockResolvedValue(mockCourse);
+      mockService.getById.mockResolvedValue(mockCourse);
 
-      const result = await controller.getByUUID(uuid);
+      const result = await controller.getById(uuid);
 
       expect(result).toEqual(mockCourse);
-      expect(mockService.getByUUID).toHaveBeenCalledWith(uuid);
+      expect(mockService.getById).toHaveBeenCalledWith(uuid);
     });
   });
 
-  describe('updateByUUID', () => {
+  describe('updateById', () => {
     it('should update a course', async () => {
       const uuid = '123e4567-e89b-12d3-a456-426614174000';
       const updateDto: UpdateCourseDto = {
         name: 'updated-course'
       };
       const updatedCourse = { ...mockCourse, ...updateDto };
-      mockService.updateByUUID.mockResolvedValue(updatedCourse);
+      mockService.updateById.mockResolvedValue(updatedCourse);
 
-      const result = await controller.updateByUUID(uuid, updateDto);
+      const result = await controller.updateById(uuid, updateDto);
 
       expect(result).toEqual(updatedCourse);
-      expect(mockService.updateByUUID).toHaveBeenCalledWith(uuid, updateDto);
+      expect(mockService.updateById).toHaveBeenCalledWith(uuid, updateDto);
     });
   });
 
-  describe('deleteByUUID', () => {
+  describe('deleteById', () => {
     it('should delete a course', async () => {
       const uuid = '123e4567-e89b-12d3-a456-426614174000';
-      mockService.deleteByUUID.mockResolvedValue(undefined);
+      mockService.deleteById.mockResolvedValue(undefined);
 
-      await controller.deleteByUUID(uuid);
+      await controller.deleteById(uuid);
 
-      expect(mockService.deleteByUUID).toHaveBeenCalledWith(uuid);
+      expect(mockService.deleteById).toHaveBeenCalledWith(uuid);
     });
   });
 });

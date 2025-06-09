@@ -25,31 +25,31 @@ export class GuildsController {
     return this.guildService.findAll();
   }
 
-  @Get(':uuid')
-  @ApiOperation({ summary: 'Récupérer un serveur Discord par son UUID' })
+  @Get(':id')
+  @ApiOperation({ summary: 'Récupérer un serveur Discord par son id' })
   @ApiResponse({ status: 200, description: 'Le serveur a été trouvé.', type: Guild })
   @ApiResponse({ status: 404, description: 'Serveur non trouvé' })
-  findOne(@Param('uuid') uuid: string) {
-    return this.guildService.findOne(uuid);
+  findOne(@Param('id') idGuild: string) {
+    return this.guildService.findOne(idGuild);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ summary: 'Mettre à jour un serveur Discord' })
   @ApiResponse({ status: 200, description: 'Le serveur a été mis à jour avec succès.', type: Guild })
   @ApiResponse({ status: 404, description: 'Serveur non trouvé' })
-  async update(@Param('uuid') uuid: string, @Body() updateGuildDto: UpdateGuildDto) {
-    const guild = await this.guildService.update(uuid, updateGuildDto);
+  async update(@Param('id') idGuild: string, @Body() updateGuildDto: UpdateGuildDto) {
+    const guild = await this.guildService.update(idGuild, updateGuildDto);
     if (!guild) {
-      throw new NotFoundException(`Guild with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Guild with id "${idGuild}" not found`);
     }
     return guild;
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ summary: 'Supprimer un serveur Discord' })
   @ApiResponse({ status: 200, description: 'Le serveur a été supprimé avec succès.' })
   @ApiResponse({ status: 404, description: 'Serveur non trouvé' })
-  remove(@Param('uuid') uuid: string) {
-    return this.guildService.remove(uuid);
+  remove(@Param('id') idGuild: string) {
+    return this.guildService.remove(idGuild);
   }
 }

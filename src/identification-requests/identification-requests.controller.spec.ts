@@ -25,26 +25,26 @@ describe('IdentificationRequestsController', () => {
 
   it('should create a new identification request', async () => {
     const dto: CreateIdentificationRequestDto = {
-      uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+      idMember: '123e4567-e89b-12d3-a456-426614174000',
       firstname: 'John',
       lastname: 'Doe',
       email: 'john.doe@example.com',
     };
-    const result = { ...dto, uuid: '123e4567-e89b-12d3-a456-426614174001' };
+    const result = { ...dto, idMember: '123e4567-e89b-12d3-a456-426614174001' };
     mockIdentificationRequestsService.create.mockResolvedValue(result);
     expect(await controller.create(dto)).toEqual(result);
     expect(mockIdentificationRequestsService.create).toHaveBeenCalledWith(dto);
   });
 
   it('should return an array of identification requests', async () => {
-    const result = [{ uuid: '123e4567-e89b-12d3-a456-426614174000', uuidMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'John', lastname: 'Doe', email: 'john.doe@example.com' }];
+    const result = [{ uuid: '123e4567-e89b-12d3-a456-426614174000', idMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'John', lastname: 'Doe', email: 'john.doe@example.com' }];
     mockIdentificationRequestsService.findAll.mockResolvedValue(result);
     expect(await controller.findAll()).toEqual(result);
     expect(mockIdentificationRequestsService.findAll).toHaveBeenCalled();
   });
 
   it('should return a single identification request', async () => {
-    const result = { uuid: '123e4567-e89b-12d3-a456-426614174000', uuidMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'John', lastname: 'Doe', email: 'john.doe@example.com' };
+    const result = { uuid: '123e4567-e89b-12d3-a456-426614174000', idMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'John', lastname: 'Doe', email: 'john.doe@example.com' };
     mockIdentificationRequestsService.findOne.mockResolvedValue(result);
     expect(await controller.findOne('123e4567-e89b-12d3-a456-426614174000')).toEqual(result);
     expect(mockIdentificationRequestsService.findOne).toHaveBeenCalledWith('123e4567-e89b-12d3-a456-426614174000');
@@ -52,7 +52,7 @@ describe('IdentificationRequestsController', () => {
 
   it('should update an identification request', async () => {
     const dto: UpdateIdentificationRequestDto = { firstname: 'Jane' };
-    const result = { uuid: '123e4567-e89b-12d3-a456-426614174000', uuidMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'Jane', lastname: 'Doe', email: 'john.doe@example.com' };
+    const result = { uuid: '123e4567-e89b-12d3-a456-426614174000', idMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'Jane', lastname: 'Doe', email: 'john.doe@example.com' };
     mockIdentificationRequestsService.update.mockResolvedValue(result);
     expect(await controller.update('123e4567-e89b-12d3-a456-426614174000', dto)).toEqual(result);
     expect(mockIdentificationRequestsService.update).toHaveBeenCalledWith('123e4567-e89b-12d3-a456-426614174000', dto);

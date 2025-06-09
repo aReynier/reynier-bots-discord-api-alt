@@ -10,8 +10,8 @@ export class Answer {
     format: 'uuid',
     readOnly: true
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_answer' })
-  uuid: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_answer' })
+  idAnswer: string;
 
   @ApiProperty({
     description: 'The content of the answer',
@@ -27,7 +27,7 @@ export class Answer {
     type: () => Question
   })
   @ManyToOne(() => Question, (question) => question.answers, {onDelete: 'CASCADE'})
-  @JoinColumn({ name: 'uuid_question' })
+  @JoinColumn({ name: 'id_question' })
   question: Question;
 
   @ManyToMany(() => Member, (member) => member.answers)

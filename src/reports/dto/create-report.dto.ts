@@ -1,10 +1,10 @@
 import { IsEnum, IsNotEmpty, IsString, MaxLength, ValidateIf, IsUUID } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { ReportCategory, ReportType } from '../entities/report.entity';
-import { PickableInternUUIDFields } from '../../utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from '../../utils/pickable-intern-id-fields';
 
-export class CreateReportDto extends PickType(PickableInternUUIDFields, [
-  'uuidReporter'
+export class CreateReportDto extends PickType(PickableInternIdFields, [
+  'idReporter'
 ]) {
   @ApiProperty({
     description: 'Type de l\'élément signalé (ressource ou membre)',
@@ -38,22 +38,22 @@ export class CreateReportDto extends PickType(PickableInternUUIDFields, [
   reason: string;
 
   @ApiProperty({
-    description: 'UUID de la ressource signalée (requis uniquement si type = resource)',
+    description: 'id de la ressource signalée (requis uniquement si type = resource)',
     example: '123e4567-e89b-12d3-a456-426614174000',
     required: false
   })
   @ValidateIf(o => o.type === ReportType.RESOURCE)
   @IsUUID()
   @IsNotEmpty()
-  uuidResource?: string;
+  idResource?: string;
 
   @ApiProperty({
-    description: 'UUID du membre signalé (requis uniquement si type = member)',
+    description: 'id du membre signalé (requis uniquement si type = member)',
     example: '123e4567-e89b-12d3-a456-426614174000',
     required: false
   })
   @ValidateIf(o => o.type === ReportType.MEMBER)
   @IsUUID()
   @IsNotEmpty()
-  uuidReportedMember?: string;
+  idReportedMember?: string;
 } 

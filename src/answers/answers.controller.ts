@@ -43,14 +43,14 @@ export class AnswersController {
     return this.answersService.findAll();
   }
 
-  @Get(':uuid')
+  @Get(':id')
   @ApiOperation({
-    summary: 'Get an answer by UUID',
-    description: 'Returns a single answer based on its UUID.'
+    summary: 'Get an answer by id',
+    description: 'Returns a single answer based on its id.'
   })
   @ApiParam({
-    name: 'uuid',
-    description: 'UUID of the answer to retrieve',
+    name: 'id',
+    description: 'id of the answer to retrieve',
     type: String,
     required: true
   })
@@ -61,20 +61,20 @@ export class AnswersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Answer with the specified UUID was not found.'
+    description: 'Answer with the specified id was not found.'
   })
-  findOne(@Param('uuid') uuid: string) {
-    return this.answersService.findOne(uuid);
+  findOne(@Param('id') id: string) {
+    return this.answersService.findOne(id);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({
     summary: 'Update an answer',
-    description: 'Updates an existing answer based on its UUID with the provided information.'
+    description: 'Updates an existing answer based on its id with the provided information.'
   })
   @ApiParam({
-    name: 'uuid',
-    description: 'UUID of the answer to update',
+    name: 'id',
+    description: 'id of the answer to update',
     type: String,
     required: true
   })
@@ -86,28 +86,28 @@ export class AnswersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Answer with the specified UUID was not found.'
+    description: 'Answer with the specified id was not found.'
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Invalid data provided in the request.'
   })
-  async update(@Param('uuid') uuid: string, @Body() updateAnswerDto: UpdateAnswerDto) {
-    const answer = await this.answersService.update(uuid, updateAnswerDto);
+  async update(@Param('id') id: string, @Body() updateAnswerDto: UpdateAnswerDto) {
+    const answer = await this.answersService.update(id, updateAnswerDto);
     if (!answer) {
-      throw new NotFoundException(`Answer with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Answer with id "${id}" not found`);
     }
     return answer;
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({
     summary: 'Delete an answer',
-    description: 'Deletes an existing answer based on its UUID.'
+    description: 'Deletes an existing answer based on its id.'
   })
   @ApiParam({
-    name: 'uuid',
-    description: 'UUID of the answer to delete',
+    name: 'id',
+    description: 'id of the answer to delete',
     type: String,
     required: true
   })
@@ -117,9 +117,9 @@ export class AnswersController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Answer with the specified UUID was not found.'
+    description: 'Answer with the specified id was not found.'
   })
-  remove(@Param('uuid') uuid: string) {
-    return this.answersService.remove(uuid);
+  remove(@Param('id') id: string) {
+    return this.answersService.remove(id);
   }
 }

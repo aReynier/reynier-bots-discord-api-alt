@@ -40,17 +40,24 @@ describe('GuildsTemplatesService', () => {
   describe('create', () => {
     it('should create a new guild template', async () => {
       const createDto = {
-        uuid: '123456789012345678',
+        idGuildTemplate: '123456789012345678',
+        idGuild: '123456789012345678',
+        idCategory: '123456789012345678',
         name: 'Test Template',
         description: 'Test Description',
         configuration: {
-          welcomeChannel: '123456789',
+          idWelcomeChannel: '123456789',
           prefix: '!',
           language: 'fr'
         }
       };
 
-      const newTemplate = { ...createDto, id: 1 };
+      const newTemplate = { 
+        ...createDto,
+        idGuildTemplate: '123456789012345678',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
       mockRepository.create.mockReturnValue(newTemplate);
       mockRepository.save.mockResolvedValue(newTemplate);
 
@@ -65,8 +72,18 @@ describe('GuildsTemplatesService', () => {
   describe('findAll', () => {
     it('should return an array of guild templates', async () => {
       const templates = [
-        { id: 1, name: 'Template 1' },
-        { id: 2, name: 'Template 2' },
+        { 
+          idGuildTemplate: '123456789012345678',
+          name: 'Template 1',
+          idGuild: '123456789012345678',
+          idCategory: '123456789012345678'
+        },
+        { 
+          idGuildTemplate: '123456789012345679',
+          name: 'Template 2',
+          idGuild: '123456789012345678',
+          idCategory: '123456789012345678'
+        }
       ];
       mockRepository.find.mockResolvedValue(templates);
 
@@ -80,15 +97,15 @@ describe('GuildsTemplatesService', () => {
   });
 
   describe('findOne', () => {
-    it('should return a guild template by uuid', async () => {
-      const template = { id: 1, name: 'Template 1' };
-      const uuid = '123456789012345678';
+    it('should return a guild template by id', async () => {
+      const template = { idGuildTemplate: '123456789012345678', name: 'Template 1' };
+      const idGuildTemplate = '123456789012345678';
       mockRepository.findOne.mockResolvedValue(template);
 
-      const result = await service.findOne(uuid);
+      const result = await service.findOne(idGuildTemplate);
 
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid },
+        where: { idGuildTemplate },
         relations: ['guild', 'category']
       });
       expect(result).toEqual(template);
@@ -97,20 +114,22 @@ describe('GuildsTemplatesService', () => {
 
   describe('update', () => {
     it('should update a guild template', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       const updateDto = { name: 'Updated Template' };
       
-      // Créer un objet template existant
+      // Créer un objet template existant avec la bonne structure
       const existingTemplate = { 
-        id: 1, 
-        uuid: '123456789012345678',
+        idGuildTemplate: '123456789012345678',
         name: 'Test Template', 
         description: 'Test Description',
+        idGuild: '123456789012345678',
+        idCategory: '123456789012345678',
         configuration: {
-          language: 'fr',
+          idWelcomeChannel: '123456789',
           prefix: '!',
-          welcomeChannel: '123456789',
+          language: 'fr'
         },
+        createdAt: new Date(),
         updatedAt: new Date()
       };
       
@@ -120,33 +139,46 @@ describe('GuildsTemplatesService', () => {
       // Mock findOneBy pour retourner le template existant
       mockRepository.findOneBy.mockResolvedValue(existingTemplate);
       
-      // Mock save pour simuler la sauvegarde
-      mockRepository.save.mockImplementation((entity) => {
-        // Vérifier que l'entité a bien été mise à jour
-        expect(entity.name).toBe('Updated Template');
-        expect(entity.updatedAt).toBeInstanceOf(Date);
-        
-        // Retourner l'entité mise à jour
-        return Promise.resolve(entity);
-      });
+      // Créer l'objet mis à jour attendu
+      const updatedTemplate = {
+        ...existingTemplate,
+        name: 'Updated Template',
+        updatedAt: new Date()
+      };
+      
+      // Mock save pour retourner l'objet mis à jour
+      mockRepository.save.mockResolvedValue(updatedTemplate);
       
       // Appeler la méthode update
-      const result = await service.update(uuid, updateDto);
+      const result = await service.update(idGuildTemplate, updateDto);
       
-      // Vérifier que findOneBy a été appelé avec le bon uuid
-      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      // Vérifier que le résultat n'est pas null
+      expect(result).not.toBeNull();
       
-      // Vérifier que save a été appelé
-      expect(mockRepository.save).toHaveBeenCalled();
-      
-      // Vérifier que le résultat contient les bonnes valeurs
-      expect(result.name).toBe('Updated Template');
-      expect(result.description).toBe('Test Description');
-      expect(result.updatedAt).toBeInstanceOf(Date);
+      if (result) { // Type guard pour TypeScript
+        // Vérifier que findOneBy a été appelé avec le bon id
+        expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idGuildTemplate });
+        
+        // Vérifier que save a été appelé
+        expect(mockRepository.save).toHaveBeenCalled();
+        
+        // Vérifier que le résultat contient les bonnes valeurs
+        expect(result.name).toBe('Updated Template');
+        expect(result.description).toBe('Test Description');
+        expect(result.configuration.idWelcomeChannel).toBe('123456789');
+        expect(result.updatedAt).toBeInstanceOf(Date);
+        
+        // Vérifier que les autres propriétés n'ont pas été modifiées
+        expect(result.idGuildTemplate).toBe(existingTemplate.idGuildTemplate);
+        expect(result.idGuild).toBe(existingTemplate.idGuild);
+        expect(result.idCategory).toBe(existingTemplate.idCategory);
+        expect(result.configuration.prefix).toBe(existingTemplate.configuration.prefix);
+        expect(result.configuration.language).toBe(existingTemplate.configuration.language);
+      }
     });
-    
+
     it('should return null if template not found', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       const updateDto = { name: 'Updated Template' };
       
       // Réinitialiser les mocks
@@ -155,21 +187,27 @@ describe('GuildsTemplatesService', () => {
       // Simuler le comportement du service
       mockRepository.findOneBy.mockResolvedValue(null);
 
-      const result = await service.update(uuid, updateDto);
+      const result = await service.update(idGuildTemplate, updateDto);
 
-      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid });
+      // Vérifier que findOneBy a été appelé avec le bon id
+      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idGuildTemplate });
+      
+      // Vérifier que le résultat est null
       expect(result).toBeNull();
+      
+      // Vérifier que save n'a pas été appelé
+      expect(mockRepository.save).not.toHaveBeenCalled();
     });
   });
 
   describe('remove', () => {
     it('should delete a guild template', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       mockRepository.delete.mockResolvedValue({ affected: 1 });
 
-      await service.remove(uuid);
+      await service.remove(idGuildTemplate);
 
-      expect(mockRepository.delete).toHaveBeenCalledWith({ uuid });
+      expect(mockRepository.delete).toHaveBeenCalledWith({ idGuildTemplate });
     });
   });
 });

@@ -25,31 +25,31 @@ export class MembersInformationsController {
     return this.membersInformationsService.findAll();
   }
 
-  @Get(':uuid')
-  @ApiOperation({ summary: 'Récupérer les informations d\'un membre par son UUID' })
+  @Get(':id')
+  @ApiOperation({ summary: 'Récupérer les informations d\'un membre par son id' })
   @ApiResponse({ status: 200, description: 'Les informations ont été trouvées.', type: MemberInformation })
   @ApiResponse({ status: 404, description: 'Informations non trouvées' })
-  findOne(@Param('uuid') uuid: string) {
-    return this.membersInformationsService.findOne(uuid);
+  findOne(@Param('id') idMemberInfos: string) {
+    return this.membersInformationsService.findOne(idMemberInfos);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ summary: 'Mettre à jour les informations d\'un membre' })
   @ApiResponse({ status: 200, description: 'Les informations ont été mises à jour avec succès.', type: MemberInformation })
   @ApiResponse({ status: 404, description: 'Informations non trouvées' })
-  async update(@Param('uuid') uuid: string, @Body() updateMemberInformationsDto: UpdateMemberInformationsDto) {
-    const memberInformations = await this.membersInformationsService.update(uuid, updateMemberInformationsDto);
+  async update(@Param('id') idMemberInfos: string, @Body() updateMemberInformationsDto: UpdateMemberInformationsDto) {
+    const memberInformations = await this.membersInformationsService.update(idMemberInfos, updateMemberInformationsDto);
     if (!memberInformations) {
-      throw new NotFoundException(`MemberInformations with UUID "${uuid}" not found`);
+      throw new NotFoundException(`MemberInformations with id "${idMemberInfos}" not found`);
     }
     return memberInformations;
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ summary: 'Supprimer les informations d\'un membre' })
   @ApiResponse({ status: 200, description: 'Les informations ont été supprimées avec succès.' })
   @ApiResponse({ status: 404, description: 'Informations non trouvées' })
-  remove(@Param('uuid') uuid: string) {
-    return this.membersInformationsService.remove(uuid);
+  remove(@Param('id') idMemberInfos: string) {
+    return this.membersInformationsService.remove(idMemberInfos);
   }
 }

@@ -22,39 +22,39 @@ export class PollTemplatesService {
     return this.pollTemplateRepository.find();
   }
 
-  async findOne(uuid: string): Promise<PollTemplate> {
-    if (!isUUID(uuid)) {
-      throw new NotFoundException(`The poll template with UUID ${uuid} does not exist`);
+  async findOne(idPollTemplate: string): Promise<PollTemplate> {
+    if (!isUUID(idPollTemplate)) {
+      throw new NotFoundException(`The poll template with id ${idPollTemplate} does not exist`);
     }
-    const pollTemplate = await this.pollTemplateRepository.findOne({ where: { uuid } });
+    const pollTemplate = await this.pollTemplateRepository.findOne({ where: { idPollTemplate: idPollTemplate } });
     if (!pollTemplate) {
-      throw new NotFoundException(`The poll template with UUID ${uuid} does not exist`);
+      throw new NotFoundException(`The poll template with id ${idPollTemplate} does not exist`);
     }
     return pollTemplate;
   }
 
-  async update(uuid: string, updatePollTemplateDto: UpdatePollTemplateDto) : Promise<PollTemplate> {
-    if (!isUUID(uuid)) {
-      throw new NotFoundException(`The poll template with UUID ${uuid} does not exist`);
+  async update(idPollTemplate: string, updatePollTemplateDto: UpdatePollTemplateDto) : Promise<PollTemplate> {
+    if (!isUUID(idPollTemplate)) {
+      throw new NotFoundException(`The poll template with id ${idPollTemplate} does not exist`);
     }
     const pollTemplate = await this.pollTemplateRepository.preload({
-      uuid,
+      idPollTemplate,
       ...updatePollTemplateDto
     })
     if (!pollTemplate) {
-      throw new NotFoundException(`The poll template with UUID ${uuid} does not exist`);
+      throw new NotFoundException(`The poll template with id ${idPollTemplate} does not exist`);
     }
     return this.pollTemplateRepository.save(pollTemplate); 
   }
 
-  async remove(uuid: string) : Promise<DeleteResult> {
-    if (!isUUID(uuid)) {
-      throw new NotFoundException(`The poll template with UUID ${uuid} does not exist`);
+  async remove(idPollTemplate: string) : Promise<DeleteResult> {
+    if (!isUUID(idPollTemplate)) {
+      throw new NotFoundException(`The poll template with id ${idPollTemplate} does not exist`);
     }
-    const pollTemplate = await this.pollTemplateRepository.findOne({ where: { uuid } });
+    const pollTemplate = await this.pollTemplateRepository.findOne({ where: { idPollTemplate } });
     if (!pollTemplate) {
-      throw new NotFoundException(`The poll template with UUID ${uuid} does not exist`);
+      throw new NotFoundException(`The poll template with id ${idPollTemplate} does not exist`);
     }
-    return await this.pollTemplateRepository.delete(uuid);
+    return await this.pollTemplateRepository.delete(idPollTemplate);
   }
 }

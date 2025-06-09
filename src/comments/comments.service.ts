@@ -26,22 +26,22 @@ export class CommentsService {
     });
   }
 
-  async findOne(uuid: string): Promise<Comment> {
+  async findOne(idComment: string): Promise<Comment> {
     const comment = await this.commentsRepository.findOne({
-      where: { uuidComment: uuid },
+      where: { idComment: idComment },
       relations: ['member', 'resource']
     });
     
     if (!comment) {
-      throw new NotFoundException(`Commentaire avec l'UUID ${uuid} non trouvé`);
+      throw new NotFoundException(`Commentaire avec l'id ${idComment} non trouvé`);
     }
     
     return comment;
   }
 
-  async findByResource(uuidResource: string): Promise<Comment[]> {
+  async findByResource(idResource: string): Promise<Comment[]> {
     const comments = await this.commentsRepository.find({
-      where: { uuidResource },
+      where: { idResource },
       relations: ['member', 'resource'],
       order: {
         createdAt: 'DESC'
@@ -51,19 +51,19 @@ export class CommentsService {
     return comments;
   }
 
-  async update(uuid: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
-    const comment = await this.findOne(uuid);
+  async update(idComment: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
+    const comment = await this.findOne(idComment);
     
     Object.assign(comment, updateCommentDto);
     
     return await this.commentsRepository.save(comment);
   }
 
-  async remove(uuid: string): Promise<void> {
-    const result = await this.commentsRepository.delete({ uuidComment: uuid });
+  async remove(idComment: string): Promise<void> {
+    const result = await this.commentsRepository.delete({ idComment: idComment });
     
     if (result.affected === 0) {
-      throw new NotFoundException(`Commentaire avec l'UUID ${uuid} non trouvé`);
+      throw new NotFoundException(`Commentaire avec l'id ${idComment} non trouvé`);
     }
   }
 }

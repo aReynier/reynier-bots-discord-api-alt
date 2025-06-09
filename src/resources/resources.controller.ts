@@ -40,16 +40,16 @@ export class ResourcesController {
   })
   findAll(): Promise<ResourceResponseDto[]> {
     return this.resourcesService.findAll();
-  }
+  } 
 
-  @Get(':uuid')
+  @Get(':id')
   @ApiOperation({ 
-    summary: 'Récupérer une ressource par son UUID',
+    summary: 'Récupérer une ressource par son id',
     description: 'Retourne les détails d\'une ressource spécifique avec toutes ses relations.'
   })
   @ApiParam({ 
-    name: 'uuid',
-    description: 'UUID de la ressource à récupérer',
+    name: 'id',
+    description: 'id de la ressource à récupérer',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -58,18 +58,18 @@ export class ResourcesController {
     type: ResourceResponseDto 
   })
   @ApiResponse({ status: 404, description: 'Ressource non trouvée' })
-  findOne(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<ResourceResponseDto> {
-    return this.resourcesService.findOne(uuid);
+  findOne(@Param('id', ParseUUIDPipe) idResource: string): Promise<ResourceResponseDto> {
+    return this.resourcesService.findOne(idResource);
   }
 
-  @Get(':uuid/comments')
+  @Get(':id/comments')
   @ApiOperation({ 
     summary: 'Récupérer tous les commentaires d\'une ressource',
     description: 'Retourne la liste de tous les commentaires associés à une ressource spécifique.'
   })
   @ApiParam({ 
-    name: 'uuid',
-    description: 'UUID de la ressource',
+    name: 'id',
+    description: 'id de la ressource',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -78,18 +78,18 @@ export class ResourcesController {
     type: [Comment] 
   })
   @ApiResponse({ status: 404, description: 'Ressource non trouvée' })
-  findComments(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<Comment[]> {
-    return this.resourcesService.findComments(uuid);
+  findComments(@Param('id', ParseUUIDPipe) idResource: string): Promise<Comment[]> {
+    return this.resourcesService.findComments(idResource);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ 
     summary: 'Mettre à jour une ressource',
     description: 'Met à jour les informations d\'une ressource existante.'
   })
   @ApiParam({ 
-    name: 'uuid',
-    description: 'UUID de la ressource à mettre à jour',
+    name: 'id',
+    description: 'id de la ressource à mettre à jour',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -100,20 +100,20 @@ export class ResourcesController {
   @ApiResponse({ status: 400, description: 'Données invalides' })
   @ApiResponse({ status: 404, description: 'Ressource non trouvée' })
   update(
-    @Param('uuid', ParseUUIDPipe) uuid: string,
+    @Param('id', ParseUUIDPipe) idResource: string,
     @Body() updateResourceDto: UpdateResourceDto,
   ): Promise<ResourceResponseDto> {
-    return this.resourcesService.update(uuid, updateResourceDto);
+    return this.resourcesService.update(idResource, updateResourceDto);
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ 
     summary: 'Supprimer une ressource',
     description: 'Supprime une ressource existante de la base de données.'
   })
   @ApiParam({ 
-    name: 'uuid',
-    description: 'UUID de la ressource à supprimer',
+    name: 'id',
+    description: 'id de la ressource à supprimer',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @ApiResponse({ 
@@ -121,7 +121,7 @@ export class ResourcesController {
     description: 'La ressource a été supprimée avec succès.' 
   })
   @ApiResponse({ status: 404, description: 'Ressource non trouvée' })
-  remove(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<void> {
-    return this.resourcesService.remove(uuid);
+  remove(@Param('id', ParseUUIDPipe) idResource: string): Promise<void> {
+    return this.resourcesService.remove(idResource);
   }
 } 

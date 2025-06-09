@@ -7,11 +7,11 @@ import { Vote } from '../../votes/entities/vote.entity';
 @Entity('comments')
 export class Comment {
   @ApiProperty({
-    description: 'UUID unique du commentaire',
+    description: 'id unique du commentaire',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_comment' })
-  uuidComment: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_comment' })
+  idComment: string;
 
   @ApiProperty({
     description: 'Contenu du commentaire',
@@ -36,25 +36,25 @@ export class Comment {
   createdAt: Date;
 
   @ApiProperty({
-    description: 'UUID du membre qui a créé le commentaire',
+    description: 'id du membre qui a créé le commentaire',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ type: 'uuid', name: 'uuid_member' })
-  uuidMember: string;
+  @Column({ type: 'uuid', name: 'id_member' })
+  idMember: string;
 
   @ApiProperty({
-    description: 'UUID de la ressource commentée',
+    description: 'id de la ressource commentée',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ type: 'uuid', name: 'uuid_resource' })
-  uuidResource: string;
+  @Column({ type: 'uuid', name: 'id_resource' })
+  idResource: string;
 
   @ApiProperty({
     description: 'Le membre qui a créé le commentaire',
     type: () => Member
   })
   @ManyToOne(() => Member, member => member.comments)
-  @JoinColumn({ name: 'uuid_member' })
+  @JoinColumn({ name: 'id_member' })
   member: Member;
 
   @ApiProperty({
@@ -62,7 +62,7 @@ export class Comment {
     type: () => Resource
   })
   @ManyToOne(() => Resource, resource => resource.comments)
-  @JoinColumn({ name: 'uuid_resource' })
+  @JoinColumn({ name: 'id_resource' })
   resource: Resource;
 
   @ApiProperty({

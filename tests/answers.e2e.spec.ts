@@ -6,7 +6,7 @@ test.describe('Answers API E2E Tests', () => {
   
   const testAnswer: CreateAnswerQuestionDto = {
     content: 'Test answer content',
-    uuidQuestion: '123e4567-e89b-12d3-a456-426614174000'
+    idQuestion: '123e4567-e89b-12d3-a456-426614174000'
   };
 
   let createdAnswerUuid: string;
@@ -66,7 +66,7 @@ test.describe('Answers API E2E Tests', () => {
     createdAnswerUuid = createData.data.uuid;
 
     // 2. Récupération de la réponse créée
-    console.log(`Fetching created answer with UUID: ${createdAnswerUuid}...`);
+    console.log(`Fetching created answer with id: ${createdAnswerUuid}...`);
     const getResponse = await request.get(`${API_URL}/answers/${createdAnswerUuid}`);
     console.log(`Get response status: ${getResponse.status()}`);
     const getResponseText = await getResponse.text();
@@ -141,7 +141,7 @@ test.describe('Answers API E2E Tests', () => {
     // Test avec UUID invalide
     console.log('Testing invalid UUID...');
     const invalidUuidResponse = await request.post(`${API_URL}/answers`, {
-      data: { ...testAnswer, uuidQuestion: 'invalid-uuid' },
+      data: { ...testAnswer, idQuestion: 'invalid-uuid' },
       headers: {
         'Content-Type': 'application/json'
       }
@@ -149,7 +149,7 @@ test.describe('Answers API E2E Tests', () => {
     expect(invalidUuidResponse.status()).toBe(400);
     const invalidUuidData = JSON.parse(await invalidUuidResponse.text());
     expect(invalidUuidData.message).toEqual(
-      expect.arrayContaining(['uuidQuestion must be a UUID'])
+      expect.arrayContaining(['idQuestion must be a UUID'])
     );
 
     // Test avec requête malformée

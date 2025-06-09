@@ -41,10 +41,10 @@ describe('AnswersService', () => {
     it('should create a new answer', async () => {
       const createAnswerQuestionDto: CreateAnswerQuestionDto = {
         content: 'Test answer',
-        uuidQuestion: '123e4567-e89b-12d3-a456-426614174000'
+        idQuestion: '123e4567-e89b-12d3-a456-426614174000'
       };
 
-      const answer = { uuid: 'test-uuid', ...createAnswerQuestionDto };
+      const answer = { idAnswer: 'test-id', ...createAnswerQuestionDto };
       mockRepository.create.mockReturnValue(answer);
       mockRepository.save.mockResolvedValue(answer);
 
@@ -59,8 +59,8 @@ describe('AnswersService', () => {
   describe('findAll', () => {
     it('should return an array of answers', async () => {
       const answers = [
-        { uuid: '1', content: 'Answer 1' },
-        { uuid: '2', content: 'Answer 2' },
+        { idAnswer: '1', content: 'Answer 1' },
+        { idAnswer: '2', content: 'Answer 2' },
       ];
       mockRepository.find.mockResolvedValue(answers);
 
@@ -73,13 +73,13 @@ describe('AnswersService', () => {
 
   describe('findOne', () => {
     it('should return a single answer', async () => {
-      const answer = { uuid: 'test-uuid', content: 'Test answer' };
+      const answer = { idAnswer: 'test-id', content: 'Test answer' };
       mockRepository.findOneBy.mockResolvedValue(answer);
 
-      const result = await service.findOne('test-uuid');
+      const result = await service.findOne('test-id');
 
       expect(result).toEqual(answer);
-      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid: 'test-uuid' });
+      expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idAnswer: 'test-id' });
     });
   });
 });

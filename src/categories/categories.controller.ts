@@ -25,31 +25,31 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
-  @Get(':uuid')
-  @ApiOperation({ summary: 'Récupérer une catégorie par son UUID' })
+  @Get(':id')
+  @ApiOperation({ summary: 'Récupérer une catégorie par son id' })
   @ApiResponse({ status: 200, description: 'La catégorie a été trouvée.', type: Category })
   @ApiResponse({ status: 404, description: 'Catégorie non trouvée' })
-  findOne(@Param('uuid') uuid: string) {
-    return this.categoriesService.findOne(uuid);
+  findOne(@Param('id') idCategory: string) {
+    return this.categoriesService.findOne(idCategory);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ summary: 'Mettre à jour une catégorie' })
   @ApiResponse({ status: 200, description: 'La catégorie a été mise à jour avec succès.', type: Category })
   @ApiResponse({ status: 404, description: 'Catégorie non trouvée' })
-  async update(@Param('uuid') uuid: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.categoriesService.update(uuid, updateCategoryDto);
+  async update(@Param('id') idCategory: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+    const category = await this.categoriesService.update(idCategory, updateCategoryDto);
     if (!category) {
-      throw new NotFoundException(`Category with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Category with id "${idCategory}" not found`);
     }
     return category;
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ summary: 'Supprimer une catégorie' })
   @ApiResponse({ status: 200, description: 'La catégorie a été supprimée avec succès.' })
   @ApiResponse({ status: 404, description: 'Catégorie non trouvée' })
-  remove(@Param('uuid') uuid: string) {
-    return this.categoriesService.remove(uuid);
+  remove(@Param('id') idCategory: string) {
+    return this.categoriesService.remove(idCategory);
   }
 }

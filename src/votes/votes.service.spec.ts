@@ -18,23 +18,23 @@ describe('VotesService', () => {
   let commentRepository: Repository<Comment>;
 
   const mockMember = {
-    uuidMember: '123e4567-e89b-12d3-a456-426614174000',
+    idMember: '123e4567-e89b-12d3-a456-426614174000',
     guildUsername: 'TestUser',
     communityRole: 'Member',
   } as Member;
 
   const mockResource = {
-    uuidResource: '123e4567-e89b-12d3-a456-426614174001',
+    idResource: '123e4567-e89b-12d3-a456-426614174001',
     title: 'Test Resource',
   } as Resource;
 
   const mockComment = {
-    uuidComment: '123e4567-e89b-12d3-a456-426614174002',
+    idComment: '123e4567-e89b-12d3-a456-426614174002',
     content: 'Test Comment',
   } as Comment;
 
   const mockVote = {
-    uuidVote: '123e4567-e89b-12d3-a456-426614174003',
+    idVote: '123e4567-e89b-12d3-a456-426614174003',
     voteType: VoteType.UPVOTE,
     member: mockMember,
     resource: mockResource,
@@ -43,15 +43,15 @@ describe('VotesService', () => {
   } as Vote;
 
   const mockCreateResourceVoteDto: CreateVoteDto = {
-    uuidMember: mockMember.uuidMember,
+    idMember: mockMember.idMember,
     voteType: VoteType.UPVOTE,
-    uuidResource: mockResource.uuidResource,
+    idResource: mockResource.idResource,
   };
 
   const mockCreateCommentVoteDto: CreateVoteDto = {
-    uuidMember: mockMember.uuidMember,
+    idMember: mockMember.idMember,
     voteType: VoteType.UPVOTE,
-    uuidComment: mockComment.uuidComment,
+    idComment: mockComment.idComment,
   };
 
   beforeEach(async () => {
@@ -152,10 +152,10 @@ describe('VotesService', () => {
   describe('findOne', () => {
     it('devrait retourner un vote spécifique', async () => {
       vi.spyOn(voteRepository, 'findOne').mockResolvedValueOnce(mockVote);
-      const result = await service.findOne(mockVote.uuidVote);
+      const result = await service.findOne(mockVote.idVote);
       expect(result).toEqual(mockVote);
       expect(voteRepository.findOne).toHaveBeenCalledWith({
-        where: { uuidVote: mockVote.uuidVote },
+        where: { idVote: mockVote.idVote },
         relations: ['member', 'resource', 'comment']
       });
     });
@@ -170,7 +170,7 @@ describe('VotesService', () => {
   describe('remove', () => {
     it('devrait supprimer un vote', async () => {
       vi.spyOn(voteRepository, 'findOne').mockResolvedValueOnce(mockVote);
-      const result = await service.remove(mockVote.uuidVote);
+      const result = await service.remove(mockVote.idVote);
       expect(result).toBe(true);
     });
 

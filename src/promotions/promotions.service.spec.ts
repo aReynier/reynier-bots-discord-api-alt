@@ -69,15 +69,15 @@ describe('PromotionsService', () => {
         name: 'Test Promotion',
         startDate: new Date(),
         endDate: new Date(),
-        status: 'active',
-        uuidCourse: '123e4567-e89b-12d3-a456-426614174000',
-        uuidGuild: '123456789012345678',
-        uuidRole: '234567890123456789',
+        isActive: true,
+        idCourse: '123e4567-e89b-12d3-a456-426614174000',
+        idGuild: '123456789012345678',
+        idRole: '234567890123456789',
       };
 
       const newRole = {
-        uuidRole: '234567890123456789',
-        uuidGuild: '123456789012345678',
+        idRole: '234567890123456789',
+        idGuild: '123456789012345678',
         name: 'Test Promotion',
         memberCount: 0,
         rolePosition: 0,
@@ -86,7 +86,7 @@ describe('PromotionsService', () => {
       };
 
       const savedPromotion = {
-        uuid: '123e4567-e89b-12d3-a456-426614174001',
+        id: '123e4567-e89b-12d3-a456-426614174001',
         ...createPromotionDto,
       };
 
@@ -98,14 +98,14 @@ describe('PromotionsService', () => {
       const result = await service.create(createPromotionDto);
 
       expect(mockRoleRepository.create).toHaveBeenCalledWith(expect.objectContaining({
-        uuidRole: createPromotionDto.uuidRole,
-        uuidGuild: createPromotionDto.uuidGuild,
+        idRole: createPromotionDto.idRole,
+        idGuild: createPromotionDto.idGuild,
         name: createPromotionDto.name,
       }));
       expect(mockRoleRepository.save).toHaveBeenCalledWith(newRole);
       expect(mockPromotionRepository.create).toHaveBeenCalledWith(expect.objectContaining({
         ...createPromotionDto,
-        uuidRole: newRole.uuidRole,
+        idRole: newRole.idRole,
       }));
       expect(mockPromotionRepository.save).toHaveBeenCalledWith(savedPromotion);
       expect(result).toEqual(savedPromotion);
@@ -115,8 +115,8 @@ describe('PromotionsService', () => {
   describe('findAll', () => {
     it('should return an array of promotions with relations', async () => {
       const promotions = [
-        { uuid: '123e4567-e89b-12d3-a456-426614174001', name: 'Promotion 1' },
-        { uuid: '123e4567-e89b-12d3-a456-426614174002', name: 'Promotion 2' },
+        { idPromotion: '123e4567-e89b-12d3-a456-426614174001', name: 'Promotion 1' },
+        { idPromotion: '123e4567-e89b-12d3-a456-426614174002', name: 'Promotion 2' },
       ];
       mockPromotionRepository.find.mockResolvedValue(promotions);
 
@@ -131,13 +131,13 @@ describe('PromotionsService', () => {
 
   describe('findOne', () => {
     it('should return a single promotion with relations', async () => {
-      const promotion = { uuid: '123e4567-e89b-12d3-a456-426614174001', name: 'Promotion 1' };
+      const promotion = { idPromotion: '123e4567-e89b-12d3-a456-426614174001', name: 'Promotion 1' };
       mockPromotionRepository.findOne.mockResolvedValue(promotion);
 
       const result = await service.findOne('123e4567-e89b-12d3-a456-426614174001');
 
       expect(mockPromotionRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid: '123e4567-e89b-12d3-a456-426614174001' },
+        where: { idPromotion: '123e4567-e89b-12d3-a456-426614174001' },
         relations: ['followers', 'managers', 'category', 'course', 'campus', 'role', 'guild']
       });
       expect(result).toEqual(promotion);
@@ -146,7 +146,7 @@ describe('PromotionsService', () => {
 
   describe('update', () => {
     it('should update a promotion', async () => {
-      const uuid = '123e4567-e89b-12d3-a456-426614174001';
+      const idPromotion = '123e4567-e89b-12d3-a456-426614174001';
       const updatePromotionDto: UpdatePromotionDto = { 
         name: 'Updated Promotion',
         startDate: new Date('2024-02-01'),
@@ -154,7 +154,7 @@ describe('PromotionsService', () => {
       };
       
       const existingPromotion = { 
-        uuid,
+        idPromotion,
         name: 'Old Promotion',
         startDate: new Date('2024-01-01'),
         endDate: new Date('2024-11-30'),
@@ -170,10 +170,10 @@ describe('PromotionsService', () => {
       mockPromotionRepository.findOne.mockResolvedValue(existingPromotion);
       mockPromotionRepository.save.mockResolvedValue(updatedPromotion);
 
-      const result = await service.update(uuid, updatePromotionDto);
+      const result = await service.update(idPromotion, updatePromotionDto);
 
       expect(mockPromotionRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid },
+        where: { idPromotion },
         relations: ['followers', 'managers', 'category', 'course', 'campus', 'role', 'guild']
       });
       expect(mockPromotionRepository.save).toHaveBeenCalledWith(expect.objectContaining({
@@ -187,16 +187,16 @@ describe('PromotionsService', () => {
 
   describe('remove', () => {
     it('should remove a promotion', async () => {
-      const uuid = '123e4567-e89b-12d3-a456-426614174001';
-      const promotion = { uuid, name: 'Promotion to Remove' };
+      const idPromotion = '123e4567-e89b-12d3-a456-426614174001';
+      const promotion = { idPromotion, name: 'Promotion to Remove' };
       
       mockPromotionRepository.findOne.mockResolvedValue(promotion);
       mockPromotionRepository.remove.mockResolvedValue(promotion);
 
-      const result = await service.remove(uuid);
+      const result = await service.remove(idPromotion);
 
       expect(mockPromotionRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid },
+        where: { idPromotion },
         relations: ['followers', 'managers', 'category', 'course', 'campus', 'role', 'guild']
       });
       expect(mockPromotionRepository.remove).toHaveBeenCalledWith(promotion);
@@ -206,16 +206,16 @@ describe('PromotionsService', () => {
 
   describe('addFollower', () => {
     it('should add a member as follower to a promotion', async () => {
-      const uuidPromotion = '123e4567-e89b-12d3-a456-426614174001';
-      const uuidMember = '123e4567-e89b-12d3-a456-426614174002';
+      const idPromotion = '123e4567-e89b-12d3-a456-426614174001';
+      const idMember = '123e4567-e89b-12d3-a456-426614174002';
       
       const promotion = { 
-        uuid: uuidPromotion, 
+        idPromotion: idPromotion, 
         name: 'Test Promotion',
         followers: [],
       };
       
-      const member = { uuidMember, guildUsername: 'TestUser' };
+      const member = { idMember, guildUsername: 'TestUser' };
       const updatedPromotion = { 
         ...promotion,
         followers: [member],
@@ -225,13 +225,13 @@ describe('PromotionsService', () => {
       mockMemberRepository.findOneBy.mockResolvedValue(member);
       mockPromotionRepository.save.mockResolvedValue(updatedPromotion);
 
-      const result = await service.addFollower(uuidPromotion, uuidMember);
+      const result = await service.addFollower(idPromotion, idMember);
 
       expect(mockPromotionRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid: uuidPromotion },
+        where: { idPromotion: idPromotion },
         relations: ['followers']
       });
-      expect(mockMemberRepository.findOneBy).toHaveBeenCalledWith({ uuidMember });
+      expect(mockMemberRepository.findOneBy).toHaveBeenCalledWith({ idMember });
       expect(mockPromotionRepository.save).toHaveBeenCalledWith(expect.objectContaining({
         ...promotion,
         followers: [member],
@@ -242,16 +242,16 @@ describe('PromotionsService', () => {
 
   describe('addManager', () => {
     it('should add a member as manager to a promotion', async () => {
-      const uuidPromotion = '123e4567-e89b-12d3-a456-426614174001';
-      const uuidMember = '123e4567-e89b-12d3-a456-426614174002';
+      const idPromotion = '123e4567-e89b-12d3-a456-426614174001';
+      const idMember = '123e4567-e89b-12d3-a456-426614174002';
       
       const promotion = { 
-        uuid: uuidPromotion, 
+        idPromotion: idPromotion, 
         name: 'Test Promotion',
         managers: [],
       };
       
-      const member = { uuidMember, guildUsername: 'TestUser' };
+      const member = { idMember, guildUsername: 'TestUser' };
       const updatedPromotion = { 
         ...promotion,
         managers: [member],
@@ -261,13 +261,13 @@ describe('PromotionsService', () => {
       mockMemberRepository.findOneBy.mockResolvedValue(member);
       mockPromotionRepository.save.mockResolvedValue(updatedPromotion);
 
-      const result = await service.addManager(uuidPromotion, uuidMember);
+      const result = await service.addManager(idPromotion, idMember);
 
       expect(mockPromotionRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid: uuidPromotion },
+        where: { idPromotion: idPromotion },
         relations: ['managers']
       });
-      expect(mockMemberRepository.findOneBy).toHaveBeenCalledWith({ uuidMember });
+      expect(mockMemberRepository.findOneBy).toHaveBeenCalledWith({ idMember });
       expect(mockPromotionRepository.save).toHaveBeenCalledWith(expect.objectContaining({
         ...promotion,
         managers: [member],

@@ -8,7 +8,7 @@ describe('CreateXpTransactionDto', () => {
 
   beforeEach(() => {
     dto = new CreateXpTransactionDto();
-    dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+    dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
     dto.transactionType = XpTransactionType.GAIN;
     dto.source = XpTransactionSource.VOTE;
     dto.transactionValue = '100.00';
@@ -20,19 +20,19 @@ describe('CreateXpTransactionDto', () => {
     expect(errors.length).toBe(0);
   });
 
-  describe('uuidMember', () => {
-    it('devrait échouer si uuidMember n\'est pas une chaîne', async () => {
-      (dto as any).uuidMember = 123;
+  describe('idMember', () => {
+    it('devrait échouer si idMember n\'est pas une chaîne', async () => {
+      (dto as any).idMember = 123;
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('uuidMember');
+      expect(errors[0].property).toBe('idMember');
     });
 
-    it('devrait échouer si uuidMember n\'est pas un UUID valide', async () => {
-      dto.uuidMember = '123';
+    it('devrait échouer si idMember n\'est pas un UUID valide', async () => {
+      dto.idMember = '123';
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('uuidMember');
+      expect(errors[0].property).toBe('idMember');
     });
   });
 

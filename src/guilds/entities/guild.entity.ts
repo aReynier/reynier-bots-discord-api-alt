@@ -15,8 +15,8 @@ export class Guild {
     description: 'ID Discord du serveur',
     example: '123456789012345678',
   })
-  @PrimaryColumn({ type: 'varchar', length: 19, name: 'uuid_guild' })
-  uuid: string;
+  @PrimaryColumn({ type: 'varchar', length: 19, name: 'id_guild' })
+  idGuild: string;
 
   @ApiProperty({
     description: 'Nom du serveur',

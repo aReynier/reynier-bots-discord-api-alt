@@ -26,11 +26,11 @@ export class ModeratorActionsService {
   async create(createDto: CreateModeratorActionDto): Promise<ModeratorAction> {
     // Vérifier que le membre existe et est modérateur
     const member = await this.memberRepository.findOne({
-      where: { uuidMember: createDto.uuidMember }
+      where: { idMember: createDto.idMember }
     });
 
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${createDto.uuidMember} not found`);
+      throw new NotFoundException(`Member with id ${createDto.idMember} not found`);
     }
 
     // Vérifier que le membre est modérateur
@@ -40,11 +40,11 @@ export class ModeratorActionsService {
 
     // Vérifier que le signalement existe
     const report = await this.reportRepository.findOne({
-      where: { uuidReport: createDto.uuidReport }
+      where: { idReport: createDto.idReport }
     });
 
     if (!report) {
-      throw new NotFoundException(`Report with UUID ${createDto.uuidReport} not found`);
+      throw new NotFoundException(`Report with id ${createDto.idReport} not found`);
     }
 
     try {
@@ -65,9 +65,9 @@ export class ModeratorActionsService {
         actionType,
         actionReason: createDto.reason,
         moderator: member,
-        moderatorUuid: member.uuidMember,
+        idModerator: member.idMember,
         report,
-        reportUuid: report.uuidReport
+        idReport: report.idReport
       });
 
       const savedAction = await this.moderatorActionRepository.save(moderatorAction);
@@ -107,16 +107,16 @@ export class ModeratorActionsService {
    * Récupère une action de modération spécifique
    * @throws NotFoundException si l'action n'existe pas
    */
-  async findOne(uuid: string): Promise<ModeratorAction> {
+  async findOne(idModeration: string): Promise<ModeratorAction> {
     try {
       const action = await this.moderatorActionRepository.findOne({
-        where: { uuidModeration: uuid },
+        where: { idModeration: idModeration },
         relations: ['moderator', 'report']
       });
 
       if (!action) {
         throw new NotFoundException(
-          `Action de modération avec l'UUID ${uuid} non trouvée`,
+          `Action de modération avec l'id ${idModeration} non trouvée`,
         );
       }
 
@@ -131,10 +131,10 @@ export class ModeratorActionsService {
     }
   }
 
-  async findByReport(reportUuid: string): Promise<ModeratorAction[]> {
+  async findByReport(idReport: string): Promise<ModeratorAction[]> {
     try {
       return await this.moderatorActionRepository.find({
-        where: { reportUuid },
+        where: { idReport },
         relations: ['moderator', 'report'],
         order: {
           actionCreatedAt: 'DESC'
@@ -151,7 +151,7 @@ export class ModeratorActionsService {
    * Supprime une action de modération
    * @throws NotFoundException si l'action n'existe pas
    */
-  async remove(uuid: string): Promise<void> {
+  async remove(idModeration: string): Promise<void> {
     throw new BadRequestException('Les actions de modération ne peuvent pas être supprimées');
   }
 }

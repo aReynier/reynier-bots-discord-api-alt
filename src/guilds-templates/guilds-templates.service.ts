@@ -23,31 +23,31 @@ export class GuildsTemplatesService {
     });
   }
 
-  findOne(uuid: string) {
+  findOne(idGuildTemplate: string) {
     return this.guildTemplateRepository.findOne({
-      where: { uuid },
+      where: { idGuildTemplate },
       relations: ['guild', 'category']
     });
   }
 
-  async update(uuid: string, updateGuildTemplateDto: UpdateGuildTemplateDto) {
-    const guildTemplate = await this.guildTemplateRepository.findOneBy({ uuid });
+  async update(idGuildTemplate: string, updateGuildTemplateDto: UpdateGuildTemplateDto) {
+    const guildTemplate = await this.guildTemplateRepository.findOneBy({ idGuildTemplate });
     if (!guildTemplate) {
       return null;
     }
     
     // Mise à jour des champs autorisés uniquement
-    const { name, description, configuration, uuidCategory } = updateGuildTemplateDto;
+    const { name, description, configuration, idCategory } = updateGuildTemplateDto;
     if (name !== undefined) guildTemplate.name = name;
     if (description !== undefined) guildTemplate.description = description;
     if (configuration !== undefined) guildTemplate.configuration = configuration;
-    if (uuidCategory !== undefined) guildTemplate.uuidCategory = uuidCategory;
+    if (idCategory !== undefined) guildTemplate.idCategory = idCategory;
     
     guildTemplate.updatedAt = new Date();
     return this.guildTemplateRepository.save(guildTemplate);
   }
 
-  remove(uuid: string) {
-    return this.guildTemplateRepository.delete({ uuid });
+  remove(idGuildTemplate: string) {
+    return this.guildTemplateRepository.delete({ idGuildTemplate });
   }
 }

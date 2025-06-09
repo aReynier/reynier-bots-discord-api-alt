@@ -12,19 +12,19 @@ describe('CommentsController', () => {
   let service: CommentsService;
 
   const mockComment = {
-    uuidComment: '123e4567-e89b-12d3-a456-426614174000',
+    idComment: '123e4567-e89b-12d3-a456-426614174000',
     content: 'Test comment',
     status: 'active',
     createdAt: new Date(),
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
-    uuidResource: '123e4567-e89b-12d3-a456-426614174002'
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
+    idResource: '123e4567-e89b-12d3-a456-426614174002'
   } as Comment;
 
   const mockCreateDto: CreateCommentDto = {
     content: 'Test comment',
     status: 'active',
-    uuidMember: '123e4567-e89b-12d3-a456-426614174001',
-    uuidResource: '123e4567-e89b-12d3-a456-426614174002'
+    idMember: '123e4567-e89b-12d3-a456-426614174001',
+    idResource: '123e4567-e89b-12d3-a456-426614174002'
   };
 
   const mockUpdateDto: UpdateCommentDto = {
@@ -82,8 +82,8 @@ describe('CommentsController', () => {
       await expect(controller.create(invalidDto)).rejects.toThrow(BadRequestException);
     });
 
-    it('devrait rejeter un commentaire avec un UUID membre invalide', async () => {
-      const invalidDto = { ...mockCreateDto, uuidMember: 'invalid-uuid' };
+    it('devrait rejeter un commentaire avec un id membre invalide', async () => {
+      const invalidDto = { ...mockCreateDto, idMember: 'invalid-uuid' };
       vi.spyOn(service, 'create').mockRejectedValueOnce(new BadRequestException());
 
       await expect(controller.create(invalidDto)).rejects.toThrow(BadRequestException);
@@ -111,7 +111,7 @@ describe('CommentsController', () => {
     it('devrait retourner les commentaires triés par date de création', async () => {
       const mockComments = [
         { ...mockComment, createdAt: new Date('2024-03-01') },
-        { ...mockComment, uuidComment: '456', createdAt: new Date('2024-03-02') }
+        { ...mockComment, idComment: '456', createdAt: new Date('2024-03-02') }
       ];
       vi.spyOn(service, 'findAll').mockResolvedValueOnce(mockComments);
 
@@ -125,10 +125,10 @@ describe('CommentsController', () => {
 
   describe('findOne', () => {
     it('devrait retourner un commentaire par uuid', async () => {
-      const result = await controller.findOne(mockComment.uuidComment);
+      const result = await controller.findOne(mockComment.idComment);
 
       expect(result).toEqual(mockComment);
-      expect(service.findOne).toHaveBeenCalledWith(mockComment.uuidComment);
+      expect(service.findOne).toHaveBeenCalledWith(mockComment.idComment);
       expect(service.findOne).toHaveBeenCalledTimes(1);
     });
 
@@ -138,7 +138,7 @@ describe('CommentsController', () => {
       await expect(controller.findOne('non-existant')).rejects.toThrow(NotFoundException);
     });
 
-    it('devrait rejeter un UUID invalide', async () => {
+    it('devrait rejeter un id invalide', async () => {
       vi.spyOn(service, 'findOne').mockRejectedValueOnce(new BadRequestException());
 
       await expect(controller.findOne('invalid-uuid')).rejects.toThrow();
@@ -150,10 +150,10 @@ describe('CommentsController', () => {
       const updatedComment = { ...mockComment, ...mockUpdateDto } as Comment;
       vi.spyOn(service, 'update').mockResolvedValueOnce(updatedComment);
 
-      const result = await controller.update(mockComment.uuidComment, mockUpdateDto);
+      const result = await controller.update(mockComment.idComment, mockUpdateDto);
 
       expect(result).toEqual(updatedComment);
-      expect(service.update).toHaveBeenCalledWith(mockComment.uuidComment, mockUpdateDto);
+      expect(service.update).toHaveBeenCalledWith(mockComment.idComment, mockUpdateDto);
       expect(service.update).toHaveBeenCalledTimes(1);
     });
 
@@ -168,7 +168,7 @@ describe('CommentsController', () => {
       const updatedComment = { ...mockComment, ...partialUpdate } as Comment;
       vi.spyOn(service, 'update').mockResolvedValueOnce(updatedComment);
 
-      const result = await controller.update(mockComment.uuidComment, partialUpdate);
+      const result = await controller.update(mockComment.idComment, partialUpdate);
 
       expect(result.content).toBe(partialUpdate.content);
       expect(result.status).toBe(mockComment.status);
@@ -178,15 +178,15 @@ describe('CommentsController', () => {
       const invalidUpdate = { status: 'invalid_status' };
       vi.spyOn(service, 'update').mockRejectedValueOnce(new BadRequestException());
 
-      await expect(controller.update(mockComment.uuidComment, invalidUpdate)).rejects.toThrow(BadRequestException);
+      await expect(controller.update(mockComment.idComment, invalidUpdate)).rejects.toThrow(BadRequestException);
     });
   });
 
   describe('remove', () => {
     it('devrait supprimer un commentaire', async () => {
-      await controller.remove(mockComment.uuidComment);
+      await controller.remove(mockComment.idComment);
 
-      expect(service.remove).toHaveBeenCalledWith(mockComment.uuidComment);
+      expect(service.remove).toHaveBeenCalledWith(mockComment.idComment);
       expect(service.remove).toHaveBeenCalledTimes(1);
     });
 
@@ -196,17 +196,17 @@ describe('CommentsController', () => {
       await expect(controller.remove('non-existant')).rejects.toThrow(NotFoundException);
     });
 
-    it('devrait rejeter un UUID invalide', async () => {
+    it('devrait rejeter un id invalide', async () => {
       vi.spyOn(service, 'remove').mockRejectedValueOnce(new BadRequestException());
 
       await expect(controller.remove('invalid-uuid')).rejects.toThrow();
     });
 
     it('devrait vérifier que le commentaire a bien été supprimé', async () => {
-      await controller.remove(mockComment.uuidComment);
+      await controller.remove(mockComment.idComment);
       
       vi.spyOn(service, 'findOne').mockRejectedValueOnce(new NotFoundException());
-      await expect(service.findOne(mockComment.uuidComment)).rejects.toThrow(NotFoundException);
+      await expect(service.findOne(mockComment.idComment)).rejects.toThrow(NotFoundException);
     });
   });
 }); 

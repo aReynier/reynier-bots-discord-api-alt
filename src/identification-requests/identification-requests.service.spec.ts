@@ -26,12 +26,12 @@ describe('IdentificationRequestsService', () => {
 
   it('should create a new identification request', async () => {
     const dto: CreateIdentificationRequestDto = {
-      uuidMember: '123e4567-e89b-12d3-a456-426614174000',
-      firstname: 'John',
-      lastname: 'Doe',
+      idMember: '123e4567-e89b-12d3-a456-426614174000',
+      firstName: 'John',
+      lastName: 'Doe',
       email: 'john.doe@example.com',
     };
-    const entity = { ...dto, uuid: '123e4567-e89b-12d3-a456-426614174001' };
+    const entity = { ...dto };
     mockRepository.create.mockReturnValue(entity);
     mockRepository.save.mockResolvedValue(entity);
 
@@ -41,34 +41,56 @@ describe('IdentificationRequestsService', () => {
   });
 
   it('should return an array of identification requests', async () => {
-    const result = [{ uuid: '123e4567-e89b-12d3-a456-426614174000', uuidMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'John', lastname: 'Doe', email: 'john.doe@example.com' }];
+    const result = [{ uuid: '123e4567-e89b-12d3-a456-426614174000', idIdentificationRequest: '123e4567-e89b-12d3-a456-426614174000', firstname: 'John', lastname: 'Doe', email: 'john.doe@example.com' }];
     mockRepository.find.mockResolvedValue(result);
     expect(await service.findAll()).toEqual(result);
     expect(mockRepository.find).toHaveBeenCalled();
   });
 
   it('should return a single identification request', async () => {
-    const result = { uuid: '123e4567-e89b-12d3-a456-426614174000', uuidMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'John', lastname: 'Doe', email: 'john.doe@example.com' };
-    mockRepository.findOneBy.mockResolvedValue(result);
-    expect(await service.findOne('123e4567-e89b-12d3-a456-426614174000')).toEqual(result);
-    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid: '123e4567-e89b-12d3-a456-426614174000' });
+    const mockIdentificationRequest = {
+      idIdentificationRequest: '123e4567-e89b-12d3-a456-426614174000',
+      idMember: '123e4567-e89b-12d3-a456-426614174000',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com'
+    };
+    mockRepository.findOneBy.mockResolvedValue(mockIdentificationRequest);
+    expect(await service.findOne('123e4567-e89b-12d3-a456-426614174000')).toEqual(mockIdentificationRequest);
+    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ 
+      idIdentificationRequest: '123e4567-e89b-12d3-a456-426614174000' 
+    });
   });
 
   it('should update an identification request', async () => {
-    const dto: UpdateIdentificationRequestDto = { firstname: 'Jane' };
-    const result = { uuid: '123e4567-e89b-12d3-a456-426614174000', uuidMember: '123e4567-e89b-12d3-a456-426614174000', firstname: 'Jane', lastname: 'Doe', email: 'john.doe@example.com' };
-    mockRepository.findOneBy.mockResolvedValue(result);
-    mockRepository.save.mockResolvedValue(result);
+    const dto: UpdateIdentificationRequestDto = { firstName: 'Jane' };
+    const mockIdentificationRequest = {
+      idIdentificationRequest: '123e4567-e89b-12d3-a456-426614174000',
+      idMember: '123e4567-e89b-12d3-a456-426614174000',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com'
+    };
+    const updatedRequest = { 
+      ...mockIdentificationRequest,
+      firstName: 'Jane'
+    };
+    mockRepository.findOneBy.mockResolvedValue(mockIdentificationRequest);
+    mockRepository.save.mockResolvedValue(updatedRequest);
 
-    expect(await service.update('123e4567-e89b-12d3-a456-426614174000', dto)).toEqual(result);
-    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid: '123e4567-e89b-12d3-a456-426614174000' });
-    expect(mockRepository.save).toHaveBeenCalledWith(result);
+    expect(await service.update('123e4567-e89b-12d3-a456-426614174000', dto)).toEqual(updatedRequest);
+    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ 
+      idIdentificationRequest: '123e4567-e89b-12d3-a456-426614174000' 
+    });
+    expect(mockRepository.save).toHaveBeenCalledWith(updatedRequest);
   });
 
   it('should delete an identification request', async () => {
     mockRepository.delete.mockResolvedValue({ affected: 1 });
     expect(await service.remove('123e4567-e89b-12d3-a456-426614174000')).toEqual({ affected: 1 });
-    expect(mockRepository.delete).toHaveBeenCalledWith('123e4567-e89b-12d3-a456-426614174000');
+    expect(mockRepository.delete).toHaveBeenCalledWith({
+      idIdentificationRequest: '123e4567-e89b-12d3-a456-426614174000'
+    });
   });
 });
 

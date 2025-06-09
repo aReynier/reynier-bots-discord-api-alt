@@ -7,11 +7,11 @@ import { Guild } from '../../guilds/entities/guild.entity';
 @Entity('Channels')
 export class Channel {
   @ApiProperty({
-    description: 'ID Discord du channel',
+    description: 'SF Discord du channel',
     example: '123456789012345678'
   })
-  @PrimaryColumn({ type: 'varchar', length: 19 , name: 'uuid_channel' })
-  uuid: string;
+  @PrimaryColumn({ type: 'varchar', length: 19 , name: 'id_channel' })
+  idChannel: string;
 
   @ApiProperty({
     description: 'Le nom du channel',
@@ -41,15 +41,23 @@ export class Channel {
     example: '123456789012345678',
     required: false
   })
-  @Column({ name: 'uuid_category', type: 'varchar', length: 19, nullable: true })
-  uuidCategory: string;
+  @Column({ name: 'id_category', type: 'varchar', length: 19, nullable: true })
+  idCategory: string;
 
   @ApiProperty({
     description: 'ID Discord du serveur associé',
     example: '123456789012345678'
   })
-  @Column({ name: 'uuid_guild', type: 'varchar', length: 19 })
-  uuidGuild: string;
+  @Column({ name: 'id_guild', type: 'varchar', length: 19 })
+  idGuild: string;
+
+  @ApiProperty({
+    description: 'ID de la formation associée',
+    example: '123456789012345678',
+    required: false
+  })
+  @Column({ name: 'id_course', type: 'varchar', length: 19, nullable: true })
+  idCourse: string;
 
   @ApiProperty({
     description: 'Date de création'
@@ -72,8 +80,8 @@ export class Channel {
     onDelete: 'SET NULL',
     nullable: true
   })
-  @JoinColumn({ name: 'uuid_category' })
-  category: Category;
+  @JoinColumn({ name: 'id_category' })
+  category?: Category;
 
   @ApiProperty({
     description: 'Formation associées aux channels',
@@ -81,14 +89,14 @@ export class Channel {
     isArray: true
   })
   @ManyToOne(() => Course, course => course.channels)
-  @JoinColumn({ name: 'uuid_course' })
-  course: Course;
+  @JoinColumn({ name: 'id_course' })
+  course?: Course;
 
   @ApiProperty({
     description: 'Le serveur Discord associé au channel',
     type: () => Guild
   })
   @ManyToOne(() => Guild, guild => guild.channels)
-  @JoinColumn({ name: 'uuid_guild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Guild;
 } 

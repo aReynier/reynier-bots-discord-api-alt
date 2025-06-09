@@ -41,9 +41,9 @@ describe('AnswersController', () => {
     it('should create a new answer', async () => {
       const createAnswerQuestionDto: CreateAnswerQuestionDto = {
         content: 'Test answer',
-        uuidQuestion: 'test-question-uuid'
+        idQuestion: 'test-question-id'
       };
-      const expectedResult = { uuid: 'test-uuid', ...createAnswerQuestionDto };
+      const expectedResult = { id: 'test-id', ...createAnswerQuestionDto };
 
       mockAnswersService.create.mockResolvedValue(expectedResult);
 
@@ -57,8 +57,8 @@ describe('AnswersController', () => {
   describe('findAll', () => {
     it('should return an array of answers', async () => {
       const expectedResult = [
-        { uuid: 'uuid1', content: 'Answer 1', uuidQuestion: 'q-uuid1' },
-        { uuid: 'uuid2', content: 'Answer 2', uuidQuestion: 'q-uuid2' }
+        { id: 'id1', content: 'Answer 1', idQuestion: 'q-id1' },
+        { id: 'id2', content: 'Answer 2', idQuestion: 'q-id2' }
       ];
 
       mockAnswersService.findAll.mockResolvedValue(expectedResult);
@@ -72,68 +72,68 @@ describe('AnswersController', () => {
 
   describe('findOne', () => {
     it('should return a single answer', async () => {
-      const uuid = 'test-uuid';
+      const id = 'test-id';
       const expectedResult = {
-        uuid,
+        id,
         content: 'Test answer',
-        uuidQuestion: 'q-uuid'
+        idQuestion: 'q-id'
       };
 
       mockAnswersService.findOne.mockResolvedValue(expectedResult);
 
-      const result = await controller.findOne(uuid);
+      const result = await controller.findOne(id);
 
       expect(result).toEqual(expectedResult);
-      expect(service.findOne).toHaveBeenCalledWith(uuid);
+      expect(service.findOne).toHaveBeenCalledWith(id);
     });
   });
 
   describe('update', () => {
     it('should update an answer', async () => {
-      const uuid = 'test-uuid';
+      const id = 'test-id';
       const updateAnswerDto: UpdateAnswerDto = {
         content: 'Updated answer'
       };
       const expectedResult = {
-        uuid,
+        id,
         ...updateAnswerDto,
-        uuidQuestion: 'q-uuid'
+        idQuestion: 'q-id'
       };
 
       mockAnswersService.update.mockResolvedValue(expectedResult);
 
-      const result = await controller.update(uuid, updateAnswerDto);
+      const result = await controller.update(id, updateAnswerDto);
 
       expect(result).toEqual(expectedResult);
-      expect(service.update).toHaveBeenCalledWith(uuid, updateAnswerDto);
+      expect(service.update).toHaveBeenCalledWith(id, updateAnswerDto);
     });
 
     it('should throw NotFoundException when answer not found', async () => {
-      const uuid = 'non-existent-uuid';
+      const id = 'non-existent-id';
       const updateAnswerDto: UpdateAnswerDto = {
         content: 'Updated answer'
       };
 
       mockAnswersService.update.mockResolvedValue(null);
 
-      await expect(controller.update(uuid, updateAnswerDto)).rejects.toThrow(
+      await expect(controller.update(id, updateAnswerDto)).rejects.toThrow(
         NotFoundException,
       );
-      expect(service.update).toHaveBeenCalledWith(uuid, updateAnswerDto);
+      expect(service.update).toHaveBeenCalledWith(id, updateAnswerDto);
     });
   });
 
   describe('remove', () => {
     it('should remove an answer', async () => {
-      const uuid = 'test-uuid';
+      const id = 'test-id';
       const expectedResult = { deleted: true };
 
       mockAnswersService.remove.mockResolvedValue(expectedResult);
 
-      const result = await controller.remove(uuid);
+      const result = await controller.remove(id);
 
       expect(result).toEqual(expectedResult);
-      expect(service.remove).toHaveBeenCalledWith(uuid);
+      expect(service.remove).toHaveBeenCalledWith(id);
     });
   });
 });

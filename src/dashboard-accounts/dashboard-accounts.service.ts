@@ -18,29 +18,29 @@ export class DashboardAccountService {
         return await this.dashboardAccountRepository.save(dashboardAccount);
     }
 
-    async getByUUID(uuid: string): Promise<DashboardAccount> {
-        const dashboardAccount = await this.dashboardAccountRepository.findOne({ where: { uuid } });
+    async getById(idDashboardAccount: string): Promise<DashboardAccount> {
+        const dashboardAccount = await this.dashboardAccountRepository.findOne({ where: { idDashboardAccount } });
         if (!dashboardAccount) {
-            throw new NotFoundException(`Dashboard account with UUID ${uuid} not found`);
+            throw new NotFoundException(`Dashboard account with id ${idDashboardAccount} not found`);
         }
         return dashboardAccount;
     }
 
-    async updateByUUID(uuid: string, updateDashboardAccountDto: UpdateDashboardAccountDto): Promise<DashboardAccount> {
-        const dashboardAccount = await this.getByUUID(uuid); // Vérifie si l'entité existe
+    async updateById(idDashboardAccount: string, updateDashboardAccountDto: UpdateDashboardAccountDto): Promise<DashboardAccount> {
+        const dashboardAccount = await this.getById(idDashboardAccount); // Vérifie si l'entité existe
         Object.assign(dashboardAccount, updateDashboardAccountDto); // Met à jour les propriétés
         return await this.dashboardAccountRepository.save(dashboardAccount);
     }
 
-    async deleteByUUID(uuid: string): Promise<void> {
+    async deleteById(idDashboardAccount: string): Promise<void> {
         const dashboardAccount = await this.dashboardAccountRepository.findOne({ 
-            where: { uuid } 
+            where: { idDashboardAccount } 
         });
         
         if (!dashboardAccount) {
-            throw new NotFoundException(`Dashboard account with UUID ${uuid} not found`);
+            throw new NotFoundException(`Dashboard account with id ${idDashboardAccount} not found`);
         }
         
-        await this.dashboardAccountRepository.delete({ uuid });
+        await this.dashboardAccountRepository.delete({ idDashboardAccount });
     }
 }

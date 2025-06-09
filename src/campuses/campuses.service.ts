@@ -19,8 +19,8 @@ export class CampusesService {
   async create(createCampusDto: CreateCampusDto): Promise<Campus> {
     try {
       const newRole = this.roleRepository.create({
-        uuidRole: createCampusDto.uuidRole, 
-        uuidGuild: createCampusDto.uuidGuild,
+        idRole: createCampusDto.idRole, 
+        idGuild: createCampusDto.idGuild,
         name: createCampusDto.name,
         memberCount: 0,
         rolePosition: 0,
@@ -32,7 +32,7 @@ export class CampusesService {
 
       const newCampus = this.campusRepository.create({
         ...createCampusDto,
-        uuidRole: savedRole.uuidRole,
+        idRole: savedRole.idRole,
       });
 
       return await this.campusRepository.save(newCampus);
@@ -45,26 +45,26 @@ export class CampusesService {
     return this.campusRepository.find();
   }
 
-  findOne(uuidCampus: string) {
-    if (!uuidCampus) {
-      throw new NotFoundException('UUID du campus manquant');
+  findOne(idCampus: string) {
+    if (!idCampus) {
+      throw new NotFoundException('id du campus manquant');
     }
-    return this.campusRepository.findOneBy({ uuidCampus });
+    return this.campusRepository.findOneBy({ idCampus });
   }
 
-  async update(uuidCampus: string, updateCampusDto: UpdateCampusDto) {
-    const campus = await this.campusRepository.findOneBy({ uuidCampus });
+  async update(idCampus: string, updateCampusDto: UpdateCampusDto) {
+    const campus = await this.campusRepository.findOneBy({ idCampus });
     if (!campus) {
-      throw new NotFoundException(`Campus with UUID "${uuidCampus}" not found`);
+      throw new NotFoundException(`Campus with id "${idCampus}" not found`);
     }
     Object.assign(campus, updateCampusDto);
     return this.campusRepository.save(campus);
   }
 
-  remove(uuidCampus: string) {
-    if (!uuidCampus) {
-      throw new NotFoundException(`Campus with UUID "${uuidCampus}" not found`);
+  remove(idCampus: string) {
+    if (!idCampus) {
+      throw new NotFoundException(`Campus with id "${idCampus}" not found`);
     }
-    return this.campusRepository.delete({ uuidCampus });
+    return this.campusRepository.delete({ idCampus });
   }
 }

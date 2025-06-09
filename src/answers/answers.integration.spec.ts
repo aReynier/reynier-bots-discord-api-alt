@@ -15,7 +15,7 @@ describe('Answers Integration Tests', () => {
 
   const testAnswer = {
     content: 'Test answer',
-    uuidQuestion: '123e4567-e89b-12d3-a456-426614174000'
+    idQuestion: '123e4567-e89b-12d3-a456-426614174000'
   };
 
   beforeAll(async () => {
@@ -49,7 +49,7 @@ describe('Answers Integration Tests', () => {
         .send(testAnswer)
         .expect(201)
         .then((response) => {
-      expect(response.body).toHaveProperty('uuid');
+      expect(response.body).toHaveProperty('id');
       expect(response.body.content).toBe(testAnswer.content);
         });
     });
@@ -59,7 +59,7 @@ describe('Answers Integration Tests', () => {
         .post('/answers')
         .send({
           content: '',
-          uuidQuestion: 'invalid-uuid'
+          idQuestion: 'invalid-id'
         })
         .expect(400);
     });
@@ -76,20 +76,20 @@ describe('Answers Integration Tests', () => {
     });
   });
 
-  describe('/GET answers/:uuid', () => {
+  describe('/GET answers/:id', () => {
     it('should return a single answer', async () => {
       // Créer d'abord une réponse
       const createResponse = await request(app.getHttpServer())
         .post('/answers')
         .send(testAnswer);
 
-      const uuid = createResponse.body.uuid;
+      const id = createResponse.body.id;
 
       return request(app.getHttpServer())
-        .get(`/answers/${uuid}`)
+        .get(`/answers/${id}`)
         .expect(200)
         .then((response) => {
-      expect(response.body.uuid).toBe(uuid);
+      expect(response.body.id).toBe(id);
         });
     });
   });

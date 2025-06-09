@@ -25,35 +25,35 @@ export class ChannelsController {
     return this.channelService.findAll();
   }
 
-  @Get(':uuid')
-  @ApiOperation({ summary: 'Récupérer un channel par son UUID' })
-  @ApiParam({ name: 'uuid', description: 'UUID du channel' })
+  @Get(':id')
+  @ApiOperation({ summary: 'Récupérer un channel par son id' })
+  @ApiParam({ name: 'id', description: 'id du channel' })
   @ApiResponse({ status: 200, description: 'Le channel a été trouvé.', type: Channel })
   @ApiResponse({ status: 404, description: 'Channel non trouvé' })
-  findOne(@Param('uuid') uuid: string) {
-    return this.channelService.findOne(uuid);
+  findOne(@Param('id') idChannel: string) {
+    return this.channelService.findOne(idChannel);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ summary: 'Mettre à jour un channel' })
-  @ApiParam({ name: 'uuid', description: 'UUID du channel' })
+  @ApiParam({ name: 'id', description: 'id du channel' })
   @ApiResponse({ status: 200, description: 'Le channel a été mis à jour.', type: Channel })
   @ApiResponse({ status: 404, description: 'Channel non trouvé' })
   @ApiResponse({ status: 400, description: 'Requête invalide' })
-  async update(@Param('uuid') uuid: string, @Body() updateChannelDto: UpdateChannelDto) {
-    const channel = await this.channelService.update(uuid, updateChannelDto);
+  async update(@Param('id') idChannel: string, @Body() updateChannelDto: UpdateChannelDto) {
+    const channel = await this.channelService.update(idChannel, updateChannelDto);
     if (!channel) {
-      throw new NotFoundException(`Channel with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Channel with id "${idChannel}" not found`);
     }
     return channel;
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ summary: 'Supprimer un channel' })
-  @ApiParam({ name: 'uuid', description: 'UUID du channel' })
+  @ApiParam({ name: 'id', description: 'id du channel' })
   @ApiResponse({ status: 200, description: 'Le channel a été supprimé.' })
   @ApiResponse({ status: 404, description: 'Channel non trouvé' })
-  remove(@Param('uuid') uuid: string) {
-    return this.channelService.remove(uuid);
+  remove(@Param('id') idChannel: string) {
+    return this.channelService.remove(idChannel);
   }
 } 

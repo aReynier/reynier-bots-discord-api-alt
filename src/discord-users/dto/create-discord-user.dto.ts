@@ -1,9 +1,9 @@
 import { IsString, Length } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { PickableDiscordUUIDFields } from 'src/utils/pickable-discord-uuid-fields';
+import { PickableDiscordIdFields} from 'src/utils/pickable-discord-id-fields';
 
-export class CreateDiscordUserDto extends PickType(PickableDiscordUUIDFields, [
-  'uuidDiscord'
+export class CreateDiscordUserDto extends PickType(PickableDiscordIdFields, [
+  'idDiscord'
 ]) {
   @ApiProperty({
     description: 'Nom d\'utilisateur Discord',

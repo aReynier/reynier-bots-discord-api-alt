@@ -11,7 +11,7 @@ describe('RolesController', () => {
   let rolesService: RolesService;
 
   const mockGuild: Guild = {
-    uuid: '123e4567-e89b-12d3-a456-426614174001',
+    idGuild: '123e4567-e89b-12d3-a456-426614174001',
     name: 'Test Guild',
     memberCount: 10,
     configuration: {},
@@ -20,15 +20,15 @@ describe('RolesController', () => {
   };
 
   const mockRole: Role = {
-    uuid: '123e4567-e89b-12d3-a456-426614174000',
+    idRole: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Test Role',
-    member_count: '10',
+    memberCount: '10',
     role_position: '1',
     hoist: true,
     color: '#FF0000',
     createdAt: new Date(),
     updatedAt: new Date(),
-    uuidGuild: '123e4567-e89b-12d3-a456-426614174001',
+    idGuild: '123e4567-e89b-12d3-a456-426614174001',
     guild: mockGuild
   };
 
@@ -47,13 +47,13 @@ describe('RolesController', () => {
   describe('create', () => {
     it('devrait créer un nouveau rôle', async () => {
       const createRoleDto: CreateRoleDto = {
-        uuidRole: '123e4567-e89b-12d3-a456-426614174000',
+        idRole: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Test Role',
-        member_count: '10',
-        role_position: '1',
+        memberCount: '10',
+        rolePosition: '1',
         hoist: true,
         color: '#FF0000',
-        uuidGuild: '123e4567-e89b-12d3-a456-426614174001'
+        idGuild: '123e4567-e89b-12d3-a456-426614174001'
       };
 
       vi.mocked(rolesService.create).mockResolvedValue(mockRole);
@@ -78,13 +78,13 @@ describe('RolesController', () => {
   });
 
   describe('findOne', () => {
-    it('devrait retourner un rôle par son uuid', async () => {
+    it('devrait retourner un rôle par son id', async () => {
       vi.mocked(rolesService.findOne).mockResolvedValue(mockRole);
 
-      const result = await controller.findOne(mockRole.uuid);
+      const result = await controller.findOne(mockRole.idRole);
 
       expect(result).toEqual(mockRole);
-      expect(rolesService.findOne).toHaveBeenCalledWith(mockRole.uuid);
+      expect(rolesService.findOne).toHaveBeenCalledWith(mockRole.idRole);
     });
   });
 
@@ -98,10 +98,10 @@ describe('RolesController', () => {
 
       vi.mocked(rolesService.update).mockResolvedValue(updatedRole);
 
-      const result = await controller.update(mockRole.uuid, updateRoleDto);
+      const result = await controller.update(mockRole.idRole, updateRoleDto);
 
       expect(result).toEqual(updatedRole);
-      expect(rolesService.update).toHaveBeenCalledWith(mockRole.uuid, updateRoleDto);
+      expect(rolesService.update).toHaveBeenCalledWith(mockRole.idRole, updateRoleDto);
     });
   });
 
@@ -109,10 +109,10 @@ describe('RolesController', () => {
     it('devrait supprimer un rôle', async () => {
       vi.mocked(rolesService.remove).mockResolvedValue(undefined);
 
-      const result = await controller.remove(mockRole.uuid);
+      const result = await controller.remove(mockRole.idRole);
 
       expect(result).toBeUndefined();
-      expect(rolesService.remove).toHaveBeenCalledWith(mockRole.uuid);
+      expect(rolesService.remove).toHaveBeenCalledWith(mockRole.idRole);
     });
   });
 });

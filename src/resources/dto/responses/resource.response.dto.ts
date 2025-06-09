@@ -9,7 +9,7 @@ export class ResourceCreatorResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose()
-  uuidMember: string;
+  idMember: string;
 
   @ApiProperty({
     description: 'Nom d\'utilisateur sur le serveur',
@@ -39,10 +39,10 @@ export class ResourceCreatorResponseDto {
   status: string;
 
   @Exclude()
-  uuidDiscord: string;
+  idDiscord: string;
 
   @Exclude()
-  uuidGuild: string;
+  idGuild: string;
 
   @Exclude()
   xp: string;
@@ -53,8 +53,8 @@ export class ResourceReportResponseDto {
     description: 'UUID du signalement',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Expose({ name: 'uuid_report' })
-  uuidReport: string;
+  @Expose({ name: 'id_report' })
+  idReport: string;
 
   @ApiProperty({
     description: 'Type de signalement',
@@ -108,7 +108,7 @@ export class ResourceVoteResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose()
-  uuidVote: string;
+  idVote: string;
 
   @ApiProperty({
     description: 'Type de vote',
@@ -147,7 +147,7 @@ export class ResourceCommentResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose()
-  uuidComment: string;
+  idComment: string;
 
   @ApiProperty({
     description: 'Contenu du commentaire',
@@ -193,7 +193,7 @@ export class ResourceResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose()
-  uuidResource: string;
+  idResource: string;
 
   @ApiProperty({
     description: 'Titre de la ressource',
@@ -228,7 +228,7 @@ export class ResourceResponseDto {
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
   @Expose()
-  creatorUuid: string;
+  idCreator: string;
 
   @ApiProperty({
     description: 'Date de création',

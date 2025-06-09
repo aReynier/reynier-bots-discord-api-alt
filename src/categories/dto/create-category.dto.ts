@@ -1,23 +1,11 @@
 import { IsString, IsInt, MaxLength, Min, Length } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { PickableDiscordIdFields} from 'src/utils/pickable-discord-id-fields';
 
-export class CreateCategoryDto {
-    @ApiProperty({
-        description: 'ID Discord de la catégorie',
-        example: '123456789012345678'
-    })
-    @IsString()
-    @Length(17, 19)
-    uuid: string;
-
-    @ApiProperty({
-        description: 'ID Discord du serveur',
-        example: '123456789012345678'
-    })
-    @IsString()
-    @Length(17, 19)
-    uuidGuild: string;
-
+export class CreateCategoryDto extends PickType(PickableDiscordIdFields, [
+    'idCategory',
+    'idGuild'
+]) {
     @ApiProperty({
         description: 'Nom de la catégorie',
         example: 'Général'
@@ -32,5 +20,5 @@ export class CreateCategoryDto {
     })
     @IsInt()
     @Min(0)
-    position: number;
+    categoryPosition: number;
 }

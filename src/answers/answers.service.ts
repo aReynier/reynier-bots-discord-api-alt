@@ -28,39 +28,39 @@ export class AnswersService {
     return answers;
   }
 
-  async findOne(uuid: string) {
-    if (!uuid) {
-      throw new BadRequestException('UUID is required');
+  async findOne(id: string) {
+    if (!id) {
+      throw new BadRequestException('id is required');
     }
-    const answer = await this.answersRepository.findOneBy({ uuid });
+    const answer = await this.answersRepository.findOneBy({ idAnswer: id });
     if (!answer) {
-      throw new NotFoundException(`Answer with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Answer with id "${id}" not found`);
     }
     return answer;
   }
 
-  async update(uuid: string, updateAnswerDto: UpdateAnswerDto) {
-    if (!uuid) {
-      throw new BadRequestException('UUID is required');
+  async update(id: string, updateAnswerDto: UpdateAnswerDto) {
+    if (!id) {
+      throw new BadRequestException('id is required');
     }
     if (!updateAnswerDto) {
       throw new BadRequestException('Update data is required');
     }
-    const answer = await this.answersRepository.findOneBy({ uuid });
+    const answer = await this.answersRepository.findOneBy({ idAnswer: id });
     if (!answer) {
-      throw new NotFoundException(`Answer with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Answer with id "${id}" not found`);
     }
     Object.assign(answer, updateAnswerDto);
     return this.answersRepository.save(answer);
   }
 
-  async remove(uuid: string) {
-    if (!uuid) {
-      throw new BadRequestException('UUID is required');
+  async remove(id: string) {
+    if (!id) {
+      throw new BadRequestException('id is required');
     }
-    const result = await this.answersRepository.delete({ uuid });
+    const result = await this.answersRepository.delete({ idAnswer: id });
     if (result.affected === 0) {
-      throw new NotFoundException(`Answer with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Answer with id "${id}" not found`);
     }
     return { deleted: true };
   }

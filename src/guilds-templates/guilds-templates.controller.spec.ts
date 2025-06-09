@@ -37,7 +37,7 @@ describe('GuildsTemplatesController', () => {
   describe('create', () => {
     it('should create a new guild template', async () => {
       const createDto = {
-        uuid: '123456789012345678',
+        idGuildTemplate: '123456789012345678',
         name: 'Test Template',
         description: 'Test Description',
         configuration: {
@@ -72,40 +72,40 @@ describe('GuildsTemplatesController', () => {
   });
 
   describe('findOne', () => {
-    it('should return a guild template by uuid', async () => {
-      const uuid = '123456789012345678';
+    it('should return a guild template by id', async () => {
+      const idGuildTemplate = '123456789012345678';
       const expectedResult = { id: 1, name: 'Template 1' };
       mockService.findOne.mockResolvedValue(expectedResult);
 
-      const result = await controller.findOne(uuid);
+      const result = await controller.findOne(idGuildTemplate);
 
-      expect(service.findOne).toHaveBeenCalledWith(uuid);
+      expect(service.findOne).toHaveBeenCalledWith(idGuildTemplate);
       expect(result).toEqual(expectedResult);
     });
   });
 
   describe('update', () => {
     it('should update a guild template', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       const updateDto = { name: 'Updated Template' };
       const expectedResult = { id: 1, ...updateDto };
       mockService.update.mockResolvedValue(expectedResult);
 
-      const result = await controller.update(uuid, updateDto);
+      const result = await controller.update(idGuildTemplate, updateDto);
 
-      expect(service.update).toHaveBeenCalledWith(uuid, updateDto);
+      expect(service.update).toHaveBeenCalledWith(idGuildTemplate, updateDto);
       expect(result).toEqual(expectedResult);
     });
   });
 
   describe('remove', () => {
     it('should delete a guild template', async () => {
-      const uuid = '123456789012345678';
+      const idGuildTemplate = '123456789012345678';
       mockService.remove.mockResolvedValue(undefined);
 
-      await controller.remove(uuid);
+      await controller.remove(idGuildTemplate);
 
-      expect(service.remove).toHaveBeenCalledWith(uuid);
+      expect(service.remove).toHaveBeenCalledWith(idGuildTemplate);
     });
   });
 });

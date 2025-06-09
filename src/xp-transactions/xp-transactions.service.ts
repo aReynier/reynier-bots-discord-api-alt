@@ -18,11 +18,11 @@ export class XpTransactionsService {
 
   async create(createXpTransactionDto: CreateXpTransactionDto): Promise<XpTransactionResponseDto> {
     const member = await this.memberRepository.findOne({
-      where: { uuidMember: createXpTransactionDto.uuidMember }
+      where: { idMember: createXpTransactionDto.idMember }
     });
 
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${createXpTransactionDto.uuidMember} not found`);
+      throw new NotFoundException(`Member with id ${createXpTransactionDto.idMember} not found`);
     }
 
     // Vérifier que la valeur est un nombre valide
@@ -39,7 +39,7 @@ export class XpTransactionsService {
       reason: createXpTransactionDto.reason,
       notes: createXpTransactionDto.notes,
       referenceType: createXpTransactionDto.referenceType,
-      referenceUuid: createXpTransactionDto.referenceUuid,
+      idReference: createXpTransactionDto.idReference,
       member,
     });
 
@@ -47,7 +47,7 @@ export class XpTransactionsService {
     
     // Retourner la transaction avec ses relations
     const transactionWithRelations = await this.xpTransactionRepository.findOne({
-      where: { uuidXpTransaction: savedTransaction.uuidXpTransaction },
+      where: { idXpTransaction: savedTransaction.idXpTransaction },
       relations: ['member'],
     });
 
@@ -69,19 +69,19 @@ export class XpTransactionsService {
     );
   }
 
-  async findByMember(uuidMember: string): Promise<XpTransactionResponseDto[]> {
+  async findByMember(idMember: string): Promise<XpTransactionResponseDto[]> {
     // Vérifier que le membre existe
     const member = await this.memberRepository.findOne({
-      where: { uuidMember }
+      where: { idMember }
     });
 
     if (!member) {
-      throw new NotFoundException(`Member with UUID ${uuidMember} not found`);
+      throw new NotFoundException(`Member with id ${idMember} not found`);
     }
 
     // Récupérer toutes les transactions du membre
     const transactions = await this.xpTransactionRepository.find({
-      where: { member: { uuidMember } },
+      where: { member: { idMember } },
       relations: ['member'],
       order: {
         createdAt: 'DESC'
@@ -93,20 +93,20 @@ export class XpTransactionsService {
     );
   }
 
-  async findOne(uuid: string): Promise<XpTransactionResponseDto> {
+  async findOne(idXpTransaction : string): Promise<XpTransactionResponseDto> {
     const transaction = await this.xpTransactionRepository.findOne({
-      where: { uuidXpTransaction: uuid },
+      where: { idXpTransaction: idXpTransaction },
       relations: ['member']
     });
 
     if (!transaction) {
-      throw new NotFoundException(`Transaction XP avec l'UUID ${uuid} non trouvée`);
+      throw new NotFoundException(`Transaction XP avec l'id ${idXpTransaction} non trouvée`);
     }
 
     return plainToInstance(XpTransactionResponseDto, transaction, { excludeExtraneousValues: true });
   }
 
-  async remove(uuid: string): Promise<void> {
+  async remove(idXpTransaction: string): Promise<void> {
     throw new BadRequestException('Les transactions XP ne peuvent pas être supprimées');
   }
 }

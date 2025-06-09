@@ -11,18 +11,18 @@ describe('ModeratorActionsController', () => {
   let service: ModeratorActionsService;
 
   const mockModeratorAction: ModeratorAction = {
-    uuidModeration: '123e4567-e89b-12d3-a456-426614174000',
+    idModeration: '123e4567-e89b-12d3-a456-426614174000',
     actionType: 'warning',
     actionReason: 'Test reason',
     actionCreatedAt: new Date(),
-    moderatorUuid: '123e4567-e89b-12d3-a456-426614174001',
-    reportUuid: '123e4567-e89b-12d3-a456-426614174002',
+    idModerator: '123e4567-e89b-12d3-a456-426614174001',
+    idReport: '123e4567-e89b-12d3-a456-426614174002',
     updatedAt: new Date(),
   } as ModeratorAction;
 
   const mockCreateDto: CreateModeratorActionDto = {
-    uuidMember: mockModeratorAction.moderatorUuid,
-    uuidReport: mockModeratorAction.reportUuid,
+    idMember: mockModeratorAction.idModerator,
+    idReport: mockModeratorAction.idReport,
     type: ActionType.WARN,
     reason: mockModeratorAction.actionReason,
   };
@@ -50,12 +50,12 @@ describe('ModeratorActionsController', () => {
 
   describe('create', () => {
     it('devrait créer une nouvelle action de modération', async () => {
-      const result = await controller.create(mockCreateDto, mockModeratorAction.moderatorUuid);
+      const result = await controller.create(mockCreateDto, mockModeratorAction.idModerator);
       expect(result).toEqual(mockModeratorAction);
       expect(service.create).toHaveBeenCalledWith(mockCreateDto);
     });
 
-    it('devrait lever une exception si l\'UUID du membre ne correspond pas', async () => {
+    it('devrait lever une exception si l\'id du membre ne correspond pas', async () => {
       await expect(
         controller.create(mockCreateDto, 'different-uuid')
       ).rejects.toThrow(UnauthorizedException);
@@ -72,9 +72,9 @@ describe('ModeratorActionsController', () => {
 
   describe('findOne', () => {
     it('devrait retourner une action de modération spécifique', async () => {
-      const result = await controller.findOne(mockModeratorAction.uuidModeration);
+      const result = await controller.findOne(mockModeratorAction.idModeration);
       expect(result).toEqual(mockModeratorAction);
-      expect(service.findOne).toHaveBeenCalledWith(mockModeratorAction.uuidModeration);
+      expect(service.findOne).toHaveBeenCalledWith(mockModeratorAction.idModeration);
     });
 
     it('devrait gérer les actions non trouvées', async () => {
@@ -87,16 +87,16 @@ describe('ModeratorActionsController', () => {
 
   describe('remove', () => {
     it('devrait supprimer une action de modération', async () => {
-      await controller.remove(mockModeratorAction.uuidModeration);
-      expect(service.remove).toHaveBeenCalledWith(mockModeratorAction.uuidModeration);
+      await controller.remove(mockModeratorAction.idModeration);
+      expect(service.remove).toHaveBeenCalledWith(mockModeratorAction.idModeration);
     });
   });
 
   describe('findByReport', () => {
     it('devrait retourner les actions de modération pour un signalement', async () => {
-      const result = await controller.findByReport(mockModeratorAction.reportUuid);
+      const result = await controller.findByReport(mockModeratorAction.idReport);
       expect(result).toEqual([mockModeratorAction]);
-      expect(service.findByReport).toHaveBeenCalledWith(mockModeratorAction.reportUuid);
+      expect(service.findByReport).toHaveBeenCalledWith(mockModeratorAction.idReport);
     });
 
     it('devrait gérer les signalements non trouvés', async () => {

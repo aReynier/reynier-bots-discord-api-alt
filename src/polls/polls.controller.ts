@@ -29,23 +29,23 @@ export class PollsController {
   @ApiOperation({ summary: 'Retrieve a specific poll by ID' })
   @ApiResponse({ status: 200, description: 'The poll was retrieved successfully.', type: Poll })
   @ApiResponse({ status: 404, description: 'Poll not found.' })
-  findOne(@Param('id') id: string): Promise<Poll | null> {
-    return this.pollsService.findOne(id);
+  findOne(@Param('id') idPoll: string): Promise<Poll | null> {
+    return this.pollsService.findOne(idPoll);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update a specific poll by ID' })
   @ApiResponse({ status: 200, description: 'The poll was updated successfully.', type: Poll })
   @ApiResponse({ status: 404, description: 'Poll not found.' })
-  update(@Param('id') id: string, @Body() updatePollDto: UpdatePollDto): Promise<Poll | null> {
-    return this.pollsService.update(id, updatePollDto);
+  update(@Param('id') idPoll: string, @Body() updatePollDto: UpdatePollDto): Promise<Poll | null> {
+    return this.pollsService.update(idPoll, updatePollDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a specific poll by ID' })
   @ApiResponse({ status: 200, description: 'The poll was deleted successfully.', type: DeleteResult })
   @ApiResponse({ status: 404, description: 'Poll not found.' })
-  remove(@Param('id') id: string): Promise<DeleteResult> {
-    return this.pollsService.remove(id);
+  remove(@Param('id') idPoll: string): Promise<DeleteResult> {
+    return this.pollsService.remove(idPoll);
   }
 }

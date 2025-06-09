@@ -45,7 +45,7 @@ describe('MembersInformationsService', () => {
     };
     const entity = { 
       ...dto, 
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+      idMemberInfos: '123e4567-e89b-12d3-a456-426614174000',
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -58,7 +58,7 @@ describe('MembersInformationsService', () => {
 
   it('should return an array of members informations', async () => {
     const result = [{
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+      idMemberInfos: '123e4567-e89b-12d3-a456-426614174000',
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
@@ -73,7 +73,7 @@ describe('MembersInformationsService', () => {
 
   it('should return a single member information', async () => {
     const result = {
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+      idMemberInfos: '123e4567-e89b-12d3-a456-426614174000',
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
@@ -83,13 +83,13 @@ describe('MembersInformationsService', () => {
     mockRepository.findOneBy.mockResolvedValue(result);
 
     expect(await service.findOne('123e4567-e89b-12d3-a456-426614174000')).toEqual(result);
-    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid: '123e4567-e89b-12d3-a456-426614174000' });
+    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idMemberInfos: '123e4567-e89b-12d3-a456-426614174000' });
   });
 
   it('should update a member information', async () => {
     const dto: UpdateMemberInformationsDto = { firstName: 'Jane' };
     const existingMemberInfo = {
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+      idMemberInfos: '123e4567-e89b-12d3-a456-426614174000',
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
@@ -122,8 +122,8 @@ describe('MembersInformationsService', () => {
     // Appeler la méthode update
     const result = await service.update('123e4567-e89b-12d3-a456-426614174000', dto);
     
-    // Vérifier que findOneBy a été appelé avec le bon uuid
-    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuid: '123e4567-e89b-12d3-a456-426614174000' });
+    // Vérifier que findOneBy a été appelé avec le bon id
+    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idMemberInfos: '123e4567-e89b-12d3-a456-426614174000' });
     
     // Vérifier que save a été appelé
     expect(mockRepository.save).toHaveBeenCalled();

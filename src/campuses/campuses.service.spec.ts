@@ -35,14 +35,16 @@ describe('CampusesService', () => {
 
   it('should create a new campus', async () => {
     const dto: CreateCampusDto = { 
+      idCampus: '123e4567-e89b-12d3-a456-426614174000',
       name: 'Test Campus',
-      uuidGuild: '123456789012345678',
-      uuidRole: '234567890123456789'
+      idGuild: '123456789012345678',
+      idRole: '234567890123456789',
+      idCategory: '345678901234567890'
     };
     
     const mockRole = {
-      uuidRole: '234567890123456789',
-      uuidGuild: '123456789012345678',
+      idRole: '234567890123456789',
+      idGuild: '123456789012345678',
       name: 'Test Campus',
       memberCount: 0,
       rolePosition: 0,
@@ -51,8 +53,12 @@ describe('CampusesService', () => {
     };
     
     const entity = { 
-      uuidCampus: '123e4567-e89b-12d3-a456-426614174000', 
-      ...dto 
+      ...dto,
+      idCampus: '123e4567-e89b-12d3-a456-426614174000',
+      category: {
+        idCategory: dto.idCategory,
+        name: 'Test Category'
+      }
     };
     
     mockRoleRepository.create.mockReturnValue(mockRole);
@@ -62,46 +68,46 @@ describe('CampusesService', () => {
 
     expect(await service.create(dto)).toEqual(entity);
     expect(mockRoleRepository.create).toHaveBeenCalledWith(expect.objectContaining({
-      uuidRole: dto.uuidRole,
-      uuidGuild: dto.uuidGuild,
+      idRole: dto.idRole,
+      idGuild: dto.idGuild,
       name: dto.name
     }));
     expect(mockRoleRepository.save).toHaveBeenCalledWith(mockRole);
     expect(mockRepository.create).toHaveBeenCalledWith(expect.objectContaining({
       ...dto,
-      uuidRole: mockRole.uuidRole
+      idRole: mockRole.idRole
     }));
     expect(mockRepository.save).toHaveBeenCalledWith(entity);
   });
 
   it('should return an array of campuses', async () => {
-    const result = [{ uuidCampus: '123e4567-e89b-12d3-a456-426614174000', name: 'Test Campus' }];
+    const result = [{ idCampus: '123e4567-e89b-12d3-a456-426614174000', name: 'Test Campus' }];
     mockRepository.find.mockResolvedValue(result);
     expect(await service.findAll()).toEqual(result);
     expect(mockRepository.find).toHaveBeenCalled();
   });
 
   it('should return a single campus', async () => {
-    const result = { uuidCampus: '123e4567-e89b-12d3-a456-426614174000', name: 'Test Campus' };
+    const result = { idCampus: '123e4567-e89b-12d3-a456-426614174000', name: 'Test Campus' };
     mockRepository.findOneBy.mockResolvedValue(result);
     expect(await service.findOne('123e4567-e89b-12d3-a456-426614174000')).toEqual(result);
-    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuidCampus: '123e4567-e89b-12d3-a456-426614174000' });
+    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idCampus: '123e4567-e89b-12d3-a456-426614174000' });
   });
 
   it('should update a campus', async () => {
     const dto: UpdateCampusDto = { name: 'Updated Campus' };
-    const result = { uuidCampus: '123e4567-e89b-12d3-a456-426614174000', name: 'Updated Campus' };
+    const result = { idCampus: '123e4567-e89b-12d3-a456-426614174000', name: 'Updated Campus' };
     mockRepository.findOneBy.mockResolvedValue(result);
     mockRepository.save.mockResolvedValue(result);
 
     expect(await service.update('123e4567-e89b-12d3-a456-426614174000', dto)).toEqual(result);
-    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ uuidCampus: '123e4567-e89b-12d3-a456-426614174000' });
+    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ idCampus: '123e4567-e89b-12d3-a456-426614174000' });
     expect(mockRepository.save).toHaveBeenCalledWith(result);
   });
 
   it('should delete a campus', async () => {
     mockRepository.delete.mockResolvedValue({ affected: 1 });
     expect(await service.remove('123e4567-e89b-12d3-a456-426614174000')).toEqual({ affected: 1 });
-    expect(mockRepository.delete).toHaveBeenCalledWith({ uuidCampus: '123e4567-e89b-12d3-a456-426614174000' });
+    expect(mockRepository.delete).toHaveBeenCalledWith({ idCampus: '123e4567-e89b-12d3-a456-426614174000' });
   });
 });

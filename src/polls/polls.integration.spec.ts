@@ -162,7 +162,7 @@ describe('Polls Integration Tests', () => {
   //     const uuid = createResponse.body.uuid;
 
   //     return request(app.getHttpServer())
-  //       .get(`/polls/${uuid}`)
+  //       .get(`/polls/${id}`)
   //       .expect(200)
   //       .then((response) => {
   //         expect(response.body.uuid).toBe(uuid);
@@ -210,7 +210,7 @@ describe('Polls Integration Tests', () => {
   //     };
 
   //     return request(app.getHttpServer())
-  //       .put(`/polls/${uuid}`)
+  //       .put(`/polls/${id}`)
   //       .send(updateData)
   //       .expect(200)
   //       .then((response) => {
@@ -244,12 +244,12 @@ describe('Polls Integration Tests', () => {
 
   //     // Delete the poll
   //     await request(app.getHttpServer())
-  //       .delete(`/polls/${uuid}`)
+  //       .delete(`/polls/${id}`)
   //       .expect(200);
 
   //     // Verify the poll is deleted
   //     return request(app.getHttpServer())
-  //       .get(`/polls/${uuid}`)
+  //       .get(`/polls/${id}`)
   //       .expect(404);
   //   });
 

@@ -8,11 +8,11 @@ import { Vote } from '../../votes/entities/vote.entity';
 @Entity('resources')
 export class Resource {
   @ApiProperty({
-    description: 'UUID unique de la ressource',
+    description: 'id unique de la ressource',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_resource' })
-  uuidResource: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'id_resource' })
+  idResource: string;
 
   @ApiProperty({
     description: 'Le titre de la ressource',
@@ -45,18 +45,18 @@ export class Resource {
   status: string;
 
   @ApiProperty({
-    description: 'UUID du membre créateur',
+    description: 'id du membre créateur',
     example: '123e4567-e89b-12d3-a456-426614174000'
   })
-  @Column({ type: 'uuid', name: 'creator_uuid' })
-  creatorUuid: string;
+  @Column({ type: 'uuid', name: 'id_creator' })
+  idCreator: string;
 
   @ApiProperty({
     description: 'Le membre qui a créé cette ressource',
     type: () => Member
   })
   @ManyToOne(() => Member, member => member.resources)
-  @JoinColumn({ name: 'creator_uuid' })
+  @JoinColumn({ name: 'id_creator' })
   creator: Member;
 
   @ApiProperty({

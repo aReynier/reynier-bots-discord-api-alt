@@ -27,7 +27,7 @@ export class RolesService {
       return savedRole;
     } catch (error) {
       if (error.code === '23505') { // Code PostgreSQL pour violation de contrainte unique
-        throw new BadRequestException('Un rôle avec cet UUID existe déjà');
+        throw new BadRequestException('Un rôle avec cet id existe déjà');
       }
       throw new BadRequestException('Erreur lors de la création du rôle: ' + error.message);
     }
@@ -42,12 +42,12 @@ export class RolesService {
     }
   }
 
-  // Récupérer un rôle par son uuid
-  async findOne(uuidRole: string): Promise<Role> {
+  // Récupérer un rôle par son id
+  async findOne(idRole: string): Promise<Role> {
     try {
-      const role = await this.roleRepository.findOneBy({ uuidRole });
+      const role = await this.roleRepository.findOneBy({ idRole });
       if (!role) {
-        throw new NotFoundException(`Rôle avec l'UUID ${uuidRole} non trouvé`);
+        throw new NotFoundException(`Rôle avec l'id ${idRole} non trouvé`);
       }
       return role;
     } catch (error) {
@@ -59,9 +59,9 @@ export class RolesService {
   }
 
   // Mettre à jour un rôle
-  async update(uuidRole: string, updateRoleDto: UpdateRoleDto): Promise<Role> {
+  async update(idRole: string, updateRoleDto: UpdateRoleDto): Promise<Role> {
     try {
-      const role = await this.findOne(uuidRole);
+      const role = await this.findOne(idRole);
       Object.assign(role, updateRoleDto);
       return await this.roleRepository.save(role);
     } catch (error) {
@@ -73,11 +73,11 @@ export class RolesService {
   }
 
   // Supprimer un rôle
-  async remove(uuidRole: string): Promise<void> {
+  async remove(idRole: string): Promise<void> {
     try {
-      const result = await this.roleRepository.delete({ uuidRole });
+      const result = await this.roleRepository.delete({ idRole });
       if (result.affected === 0) {
-        throw new NotFoundException(`Rôle avec l'UUID ${uuidRole} non trouvé`);
+        throw new NotFoundException(`Rôle avec l'id ${idRole} non trouvé`);
       }
     } catch (error) {
       if (error instanceof NotFoundException) {

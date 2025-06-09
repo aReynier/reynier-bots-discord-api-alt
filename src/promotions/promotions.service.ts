@@ -24,8 +24,8 @@ export class PromotionsService {
     try {
       // Création du rôle associé à la promotion
       const newRole = this.roleRepository.create({
-        uuidRole: createPromotionDto.uuidRole, // UUID fourni par le DTO
-        uuidGuild: createPromotionDto.uuidGuild, // Lié à la guilde
+        idRole: createPromotionDto.idRole, // id fourni par le DTO
+        idGuild: createPromotionDto.idGuild, // Lié à la guilde
         name: createPromotionDto.name, // Même nom que la promotion
         memberCount: 0,
         rolePosition: 0,
@@ -39,7 +39,7 @@ export class PromotionsService {
       // Création de la promotion avec le rôle associé
       const newPromotion = this.promotionRepository.create({
         ...createPromotionDto,
-        uuidRole: savedRole.uuidRole, // Associe le rôle créé à la promotion
+        idRole: savedRole.idRole, // Associe le rôle créé à la promotion
       });
 
       return await this.promotionRepository.save(newPromotion);
@@ -54,20 +54,20 @@ export class PromotionsService {
     });
   }
 
-  async findOne(uuid: string): Promise<Promotion> {
+  async findOne(idPromotion: string): Promise<Promotion> {
     const promotion = await this.promotionRepository.findOne({
-      where: { uuid },
+      where: { idPromotion },
       relations: ['followers', 'managers', 'category', 'course', 'campus', 'role', 'guild']
     });
     
     if (!promotion) {
-      throw new NotFoundException(`Promotion avec UUID ${uuid} non trouvée`);
+      throw new NotFoundException(`Promotion avec idPromotion ${idPromotion} non trouvée`);
     }
     return promotion;
   }
 
-  async update(uuid: string, updatePromotionDto: UpdatePromotionDto): Promise<Promotion> {
-    const promotion = await this.findOne(uuid);
+  async update(idPromotion: string, updatePromotionDto: UpdatePromotionDto): Promise<Promotion> {
+    const promotion = await this.findOne(idPromotion);
 
     // Mise à jour des champs autorisés
     const { name, startDate, endDate } = updatePromotionDto;
@@ -79,28 +79,28 @@ export class PromotionsService {
     return await this.promotionRepository.save(promotion);
   }
 
-  async remove(uuid: string) {
-    const promotion = await this.findOne(uuid);
+  async remove(idPromotion: string) {
+    const promotion = await this.findOne(idPromotion);
     return await this.promotionRepository.remove(promotion);
   }
 
-  async addFollower(uuidPromotion: string, uuidMember: string): Promise<Promotion> {
+  async addFollower(idPromotion: string, idMember: string): Promise<Promotion> {
     const promotion = await this.promotionRepository.findOne({
-      where: { uuid: uuidPromotion },
+      where: { idPromotion: idPromotion },
       relations: ['followers']
     });
 
     if (!promotion) {
-      throw new NotFoundException(`Promotion avec UUID ${uuidPromotion} non trouvée`);
+      throw new NotFoundException(`Promotion avec id ${idPromotion} non trouvée`);
     }
 
-    const member = await this.memberRepository.findOneBy({ uuidMember });
+    const member = await this.memberRepository.findOneBy({ idMember });
     if (!member) {
-      throw new NotFoundException(`Membre avec UUID ${uuidMember} non trouvé`);
+      throw new NotFoundException(`Membre avec id ${idMember} non trouvé`);
     }
 
     // Vérifier si le membre est déjà follower
-    if (promotion.followers && promotion.followers.some(follower => follower.uuidMember === uuidMember)) {
+    if (promotion.followers && promotion.followers.some(follower => follower.idMember === idMember)) {
       throw new BadRequestException(`Le membre est déjà follower de cette promotion`);
     }
 
@@ -116,23 +116,23 @@ export class PromotionsService {
     return await this.promotionRepository.save(promotion);
   }
 
-  async addManager(uuidPromotion: string, uuidMember: string): Promise<Promotion> {
+  async addManager(idPromotion: string, idMember: string): Promise<Promotion> {
     const promotion = await this.promotionRepository.findOne({
-      where: { uuid: uuidPromotion },
+      where: { idPromotion: idPromotion },
       relations: ['managers']
     });
 
     if (!promotion) {
-      throw new NotFoundException(`Promotion avec UUID ${uuidPromotion} non trouvée`);
+      throw new NotFoundException(`Promotion avec id ${idPromotion} non trouvée`);
     }
 
-    const member = await this.memberRepository.findOneBy({ uuidMember });
+    const member = await this.memberRepository.findOneBy({ idMember });
     if (!member) {
-      throw new NotFoundException(`Membre avec UUID ${uuidMember} non trouvé`);
+      throw new NotFoundException(`Membre avec id ${idMember} non trouvé`);
     }
 
     // Vérifier si le membre est déjà manager
-    if (promotion.managers && promotion.managers.some(manager => manager.uuidMember === uuidMember)) {
+    if (promotion.managers && promotion.managers.some(manager => manager.idMember === idMember)) {
       throw new BadRequestException(`Le membre est déjà manager de cette promotion`);
     }
 

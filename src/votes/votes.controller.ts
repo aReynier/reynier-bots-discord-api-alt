@@ -28,9 +28,9 @@ export class VotesController {
     content: {
       'application/json': {
         example: {
-          voteUuid: '123e4567-e89b-12d3-a456-426614174000',
-          userId: '123e4567-e89b-12d3-a456-426614174001',
-          itemId: '123e4567-e89b-12d3-a456-426614174002',
+          idVote: '123e4567-e89b-12d3-a456-426614174000',
+          idUser: '123e4567-e89b-12d3-a456-426614174001',
+          idItem: '123e4567-e89b-12d3-a456-426614174002',
           voteType: 'upvote',
           voteCreatedAt: '2024-01-01T00:00:00Z',
           voteUpdatedAt: '2024-01-01T00:00:00Z'
@@ -71,9 +71,9 @@ export class VotesController {
     content: {
       'application/json': {
         example: [{
-          voteUuid: '123e4567-e89b-12d3-a456-426614174000',
-          userId: '123e4567-e89b-12d3-a456-426614174001',
-          itemId: '123e4567-e89b-12d3-a456-426614174002',
+          idVote: '123e4567-e89b-12d3-a456-426614174000',
+          idUser: '123e4567-e89b-12d3-a456-426614174001',
+          idItem: '123e4567-e89b-12d3-a456-426614174002',
           voteType: 'upvote',
           voteCreatedAt: '2024-01-01T00:00:00Z',
           voteUpdatedAt: '2024-01-01T00:00:00Z'
@@ -115,9 +115,9 @@ export class VotesController {
     content: {
       'application/json': {
         example: {
-          voteUuid: '123e4567-e89b-12d3-a456-426614174000',
-          userId: '123e4567-e89b-12d3-a456-426614174001',
-          itemId: '123e4567-e89b-12d3-a456-426614174002',
+          idVote: '123e4567-e89b-12d3-a456-426614174000',
+          idUser: '123e4567-e89b-12d3-a456-426614174001',
+          idItem: '123e4567-e89b-12d3-a456-426614174002',
           voteType: 'upvote',
           voteCreatedAt: '2024-01-01T00:00:00Z',
           voteUpdatedAt: '2024-01-01T00:00:00Z'

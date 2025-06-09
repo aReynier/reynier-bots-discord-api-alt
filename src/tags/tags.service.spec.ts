@@ -13,7 +13,7 @@ describe('TagsService', () => {
   let repository: Repository<Tag>;
 
   const mockTag = {
-    uuid: '123e4567-e89b-12d3-a456-426614174000',
+    idTag: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Test Tag',
     description: 'Test Description',
     createdAt: new Date(),
@@ -88,14 +88,14 @@ describe('TagsService', () => {
   });
 
   describe('findOne', () => {
-    it('devrait retourner un tag par son uuid', async () => {
+    it('devrait retourner un tag par son id', async () => {
       mockRepository.findOne.mockResolvedValue(mockTag);
 
-      const result = await service.findOne(mockTag.uuid);
+      const result = await service.findOne(mockTag.idTag);
 
       expect(result).toEqual(mockTag);
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { uuid: mockTag.uuid },
+        where: { idTag: mockTag.idTag },
       });
     });
 
@@ -115,7 +115,7 @@ describe('TagsService', () => {
       mockRepository.findOne.mockResolvedValue(mockTag);
       mockRepository.save.mockResolvedValue({ ...mockTag, ...updateTagDto });
 
-      const result = await service.update(mockTag.uuid, updateTagDto);
+      const result = await service.update(mockTag.idTag, updateTagDto);
 
       expect(result).toEqual({ ...mockTag, ...updateTagDto });
       expect(mockRepository.save).toHaveBeenCalled();
@@ -131,7 +131,7 @@ describe('TagsService', () => {
       mockRepository.findOne.mockResolvedValue(mockTag);
       mockRepository.save.mockRejectedValue({ code: '23505' });
 
-      await expect(service.update(mockTag.uuid, { name: 'Existing Tag' })).rejects.toThrow(ConflictException);
+      await expect(service.update(mockTag.idTag, { name: 'Existing Tag' })).rejects.toThrow(ConflictException);
     });
   });
 
@@ -139,9 +139,9 @@ describe('TagsService', () => {
     it('devrait supprimer un tag avec succès', async () => {
       mockRepository.delete.mockResolvedValue({ affected: 1 });
 
-      await service.remove(mockTag.uuid);
+      await service.remove(mockTag.idTag);
 
-      expect(mockRepository.delete).toHaveBeenCalledWith(mockTag.uuid);
+      expect(mockRepository.delete).toHaveBeenCalledWith(mockTag.idTag);
     });
 
     it('devrait lever une NotFoundException si le tag n\'existe pas', async () => {

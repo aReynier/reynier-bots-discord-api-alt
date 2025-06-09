@@ -1,7 +1,7 @@
 import { IsString, MaxLength, IsEnum, IsOptional, IsDecimal, IsUUID } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { XpTransactionType, XpTransactionSource, ReferenceType } from '../entities/xp-transaction.entity';
-import { PickableInternUUIDFields } from '../../utils/pickable-intern-uuid-fields';
+import { PickableInternIdFields } from '../../utils/pickable-intern-id-fields';
 
 /**
  * Data Transfer Object pour la création d'une transaction XP
@@ -14,7 +14,7 @@ import { PickableInternUUIDFields } from '../../utils/pickable-intern-uuid-field
  * @example
  * ```typescript
  * const transaction = new CreateXpTransactionDto();
- * transaction.uuidMember = "123e4567-e89b-12d3-a456-426614174000";
+ * transaction.idMember = "123e4567-e89b-12d3-a456-426614174000";
  * transaction.amount = 100;
  * transaction.reason = "Participation active";
  * transaction.notes = "Aide exceptionnelle"; // Optionnel
@@ -23,8 +23,8 @@ import { PickableInternUUIDFields } from '../../utils/pickable-intern-uuid-field
  * @see XpTransactionsService
  * @see XpTransactionsController
  */
-export class CreateXpTransactionDto extends PickType(PickableInternUUIDFields, [
-  'uuidMember'
+export class CreateXpTransactionDto extends PickType(PickableInternIdFields, [
+  'idMember'
 ]) {
   @ApiProperty({
     description: 'Type de la transaction',
@@ -86,5 +86,5 @@ export class CreateXpTransactionDto extends PickType(PickableInternUUIDFields, [
   })
   @IsOptional()
   @IsUUID()
-  referenceUuid?: string;
+  idReference?: string;
 }

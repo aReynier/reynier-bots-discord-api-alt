@@ -10,12 +10,12 @@ describe('Resource Entity', () => {
 
   beforeEach(() => {
     resource = new Resource();
-    resource.uuidResource = '123e4567-e89b-12d3-a456-426614174000';
+    resource.idResource = '123e4567-e89b-12d3-a456-426614174000';
     resource.title = 'Test Resource';
     resource.description = 'Test Description';
     resource.content = 'Test Content';
     resource.status = 'active';
-    resource.creatorUuid = '123e4567-e89b-12d3-a456-426614174001';
+    resource.idCreator = '123e4567-e89b-12d3-a456-426614174001';
     resource.createdAt = new Date('2024-02-25T12:00:00Z');
     resource.updatedAt = new Date('2024-02-25T12:00:00Z');
   });
@@ -23,12 +23,12 @@ describe('Resource Entity', () => {
   describe('Basic Properties', () => {
     it('should have all required properties with correct types', () => {
       expect(resource).toBeInstanceOf(Resource);
-      expect(typeof resource.uuidResource).toBe('string');
+      expect(typeof resource.idResource).toBe('string');
       expect(typeof resource.title).toBe('string');
       expect(typeof resource.description).toBe('string');
       expect(typeof resource.content).toBe('string');
       expect(typeof resource.status).toBe('string');
-      expect(typeof resource.creatorUuid).toBe('string');
+      expect(typeof resource.idCreator).toBe('string');
       expect(resource.createdAt).toBeInstanceOf(Date);
       expect(resource.updatedAt).toBeInstanceOf(Date);
     });
@@ -43,17 +43,17 @@ describe('Resource Entity', () => {
   describe('Relationships', () => {
     it('should have a creator relationship with Member', () => {
       const member = new Member();
-      member.uuidMember = resource.creatorUuid;
+      member.idMember = resource.idCreator;
       resource.creator = member;
 
       expect(resource.creator).toBeDefined();
       expect(resource.creator).toBeInstanceOf(Member);
-      expect(resource.creator.uuidMember).toBe(resource.creatorUuid);
+      expect(resource.creator.idMember).toBe(resource.idCreator);
     });
 
     it('should have a reports relationship', () => {
       const report = new Report();
-      report.uuidReport = '123e4567-e89b-12d3-a456-426614174002';
+      report.idReport = '123e4567-e89b-12d3-a456-426614174002';
       resource.reports = [report];
 
       expect(resource.reports).toBeDefined();
@@ -63,7 +63,7 @@ describe('Resource Entity', () => {
 
     it('should have a comments relationship', () => {
       const comment = new Comment();
-      comment.uuidComment = '123e4567-e89b-12d3-a456-426614174003';
+      comment.idComment = '123e4567-e89b-12d3-a456-426614174003';
       resource.comments = [comment];
 
       expect(resource.comments).toBeDefined();
@@ -73,7 +73,7 @@ describe('Resource Entity', () => {
 
     it('should have a votes relationship', () => {
       const vote = new Vote();
-      vote.uuidVote = '123e4567-e89b-12d3-a456-426614174004';
+      vote.idVote = '123e4567-e89b-12d3-a456-426614174004';
       resource.votes = [vote];
 
       expect(resource.votes).toBeDefined();
@@ -85,16 +85,16 @@ describe('Resource Entity', () => {
   describe('Data Transformation', () => {
     it('should transform plain object to Resource instance', () => {
       const plainObject = {
-        uuidResource: '123e4567-e89b-12d3-a456-426614174000',
+        idResource: '123e4567-e89b-12d3-a456-426614174000',
         title: 'Test Resource',
         description: 'Test Description',
         content: 'Test Content',
         status: 'active',
-        creatorUuid: '123e4567-e89b-12d3-a456-426614174001',
+        idCreator: '123e4567-e89b-12d3-a456-426614174001',
         createdAt: '2024-02-25T12:00:00Z',
         updatedAt: '2024-02-25T12:00:00Z',
         creator: {
-          uuidMember: '123e4567-e89b-12d3-a456-426614174001',
+          idMember: '123e4567-e89b-12d3-a456-426614174001',
         },
         reports: [],
         comments: [],
@@ -104,12 +104,12 @@ describe('Resource Entity', () => {
       const transformed = plainToInstance(Resource, plainObject, { enableImplicitConversion: true });
 
       expect(transformed).toBeInstanceOf(Resource);
-      expect(transformed.uuidResource).toBe(plainObject.uuidResource);
+      expect(transformed.idResource).toBe(plainObject.idResource);
       expect(transformed.title).toBe(plainObject.title);
       expect(transformed.description).toBe(plainObject.description);
       expect(transformed.content).toBe(plainObject.content);
       expect(transformed.status).toBe(plainObject.status);
-      expect(transformed.creatorUuid).toBe(plainObject.creatorUuid);
+      expect(transformed.idCreator).toBe(plainObject.idCreator);
       expect(transformed.createdAt).toBeInstanceOf(Date);
       expect(transformed.updatedAt).toBeInstanceOf(Date);
     });

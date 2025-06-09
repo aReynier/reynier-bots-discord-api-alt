@@ -28,39 +28,39 @@ export class AnswerTemplatesService {
     return answers;
   }
 
-  async findOne(uuid: string) {
-    if (!uuid) {
-      throw new BadRequestException('UUID is required');
+  async findOne(idAnswerTemplate: string) {
+    if (!idAnswerTemplate) {
+      throw new BadRequestException('idAnswerTemplate is required');
     }
-    const answer = await this.answersRepository.findOneBy({ uuid });
+    const answer = await this.answersRepository.findOneBy({ idAnswerTemplate });
     if (!answer) {
-      throw new NotFoundException(`Answer with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Answer with id "${idAnswerTemplate}" not found`);
     }
     return answer;
   }
 
-  async update(uuid: string, updateAnswerDto: UpdateAnswerTemplateDto) {
-    if (!uuid) {
-      throw new BadRequestException('UUID is required');
+  async update(idAnswerTemplate: string, updateAnswerDto: UpdateAnswerTemplateDto) {
+    if (!idAnswerTemplate) {
+      throw new BadRequestException('id is required');
     }
     if (!updateAnswerDto) {
       throw new BadRequestException('Update data is required');
     }
-    const answer = await this.answersRepository.findOneBy({ uuid });
+    const answer = await this.answersRepository.findOneBy({ idAnswerTemplate });
     if (!answer) {
-      throw new NotFoundException(`Answer with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Answer with id "${idAnswerTemplate}" not found`);
     }
     Object.assign(answer, updateAnswerDto);
     return this.answersRepository.save(answer);
   }
 
-  async remove(uuid: string) {
-    if (!uuid) {
-      throw new BadRequestException('UUID is required');
+  async remove(idAnswerTemplate: string) {
+    if (!idAnswerTemplate) {
+      throw new BadRequestException('id is required');
     }
-    const result = await this.answersRepository.delete({ uuid });
+    const result = await this.answersRepository.delete({ idAnswerTemplate });
     if (result.affected === 0) {
-      throw new NotFoundException(`Answer with UUID "${uuid}" not found`);
+      throw new NotFoundException(`Answer with id "${idAnswerTemplate}" not found`);
     }
     return { deleted: true };
   }

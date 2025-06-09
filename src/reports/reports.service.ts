@@ -22,25 +22,25 @@ export class ReportsService {
 
   async create(createReportDto: CreateReportDto): Promise<ReportResponseDto> {
     // Validation conditionnelle selon le type de signalement
-    if (createReportDto.type === ReportType.RESOURCE && !createReportDto.uuidResource) {
-      throw new BadRequestException('UUID de la ressource requis pour un signalement de ressource');
+    if (createReportDto.type === ReportType.RESOURCE && !createReportDto.idResource) {
+      throw new BadRequestException('id de la ressource requis pour un signalement de ressource');
     }
-    if (createReportDto.type === ReportType.MEMBER && !createReportDto.uuidReportedMember) {
-      throw new BadRequestException('UUID du membre signalé requis pour un signalement de membre');
+    if (createReportDto.type === ReportType.MEMBER && !createReportDto.idReportedMember) {
+      throw new BadRequestException('id du membre signalé requis pour un signalement de membre');
     }
-    if (createReportDto.type === ReportType.RESOURCE && createReportDto.uuidReportedMember) {
-      throw new BadRequestException('UUID du membre signalé non autorisé pour un signalement de ressource');
+    if (createReportDto.type === ReportType.RESOURCE && createReportDto.idReportedMember) {
+      throw new BadRequestException('id du membre signalé non autorisé pour un signalement de ressource');
     }
-    if (createReportDto.type === ReportType.MEMBER && createReportDto.uuidResource) {
-      throw new BadRequestException('UUID de la ressource non autorisé pour un signalement de membre');
+    if (createReportDto.type === ReportType.MEMBER && createReportDto.idResource) {
+      throw new BadRequestException('id de la ressource non autorisé pour un signalement de membre');
     }
 
     // Vérifier que le reporter existe
     const reporter = await this.membersRepository.findOne({
-      where: { uuidMember: createReportDto.uuidReporter }
+      where: { idMember: createReportDto.idReporter }
     });
     if (!reporter) {
-      throw new NotFoundException(`Reporter with UUID ${createReportDto.uuidReporter} not found`);
+      throw new NotFoundException(`Reporter with id ${createReportDto.idReporter} not found`);
     }
 
     // Vérifier l'élément reporté selon le type
@@ -49,33 +49,33 @@ export class ReportsService {
 
     if (createReportDto.type === ReportType.RESOURCE) {
       resource = await this.resourcesRepository.findOne({
-        where: { uuidResource: createReportDto.uuidResource }
+        where: { idResource: createReportDto.idResource }
       });
       if (!resource) {
-        throw new NotFoundException(`Resource with UUID ${createReportDto.uuidResource} not found`);
+        throw new NotFoundException(`Resource with id ${createReportDto.idResource} not found`);
       }
     } else if (createReportDto.type === ReportType.MEMBER) {
       reportedMember = await this.membersRepository.findOne({
-        where: { uuidMember: createReportDto.uuidReportedMember }
+        where: { idMember: createReportDto.idReportedMember }
       });
       if (!reportedMember) {
-        throw new NotFoundException(`Member with UUID ${createReportDto.uuidReportedMember} not found`);
+        throw new NotFoundException(`Member with id ${createReportDto.idReportedMember} not found`);
       }
     }
 
     // Vérifier si un signalement similaire existe déjà
     const existingReport = await this.reportsRepository.findOne({
       where: {
-        reporter: { uuidMember: reporter.uuidMember },
-        ...(resource && { resource: { uuidResource: resource.uuidResource } }),
-        ...(reportedMember && { reportedMember: { uuidMember: reportedMember.uuidMember } })
+        reporter: { idMember: reporter.idMember },
+        ...(resource && { resource: { idResource: resource.idResource } }),
+        ...(reportedMember && { reportedMember: { idMember: reportedMember.idMember } })
       },
       relations: ['reporter', 'resource', 'reportedMember']
     });
 
     if (existingReport) {
       throw new ConflictException(
-        `Un signalement existe déjà pour cet élément par ce membre (UUID: ${existingReport.uuidReport})`
+        `Un signalement existe déjà pour cet élément par ce membre (id: ${existingReport.idReport})`
       );
     }
 
@@ -93,7 +93,7 @@ export class ReportsService {
     
     // Récupérer le rapport avec toutes ses relations
     const reportWithRelations = await this.reportsRepository.findOne({
-      where: { uuidReport: savedReport.uuidReport },
+      where: { idReport: savedReport.idReport },
       relations: ['reporter', 'resource', 'reportedMember']
     });
 
@@ -110,28 +110,28 @@ export class ReportsService {
     );
   }
 
-  async findOne(uuidReport: string): Promise<ReportResponseDto> {
+  async findOne(idReport: string): Promise<ReportResponseDto> {
     const report = await this.reportsRepository.findOne({
-      where: { uuidReport },
+      where: { idReport },
       relations: ['reporter', 'resource', 'reportedMember']
     });
     
     if (!report) {
-      throw new NotFoundException(`Report with UUID ${uuidReport} not found`);
+      throw new NotFoundException(`Report with id ${idReport} not found`);
     }
     
     return plainToInstance(ReportResponseDto, report, { excludeExtraneousValues: true });
   }
 
-  async update(uuid: string, updateReportDto: UpdateReportDto): Promise<ReportResponseDto> {
+  async update(idReport: string, updateReportDto: UpdateReportDto): Promise<ReportResponseDto> {
     // Vérifier que le signalement existe
     const report = await this.reportsRepository.findOne({
-      where: { uuidReport: uuid },
+      where: { idReport: idReport },
       relations: ['reporter', 'resource', 'reportedMember']
     });
 
     if (!report) {
-      throw new NotFoundException(`Report with UUID ${uuid} not found`);
+      throw new NotFoundException(`Report with id ${idReport} not found`);
     }
 
     // Mettre à jour le signalement
@@ -142,18 +142,18 @@ export class ReportsService {
 
     // Récupérer le signalement mis à jour avec toutes ses relations
     const reportWithRelations = await this.reportsRepository.findOne({
-      where: { uuidReport: updatedReport.uuidReport },
+      where: { idReport: updatedReport.idReport },
       relations: ['reporter', 'resource', 'reportedMember']
     });
 
     return plainToInstance(ReportResponseDto, reportWithRelations, { excludeExtraneousValues: true });
   }
 
-  async remove(uuid: string, currentUserId: string): Promise<void> {
-    const reportDto = await this.findOne(uuid);
+  async remove(idReport: string, currentUserId: string): Promise<void> {
+    const reportDto = await this.findOne(idReport);
     
     // Vérifier si l'utilisateur est le créateur du signalement
-    if (reportDto.reporter.uuidMember !== currentUserId) {
+    if (reportDto.reporter.idMember !== currentUserId) {
       throw new ForbiddenException(
         'Vous ne pouvez supprimer que vos propres signalements'
       );
@@ -161,12 +161,12 @@ export class ReportsService {
 
     // Récupérer l'entité Report avant de la supprimer
     const report = await this.reportsRepository.findOne({
-      where: { uuidReport: uuid },
+      where: { idReport: idReport },
       relations: ['reporter', 'resource', 'reportedMember']
     });
 
     if (!report) {
-      throw new NotFoundException(`Report with UUID ${uuid} not found`);
+      throw new NotFoundException(`Report with id ${idReport} not found`);
     }
 
     await this.reportsRepository.remove(report);

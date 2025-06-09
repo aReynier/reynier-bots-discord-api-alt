@@ -10,7 +10,7 @@ describe('CreateResourceDto', () => {
     dto.description = 'Test Description';
     dto.content = 'Test Content';
     dto.status = 'active';
-    dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+    dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
 
     // Act
     const errors = await validate(dto);
@@ -27,7 +27,7 @@ describe('CreateResourceDto', () => {
       dto.description = 'Test Description';
       dto.content = 'Test Content';
       dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+      dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -45,7 +45,7 @@ describe('CreateResourceDto', () => {
       dto.description = 'Test Description';
       dto.content = 'Test Content';
       dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+      dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -65,7 +65,7 @@ describe('CreateResourceDto', () => {
       dto.description = '';
       dto.content = 'Test Content';
       dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+      dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -85,7 +85,7 @@ describe('CreateResourceDto', () => {
       dto.description = 'Test Description';
       dto.content = '';
       dto.status = 'active';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+      dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -105,7 +105,7 @@ describe('CreateResourceDto', () => {
       dto.description = 'Test Description';
       dto.content = 'Test Content';
       dto.status = 'invalid_status';
-      dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+      dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
 
       // Act
       const errors = await validate(dto);
@@ -126,7 +126,7 @@ describe('CreateResourceDto', () => {
           dto.description = 'Test Description';
           dto.content = 'Test Content';
           dto.status = status;
-          dto.uuidMember = '123e4567-e89b-12d3-a456-426614174000';
+          dto.idMember = '123e4567-e89b-12d3-a456-426614174000';
 
           // Act
           return validate(dto);
@@ -140,22 +140,22 @@ describe('CreateResourceDto', () => {
     });
   });
 
-  describe('uuidMember validation', () => {
-    it('should fail when uuidMember is not a valid UUID', async () => {
+  describe('idMember validation', () => {
+    it('should fail when idMember is not a valid UUID', async () => {
       // Arrange
       const dto = new CreateResourceDto();
       dto.title = 'Test Resource';
       dto.description = 'Test Description';
       dto.content = 'Test Content';
       dto.status = 'active';
-      dto.uuidMember = 'not-a-uuid';
+      dto.idMember = 'not-a-uuid';
 
       // Act
       const errors = await validate(dto);
 
       // Assert
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].property).toBe('uuidMember');
+      expect(errors[0].property).toBe('idMember');
       expect(errors[0].constraints).toHaveProperty('isUuid');
     });
   });
