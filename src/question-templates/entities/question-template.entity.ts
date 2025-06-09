@@ -9,8 +9,8 @@ export class QuestionTemplate {
         description: 'Unique identifier of the question',
         example: '123e4567-e89b-12d3-a456-426614174000'
     })
-    @PrimaryGeneratedColumn('uuid', { name: 'uuid_question_template' })
-    uuid: string;
+    @PrimaryGeneratedColumn('uuid', { name: 'id_question_template' })
+    idQuestionTemplate: string;
     
     @ApiProperty({
         description: 'Content of the question template',
@@ -31,7 +31,7 @@ export class QuestionTemplate {
         type: () => PollTemplate
     })
     @ManyToOne(() => PollTemplate, (pollTemplate) => pollTemplate.questionTemplates, {onDelete: 'CASCADE'})
-    @JoinColumn({ name: 'uuid_poll_template' })
+    @JoinColumn({ name: 'id_poll_template' })
     pollTemplate: PollTemplate;
 
     @ApiProperty({
