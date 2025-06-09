@@ -30,16 +30,16 @@ export class CoursesService {
             const courseData = {
                 name: createCourseDto.name,
                 isCertified: createCourseDto.isCertified,
-                uuidGuild: createCourseDto.uuidGuild,
-                uuidCategory: createCourseDto.uuidCategory,
+                idGuild: createCourseDto.idGuild,
+                idCategory: createCourseDto.idCategory,
             };
 
             const newCourse = this.courseRepository.create(courseData);
             const savedCourse = await this.courseRepository.save(newCourse);
 
-            if (createCourseDto.uuidRole) {
+            if (createCourseDto.idRole) {
                 const role = await this.roleRepository.findOne({
-                    where: { uuidRole: createCourseDto.uuidRole }
+                    where: { idRole: createCourseDto.idRole }
                 });
 
                 if (role) {
@@ -47,12 +47,12 @@ export class CoursesService {
                         .createQueryBuilder()
                         .relation(Course, "roles")
                         .of(savedCourse)
-                        .add(role.uuidRole);
+                        .add(role.idRole);
                 }
             }
 
             const courseWithRelations = await this.courseRepository.findOne({
-                where: { uuid: savedCourse.uuid },
+                where: { idCourse: savedCourse.idCourse },
                 relations: {
                     category: true,
                     guild: true,
@@ -63,7 +63,7 @@ export class CoursesService {
             });
 
             if (!courseWithRelations) {
-                throw new NotFoundException(`Course with UUID ${savedCourse.uuid} not found after creation`);
+                throw new NotFoundException(`Course with id ${savedCourse.idCourse} not found after creation`);
             }
 
             return courseWithRelations;
@@ -78,33 +78,33 @@ export class CoursesService {
         });
     }
 
-    async getByUUID(uuid: string): Promise<Course> {
+    async getById(idCourse: string): Promise<Course> {
         const course = await this.courseRepository.findOne({
-            where: { uuid },
+            where: { idCourse },
             relations: ['category', 'guild', 'roles', 'promotions', 'channels'],
         });
 
         if (!course) {
-            throw new NotFoundException(`Course with UUID ${uuid} not found`);
+            throw new NotFoundException(`Course with id ${idCourse} not found`);
         }
         return course;
     }
 
-    async updateByUUID(uuid: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
+    async updateById(idCourse: string, updateCourseDto: UpdateCourseDto): Promise<Course> {
         const course = await this.courseRepository.findOne({
-            where: { uuid },
+            where: { idCourse },
             relations: ['category', 'guild', 'roles', 'promotions', 'channels']
         });
 
         if (!course) {
-            throw new NotFoundException(`Course with UUID ${uuid} not found`);
+            throw new NotFoundException(`Course with id ${idCourse} not found`);
         }
 
         if (updateCourseDto.name) {
             const existingCourse = await this.courseRepository.findOne({
                 where: { name: updateCourseDto.name },
             });
-            if (existingCourse && existingCourse.uuid !== uuid) {
+            if (existingCourse && existingCourse.idCourse !== idCourse) {
                 throw new ConflictException(`Course with name ${updateCourseDto.name} already exists`);
             }
         }
@@ -113,15 +113,15 @@ export class CoursesService {
         return await this.courseRepository.save(course);
     }
 
-    async deleteByUUID(uuid: string): Promise<void> {
+    async deleteById(idCourse: string): Promise<void> {
         const course = await this.courseRepository.findOne({ 
-            where: { uuid } 
+            where: { idCourse } 
         });
 
         if (!course) {
-            throw new NotFoundException(`Course with UUID ${uuid} not found`);
+            throw new NotFoundException(`Course with id ${idCourse} not found`);
         }
-        const result = await this.courseRepository.delete({ uuid });
+        const result = await this.courseRepository.delete({ idCourse });
         if (result.affected === 0) {
             throw new BadRequestException('Failed to delete course');
         }

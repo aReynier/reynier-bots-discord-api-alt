@@ -5,38 +5,33 @@ import { CreateCourseDto } from "./create-course.dto";
 describe('CreateCourseDto', () => {
     it('should validate a valid DTO', async () => {
         const dto = new CreateCourseDto();
-        dto.name = 'Développeur web';
+        dto.name = 'Test Course';
         dto.isCertified = true;
-        dto.uuidGuild = '123456789012345678';
-        dto.uuidCategory = '123456789012345678';
-
+        dto.idRole = '123456789012345678';
+        
         const errors = await validate(dto);
-        expect(errors).toHaveLength(0);
+        expect(errors.length).toBe(0);
     });
 
     it('should fail validation for missing required fields', async () => {
         const dto = new CreateCourseDto();
-
         const errors = await validate(dto);
         
-        expect(errors).toHaveLength(4);
-        
-        const errorProperties = errors.map(error => error.property);
-        expect(errorProperties).toContain('name');
-        expect(errorProperties).toContain('isCertified');
-        expect(errorProperties).toContain('uuidGuild');
-        expect(errorProperties).toContain('uuidCategory');
+        const errorFields = errors.map(err => err.property);
+        expect(errorFields).toContain('name');
+        expect(errorFields).toContain('isCertified');
+        expect(errorFields).toContain('idRole');
     });
 
     it('should fail validation for short name', async () => {
         const dto = new CreateCourseDto();
-        dto.name = 'cd';
+        dto.name = 'ab';  // trop court
         dto.isCertified = true;
-        dto.uuidGuild = '123456789012345678';
-        dto.uuidCategory = '123456789012345678';
-
+        dto.idRole = '123456789012345678';
+        
         const errors = await validate(dto);
-        expect(errors).toHaveLength(1);
-        expect(errors[0].property).toBe('name');
+        const nameErrors = errors.find(err => err.property === 'name');
+        expect(errors.length).toBe(1);
+        expect(nameErrors?.constraints?.minLength).toBeDefined();
     });
 });

@@ -1,8 +1,7 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
-  OneToOne,
   JoinColumn,
   OneToMany,
   ManyToOne,
@@ -20,11 +19,11 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Course {
 
   @ApiProperty({
-    description: 'UUID unique de la formation',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: 'SF discord de la formation',
+    example: '123456789012345678',
   })
-  @PrimaryGeneratedColumn('uuid', { name: 'uuid_course' })
-    uuid: string;
+  @PrimaryColumn({ type: 'varchar', length: 19, name: 'id_course' })
+    idCourse: string;
 
   @ApiProperty({
     description: 'Nom de la formation',
@@ -68,37 +67,34 @@ export class Course {
     type: () => Guild,
   })
   @ManyToOne(() => Guild, (guild) => guild.courses)
-  @JoinColumn({ name: 'uuid_guild' })
+  @JoinColumn({ name: 'id_guild' })
   guild: Guild;
 
   @ApiProperty({
-    description: 'UUID unique de la guilde',
+    description: 'SF unique de la guilde',
     example: '123456789012345678',
   })
-  @Column({ name: 'uuid_guild', type: 'varchar', length: 19})
-    uuidGuild: string;
+  @Column({ name: 'id_guild', type: 'varchar', length: 19})
+    idGuild: string;
   
   @ApiProperty({
     description: 'Catégorie associée à la formation',
-    example: {
-      uuid: '123456789012345678',
-      name: 'Développement Web',
-    },
+    type: () => Category
   })
-  @ManyToOne(() => Category, (category) => category.course)
-  @JoinColumn({ name: 'uuid_category' })
+  @ManyToOne(() => Category, category => category.courses)
+  @JoinColumn({ name: 'id_category' })
   category: Category;
 
   @ApiProperty({
-    description: 'UUID unique de la catégorie',
+    description: 'id unique de la catégorie',
     example: '123456789012345678'
   })
   @Column({
-    name: 'uuid_category',
+    name: 'id_category',
     type: 'varchar',
     length: 19
   })
-  uuidCategory: string;
+  idCategory: string;
   
   @ApiProperty({
     description: 'Rôles associés aux formations',
@@ -111,12 +107,12 @@ export class Course {
   @JoinTable({
     name: 'courses_roles',
     joinColumns: [{
-        name: 'uuid_course',
-        referencedColumnName: 'uuid'
+        name: 'id_course',
+        referencedColumnName: 'idCourse'
     }],
     inverseJoinColumns: [{
-        name: 'uuid_role',
-        referencedColumnName: 'uuidRole'
+        name: 'id_role',
+        referencedColumnName: 'idRole'
     }]
   })
   roles: Role[];
