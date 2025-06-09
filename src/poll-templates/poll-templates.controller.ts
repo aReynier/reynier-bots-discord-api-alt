@@ -24,27 +24,27 @@ export class PollTemplatesController {
     return this.pollTemplatesService.findAll();
   }
 
-  @Get(':uuid')
+  @Get(':id')
   @ApiOperation({ summary: 'Retrieve a specific poll template by ID' })
   @ApiResponse({ status: 200, description: 'The poll template was retrieved successfully.' })
   @ApiResponse({ status: 404, description: 'Poll template not found.' })
-  findOne(@Param('uuid') uuid: string) {
-    return this.pollTemplatesService.findOne(uuid);
+  findOne(@Param('id') id: string) {
+    return this.pollTemplatesService.findOne(id);
   }
 
-  @Put(':uuid')
+  @Put(':id')
   @ApiOperation({ summary: 'Update a specific poll template by ID' })
   @ApiResponse({ status: 200, description: 'The poll template was updated successfully.' })
   @ApiResponse({ status: 404, description: 'Poll template not found.' })
-  update(@Param('uuid') uuid: string, @Body() updatePollTemplateDto: UpdatePollTemplateDto) {
-    return this.pollTemplatesService.update(uuid, updatePollTemplateDto);
+  update(@Param('id') id: string, @Body() updatePollTemplateDto: UpdatePollTemplateDto) {
+    return this.pollTemplatesService.update(id, updatePollTemplateDto);
   }
 
-  @Delete(':uuid')
+  @Delete(':id')
   @ApiOperation({ summary: 'Delete a specific poll template by ID' })
   @ApiResponse({ status: 200, description: 'The poll template was deleted successfully.' })
   @ApiResponse({ status: 404, description: 'Poll template not found.' })
-  remove(@Param('uuid') uuid: string) {
-    return this.pollTemplatesService.remove(uuid);
+  remove(@Param('id') id: string) {
+    return this.pollTemplatesService.remove(id);
   }
 }
