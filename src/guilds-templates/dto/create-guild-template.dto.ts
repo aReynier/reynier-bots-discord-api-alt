@@ -1,4 +1,4 @@
-import { IsString, MaxLength, Length, IsOptional, IsJSON } from 'class-validator';
+import { IsString, MaxLength, Length, IsOptional, IsJSON, Matches } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { PickableDiscordIdFields} from 'src/utils/pickable-discord-id-fields';
 import { IntersectionType } from '@nestjs/swagger';
@@ -14,7 +14,11 @@ export class CreateGuildTemplateDto extends PickType(IntersectionType(PickableDi
     example: 'Template Simplon'
   })
   @IsString()
-  @MaxLength(100)
+  @Length(2, 100, { message: 'Le nom doit contenir entre 2 et 100 caractères' })
+  @Matches(
+    /^[a-zA-ZÀ-ÿ0-9\s\-_]+$/, 
+    { message: 'Le nom ne peut contenir que des lettres (avec accents), chiffres, espaces, tirets et underscores' }
+  )
   name: string;
 
   @ApiProperty({
@@ -23,7 +27,11 @@ export class CreateGuildTemplateDto extends PickType(IntersectionType(PickableDi
     required: false
   })
   @IsString()
-  @MaxLength(500)
+  @Length(2, 500, { message: 'La description doit contenir entre 2 et 500 caractères' })
+  @Matches(
+    /^[a-zA-ZÀ-ÿ0-9\s\-_.,!?;:'"()\[\]]+$/, 
+    { message: 'La description peut contenir des lettres (avec accents), chiffres, espaces, ponctuation basique (.!?;:,), guillemets, parenthèses et crochets' }
+  )
   @IsOptional()
   description?: string;
 
